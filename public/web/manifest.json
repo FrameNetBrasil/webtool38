@@ -1,0 +1,206 @@
+{
+  "src/app.css": {
+    "file": "assets/app-fdcfbae9.css",
+    "src": "src/app.css"
+  },
+  "src/app.js": {
+    "assets": [
+      "assets/oxygenmono-regular-webfont-22172378.eot",
+      "assets/oxygenmono-regular-webfont-3771eeea.woff2",
+      "assets/oxygenmono-regular-webfont-8fc77e91.woff",
+      "assets/oxygenmono-regular-webfont-91546e7d.ttf",
+      "assets/oxygenmono-regular-webfont-4e322cc9.svg",
+      "assets/combo_arrow-48f2d5db.png",
+      "assets/loading-b66fedaa.gif",
+      "assets/blank-2dfe28cb.gif",
+      "assets/menu_arrows-e3ead896.png",
+      "assets/messager_icons-bc262bbc.png",
+      "assets/panel_tools-6f031428.png",
+      "assets/tabs_icons-76528aac.png",
+      "assets/tree_icons-28946d0e.png",
+      "assets/warning-274dce8d.svg",
+      "assets/expand_less-3c17d227.svg",
+      "assets/expand_more-20f94323.svg",
+      "assets/pt-9df0e66e.svg",
+      "assets/en-53438453.svg",
+      "assets/fr-0d65e4d0.svg",
+      "assets/es-348a6056.svg",
+      "assets/it-ea363212.svg",
+      "assets/se-e4723610.svg",
+      "assets/lt-8431f6f1.svg",
+      "assets/jp-f96ef7bd.svg",
+      "assets/de-2e2d21aa.svg",
+      "assets/iw-ecf527ae.svg",
+      "assets/zh-766141dc.svg",
+      "assets/ru-20436d8e.svg",
+      "assets/ko-861ecf98.svg",
+      "assets/ar-b8c28dd2.svg",
+      "assets/sq-556b9669.svg",
+      "assets/fi-9606f060.svg",
+      "assets/hi-cb8c5701.svg",
+      "assets/ur-ec345441.svg",
+      "assets/el-cb56114d.svg",
+      "assets/te-eea0326e.svg",
+      "assets/kn-0b3ab17a.svg",
+      "assets/hr-a1669532.svg"
+    ],
+    "css": [
+      "assets/app-fdcfbae9.css"
+    ],
+    "file": "assets/app-51d5c344.js",
+    "isEntry": true,
+    "src": "src/app.js"
+  },
+  "src/assets/fonts/oxygen/oxygenmono-regular-webfont.eot": {
+    "file": "assets/oxygenmono-regular-webfont-22172378.eot",
+    "src": "src/assets/fonts/oxygen/oxygenmono-regular-webfont.eot"
+  },
+  "src/assets/fonts/oxygen/oxygenmono-regular-webfont.svg": {
+    "file": "assets/oxygenmono-regular-webfont-4e322cc9.svg",
+    "src": "src/assets/fonts/oxygen/oxygenmono-regular-webfont.svg"
+  },
+  "src/assets/fonts/oxygen/oxygenmono-regular-webfont.ttf": {
+    "file": "assets/oxygenmono-regular-webfont-91546e7d.ttf",
+    "src": "src/assets/fonts/oxygen/oxygenmono-regular-webfont.ttf"
+  },
+  "src/assets/fonts/oxygen/oxygenmono-regular-webfont.woff": {
+    "file": "assets/oxygenmono-regular-webfont-8fc77e91.woff",
+    "src": "src/assets/fonts/oxygen/oxygenmono-regular-webfont.woff"
+  },
+  "src/assets/fonts/oxygen/oxygenmono-regular-webfont.woff2": {
+    "file": "assets/oxygenmono-regular-webfont-3771eeea.woff2",
+    "src": "src/assets/fonts/oxygen/oxygenmono-regular-webfont.woff2"
+  },
+  "src/assets/images/icons/expand_less.svg": {
+    "file": "assets/expand_less-3c17d227.svg",
+    "src": "src/assets/images/icons/expand_less.svg"
+  },
+  "src/assets/images/icons/expand_more.svg": {
+    "file": "assets/expand_more-20f94323.svg",
+    "src": "src/assets/images/icons/expand_more.svg"
+  },
+  "src/assets/images/icons/warning.svg": {
+    "file": "assets/warning-274dce8d.svg",
+    "src": "src/assets/images/icons/warning.svg"
+  },
+  "src/assets/images/nls/ar.svg": {
+    "file": "assets/ar-b8c28dd2.svg",
+    "src": "src/assets/images/nls/ar.svg"
+  },
+  "src/assets/images/nls/de.svg": {
+    "file": "assets/de-2e2d21aa.svg",
+    "src": "src/assets/images/nls/de.svg"
+  },
+  "src/assets/images/nls/el.svg": {
+    "file": "assets/el-cb56114d.svg",
+    "src": "src/assets/images/nls/el.svg"
+  },
+  "src/assets/images/nls/en.svg": {
+    "file": "assets/en-53438453.svg",
+    "src": "src/assets/images/nls/en.svg"
+  },
+  "src/assets/images/nls/es.svg": {
+    "file": "assets/es-348a6056.svg",
+    "src": "src/assets/images/nls/es.svg"
+  },
+  "src/assets/images/nls/fi.svg": {
+    "file": "assets/fi-9606f060.svg",
+    "src": "src/assets/images/nls/fi.svg"
+  },
+  "src/assets/images/nls/fr.svg": {
+    "file": "assets/fr-0d65e4d0.svg",
+    "src": "src/assets/images/nls/fr.svg"
+  },
+  "src/assets/images/nls/hi.svg": {
+    "file": "assets/hi-cb8c5701.svg",
+    "src": "src/assets/images/nls/hi.svg"
+  },
+  "src/assets/images/nls/hr.svg": {
+    "file": "assets/hr-a1669532.svg",
+    "src": "src/assets/images/nls/hr.svg"
+  },
+  "src/assets/images/nls/it.svg": {
+    "file": "assets/it-ea363212.svg",
+    "src": "src/assets/images/nls/it.svg"
+  },
+  "src/assets/images/nls/iw.svg": {
+    "file": "assets/iw-ecf527ae.svg",
+    "src": "src/assets/images/nls/iw.svg"
+  },
+  "src/assets/images/nls/jp.svg": {
+    "file": "assets/jp-f96ef7bd.svg",
+    "src": "src/assets/images/nls/jp.svg"
+  },
+  "src/assets/images/nls/kn.svg": {
+    "file": "assets/kn-0b3ab17a.svg",
+    "src": "src/assets/images/nls/kn.svg"
+  },
+  "src/assets/images/nls/ko.svg": {
+    "file": "assets/ko-861ecf98.svg",
+    "src": "src/assets/images/nls/ko.svg"
+  },
+  "src/assets/images/nls/lt.svg": {
+    "file": "assets/lt-8431f6f1.svg",
+    "src": "src/assets/images/nls/lt.svg"
+  },
+  "src/assets/images/nls/pt.svg": {
+    "file": "assets/pt-9df0e66e.svg",
+    "src": "src/assets/images/nls/pt.svg"
+  },
+  "src/assets/images/nls/ru.svg": {
+    "file": "assets/ru-20436d8e.svg",
+    "src": "src/assets/images/nls/ru.svg"
+  },
+  "src/assets/images/nls/se.svg": {
+    "file": "assets/se-e4723610.svg",
+    "src": "src/assets/images/nls/se.svg"
+  },
+  "src/assets/images/nls/sq.svg": {
+    "file": "assets/sq-556b9669.svg",
+    "src": "src/assets/images/nls/sq.svg"
+  },
+  "src/assets/images/nls/te.svg": {
+    "file": "assets/te-eea0326e.svg",
+    "src": "src/assets/images/nls/te.svg"
+  },
+  "src/assets/images/nls/ur.svg": {
+    "file": "assets/ur-ec345441.svg",
+    "src": "src/assets/images/nls/ur.svg"
+  },
+  "src/assets/images/nls/zh.svg": {
+    "file": "assets/zh-766141dc.svg",
+    "src": "src/assets/images/nls/zh.svg"
+  },
+  "src/css/easyui/images/blank.gif": {
+    "file": "assets/blank-2dfe28cb.gif",
+    "src": "src/css/easyui/images/blank.gif"
+  },
+  "src/css/easyui/images/combo_arrow.png": {
+    "file": "assets/combo_arrow-48f2d5db.png",
+    "src": "src/css/easyui/images/combo_arrow.png"
+  },
+  "src/css/easyui/images/loading.gif": {
+    "file": "assets/loading-b66fedaa.gif",
+    "src": "src/css/easyui/images/loading.gif"
+  },
+  "src/css/easyui/images/menu_arrows.png": {
+    "file": "assets/menu_arrows-e3ead896.png",
+    "src": "src/css/easyui/images/menu_arrows.png"
+  },
+  "src/css/easyui/images/messager_icons.png": {
+    "file": "assets/messager_icons-bc262bbc.png",
+    "src": "src/css/easyui/images/messager_icons.png"
+  },
+  "src/css/easyui/images/panel_tools.png": {
+    "file": "assets/panel_tools-6f031428.png",
+    "src": "src/css/easyui/images/panel_tools.png"
+  },
+  "src/css/easyui/images/tabs_icons.png": {
+    "file": "assets/tabs_icons-76528aac.png",
+    "src": "src/css/easyui/images/tabs_icons.png"
+  },
+  "src/css/easyui/images/tree_icons.png": {
+    "file": "assets/tree_icons-28946d0e.png",
+    "src": "src/css/easyui/images/tree_icons.png"
+  }
+}

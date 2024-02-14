@@ -1,0 +1,20 @@
+<x-layout.content>
+    <x-layout.child>
+        <x-slot:left>
+            <div
+                hx-trigger="load"
+                hx-target="this"
+                hx-swap="outerHTML"
+                hx-get="/lus/{{$data->lu->idLU}}/semanticTypes/formAdd"
+            ></div>
+        </x-slot:left>
+        <x-slot:right>
+            <div
+                hx-trigger="load"
+                hx-target="this"
+                hx-swap="outerHTML"
+                hx-get="/lus/{{$data->lu->idLU}}/semanticTypes/grid"
+            ></div>
+        </x-slot:right>
+    </x-layout.child>
+</x-layout.content>

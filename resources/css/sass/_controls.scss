@@ -1,0 +1,359 @@
+.btn {
+    height: 32px;
+    min-height: 32px;
+    min-width: 56px;
+    text-transform: none;
+    cursor: pointer;
+    border-radius: var(--wt-controls-border-radius);
+    font-weight: 600;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.btn-primary {
+    border: 0px;
+    background-color: $primary;
+    color: white;
+    a {
+        color: white;
+    }
+}
+
+.btn-secondary {
+    border: 0px;
+    background-color: $secondary;
+    color: white;
+    a {
+        color: white;
+    }
+}
+
+.btn-danger {
+    border: 0px;
+    background-color: $negative;
+    color: white;
+    a {
+        color: white;
+    }
+}
+
+.wt-form {
+    .form-fields {
+        padding: 8px;
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+
+        .textbox {
+            padding: 4px;
+            width: calc(100% - 8px) !important;
+        }
+
+        input[type='checkbox'] {
+            width: 32px !important;
+            margin:8px 0 0 0;
+        }
+    }
+
+    .form-toolbar {
+        background-color: var(--wt-bg-panel-header);
+        background: linear-gradient(to bottom, var(--wt-bg-panel-header) 0, var(--wt-bg-panel-header) 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--wt-bg-panel-header), endColorstr=var(--wt-bg-panel-header), GradientType=0);
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+
+        .l-btn-text {
+            font-size: 0.875em !important;
+        }
+
+    }
+
+    .form-buttons {
+        padding: 4px;
+        background-color: var(--wt-bg-panel-header);
+        background: linear-gradient(to bottom, var(--wt-bg-panel-header) 0, var(--wt-bg-panel-header) 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--wt-bg-panel-header), endColorstr=var(--wt-bg-panel-header), GradientType=0);
+        border: var(--wt-border-panel-header);
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    .form-field {
+        margin-bottom: 8px;
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 0.125rem;
+        }
+    }
+}
+
+.wt-card {
+    .header {
+        padding: 8px;
+        border: 1px solid var(--wt-border-panel-header);
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        background-color: var(--wt-bg-card-header);
+    }
+
+    .body {
+        padding: 8px;
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+    }
+}
+
+.wt-card-plain {
+    .header {
+        padding: 8px;
+        border:0;
+        border-bottom: 1px solid var(--wt-border-panel-header);
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        background-color: white;
+    }
+
+    .body {
+        padding: 8px;
+        border: 0;
+        //border-left: 1px solid var(--wt-border-panel-header);
+        //border-right: 1px solid var(--wt-border-panel-header);
+        //border-bottom: 1px solid var(--wt-border-panel-header);
+    }
+}
+
+.wt-card-error {
+
+    .wt-card-error--error {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-1;
+            background-color: $negative;
+        }
+    }
+
+    .wt-card-error--warning {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-10;
+            background-color: $warning;
+        }
+    }
+
+    .wt-card-error--info {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-10;
+            background-color: $info;
+        }
+    }
+
+    .body {
+        padding: 8px;
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
+
+.wt-messager {
+    border: 1px solid var(--wt-border-panel-header) !important;
+    border-radius: var(--wt-controls-border-radius);
+    padding: 0;
+
+    .panel-tool {
+        display: none;
+    }
+
+    .messager-body {
+        padding: 8px;
+        overflow: auto;
+        max-height: 40px !important;
+        background-color: var(--wt-bg-card-header);
+    }
+}
+
+.wt-messager-success {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $positive;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+}
+
+.wt-messager-error {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $negative;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+}
+
+.wt-messager-info {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $info;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+}
+
+.wt-messager-warning {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $warning;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-10;
+        }
+    }
+}
+
+.wt-messager-confirm {
+    border: 1px solid var(--wt-border-panel-header) !important;
+    border-radius: var(--wt-controls-border-radius);
+    padding: 0;
+
+    .panel-tool {
+        display: none;
+    }
+
+    .messager-body {
+        padding: 8px;
+        overflow: auto;
+        max-height: 40px !important;
+        background-color: var(--wt-bg-card-header);
+    }
+
+    .dialog-button {
+        border-color: var(--wt-border-panel-header) !important;
+    }
+
+    .l-btn {
+        background-color: var(--wt-bg-form-button);
+    }
+
+    .messager-question {
+        background: url('../assets/images/icons/warning.svg');
+        width: 24px;
+        height: 24px;
+    }
+}
+
+
+.wt-datagrid {
+    overflow-y:auto;
+    border-bottom: 1px solid var(--wt-border-panel-header);
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    thead {
+        background-color: var(--wt-bg-panel-header);
+    }
+
+    td, th {
+        border: 1px solid var(--wt-border-panel-header);
+        padding: 4px;
+    }
+
+    tr:nth-child(even) {
+        background-color: var(--wt-bg-datagrid-row-1);
+    }
+
+    tr:hover {
+        background-color: var(--wt-action-hover);
+    }
+
+    th {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        text-align: left;
+        background-color: var(--wt-bg-datagrid-header);
+        color: var(--wt-text-color);
+    }
+
+    .wt-datagrid-action {
+        cursor: pointer;
+        width:16px;
+    }
+}
+
+.wt-combobox-panel {
+    //position:relative;
+
+    .panel-title {
+        font-weight: normal;
+    }
+
+    .panel-tool-collapse {
+        background: url('../assets/images/icons/expand_less.svg');
+    }
+
+    .panel-tool-expand {
+        background: url('../assets/images/icons/expand_more.svg');
+    }
+
+    .panel-tool {
+        margin-top: -12px;
+        height: 24px;
+    }
+
+    .panel-tool a:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        background-color: transparent;
+        border-radius: 0;
+    }
+    .panel-tool a {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        margin: 0 0 0 2px;
+        vertical-align: top;
+    }
+}
+
+
+
+/*
+<div class="panel window wt-messager panel-htop" style="top: 0px; background-color: red; display: block; width: 288px; left: 854px; position: absolute; z-index: 9001;"><div class="panel-header panel-header-noborder window-header" style="width: 286px;"><div class="panel-title">success</div><div class="panel-tool"><a href="javascript:;" class="panel-tool-close"></a></div></div><div class="messager-body panel-body panel-body-noborder window-body" title="" id="" style="width: 286px; height: 105px;">Entries recorded.</div></div>
+ */

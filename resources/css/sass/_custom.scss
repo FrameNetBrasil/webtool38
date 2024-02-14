@@ -1,0 +1,21 @@
+.panel-body::before, .panel-body::after {
+    content:"";
+    display:block;
+}
+
+.fa16px {
+    font-size: 16px;
+}
+
+.l-btn {
+    color: var(--wt-text-color);
+}
+
+.combobox-item {
+    cursor:pointer;
+}
+
+.combobox-item-selected {
+    background-color: var(--wt-bg-selected);
+    color: #000000;
+}

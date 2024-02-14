@@ -1,0 +1,18 @@
+<x-link-button
+    id="menuLUEdit"
+    label="Edit"
+    hx-get="/lus/{{$data->lu->idLU}}/formEdit"
+    hx-target="#luEditPane"
+></x-link-button>
+<x-link-button
+    id="menuLUConstraints"
+    label="Constraints"
+    hx-get="/lus/{{$data->lu->idLU}}/constraints"
+    hx-target="#luEditPane"
+></x-link-button>
+<x-link-button
+    id="menuLUSemanticTypes"
+    label="SemanticTypes"
+    hx-get="/lus/{{$data->lu->idLU}}/semanticTypes"
+    hx-target="#luEditPane"
+></x-link-button>

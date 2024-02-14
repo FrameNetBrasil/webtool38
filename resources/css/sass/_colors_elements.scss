@@ -1,0 +1,38 @@
+/*
+ Color elements
+ */
+
+.color_target {
+    color: #FFF;
+    background-color: #000 !important;
+}
+
+.color_frame {
+    color: var(--wt-frame-color);
+    fill: var(--wt-frame-color);
+    stroke: var(--wt-frame-color);
+}
+
+.color_frame--text {
+    fill: white;
+}
+
+.color_qla_agentive--text {
+    color: var(--wt-qualia-agentive-color);
+}
+
+.color_qla_constitutive--text {
+    color: var(--wt-qualia-constitutive-color);
+}
+
+.color_qla_context--text {
+    color: var(--wt-qualia-context-color);
+}
+
+.color_qla_formal--text {
+    color: var(--wt-qualia-formal-color);
+}
+
+.color_qla_telic--text {
+    color: var(--wt-qualia-telic-color);
+}

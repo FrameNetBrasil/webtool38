@@ -1,0 +1,42 @@
+<?php
+
+namespace App\View\Components\Combobox;
+
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
+use App\Repositories\Color as ColorRepository;
+
+class Color extends Component
+{
+    public array $options;
+    /**
+     * Create a new component instance.
+     */
+    public function __construct(
+        public string $id,
+        public string $label,
+        public string $value = ''
+    )
+    {
+        $color = new ColorRepository();
+        $list = $color->listForSelect()->getResult();
+        $this->options = [];
+        foreach($list as $c) {
+            $this->options[] = [
+                'id' => $c['idColor'],
+                'text' => $c['name'],
+                'color' => "color_{$c['idColor']}"
+            ];
+        }
+
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View|Closure|string
+    {
+        return view('components.combobox.color');
+    }
+}

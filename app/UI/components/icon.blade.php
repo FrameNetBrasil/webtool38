@@ -1,0 +1,1 @@
+<span class="material-icons wt-icon wt-icon-{{$icon}}"></span><span>{{$slot}}</span>

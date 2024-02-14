@@ -1,0 +1,24 @@
+<x-link-button
+    id="menuFEEdit"
+    label="Edit"
+    hx-get="/fes/{{$data->frameElement->idFrameElement}}/formEdit"
+    hx-target="#feEditPane"
+></x-link-button>
+<x-link-button
+    id="menuFEEntries"
+    label="Translations"
+    hx-get="/fes/{{$data->frameElement->idFrameElement}}/formEntries"
+    hx-target="#feEditPane"
+></x-link-button>
+<x-link-button
+    id="menuFEConstraints"
+    label="Constraints"
+    hx-get="/fes/{{$data->frameElement->idFrameElement}}/constraints"
+    hx-target="#feEditPane"
+></x-link-button>
+<x-link-button
+    id="menuFESemanticTypes"
+    label="SemanticTypes"
+    hx-get="/fes/{{$data->frameElement->idFrameElement}}/semanticTypes"
+    hx-target="#feEditPane"
+></x-link-button>

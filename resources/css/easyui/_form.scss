@@ -1,0 +1,24 @@
+form {
+    margin-block-end: 0;
+}
+
+.form-body {
+    border-width: 1px;
+    border-style: solid;
+    overflow: auto;
+    border-top-width: 0;
+    padding: 8px;
+}
+
+.form-button {
+    //position: relative;
+    //top: -1px;
+    padding: 5px;
+    text-align: right;
+    margin: 8px -8px -8px -8px;
+    background: var(--wt-bg-form-button);
+}
+.form-button .btn {
+    margin-left: 5px;
+}
+
