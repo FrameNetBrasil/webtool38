@@ -7,7 +7,7 @@ if (!function_exists('ddump')) {
     {
         foreach ($var ?? [] as $m) {
             $message = print_r($m, true);
-            Log::channel('trace')->debug($message);
+            Log::channel(env('LOG_CHANNEL'))->debug($message);
         }
     }
 

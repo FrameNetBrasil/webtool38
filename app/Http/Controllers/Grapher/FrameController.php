@@ -37,7 +37,6 @@ class FrameController extends Controller
     #[Post(path: '/grapher/frame/graph/{idEntity?}')]
     public function frameGraph(int $idEntity = null)
     {
-        ddump($this->data);
         $nodes = session("graphNodes") ?? [];
         if (isset($this->data->idFrame)) {
             $frame = new Frame($this->data->idFrame);
@@ -48,7 +47,6 @@ class FrameController extends Controller
         } else {
             $idRelationType = session('idRelationType') ?? [];
         }
-        ddump('idEntity ' . $idEntity);
         if (!is_null($idEntity)) {
             if ($idEntity == 0) {
                 $nodes = [];
@@ -61,14 +59,12 @@ class FrameController extends Controller
             "idRelationType" => $idRelationType
         ]);
         $this->data->graph = RelationService::listFrameRelationsForGraph($nodes, $idRelationType);
-        ddump($this->data);
         return $this->render('frameGraph');
     }
 
     #[Post(path: '/grapher/framefe/graph/{idEntityRelation}')]
     public function frameFeGraph(int $idEntityRelation = null)
     {
-        ddump($this->data);
         $nodes = session("graphNodes") ?? [];
         $idRelationType = session('idRelationType');
         $this->data->graph = RelationService::listFrameRelationsForGraph($nodes, $idRelationType);
@@ -81,7 +77,6 @@ class FrameController extends Controller
                 $this->data->graph['links'][$idSource][$idTarget] = $link;
             }
         }
-        ddump($this->data);
         return $this->render('frameGraph');
     }
 

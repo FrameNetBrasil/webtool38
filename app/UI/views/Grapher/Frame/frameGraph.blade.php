@@ -28,7 +28,7 @@
                                 text: text,
                             }
                         });
-                        rect.resize(w, 16);
+                        rect.resize(w, 20);
                     }
                     if (node['type'] === 'fe') {
                         text = node['name'];
@@ -69,7 +69,7 @@
                                 ]
                             }]
                         });
-                        rect.resize(w, 16);
+                        rect.resize(w, 20);
                     }
                     elements.push(rect);
                 }

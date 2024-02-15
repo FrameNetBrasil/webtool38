@@ -33,7 +33,7 @@ class FrameController extends Controller
     {
         $this->data->search ??= (object)[];
         $this->data->search->_token = csrf_token();
-        return $this->render('browse');
+        return $this->render('pageBrowse');
     }
 
     #[Post(path: '/report/frames/listForTree')]

@@ -1,17 +1,17 @@
-<div id="reportPane"
+<article
      class="flex flex-column sm:col-11 md:col-11 lg:col-11 xl:col-8 mx-auto h-full p-0  wt-layout-report">
     <div class="flex-none">
-        <div class="options">
+        <header class="options">
             {{$menu}}
-        </div>
+        </header>
     </div>
 
     <div class="flex-grow-1">
-        <div class="pane">
+        <section class="pane">
             {{$pane}}
-        </div>
+        </section>
     </div>
-</div>
+</article>
 <script>
     $(function () {
 
