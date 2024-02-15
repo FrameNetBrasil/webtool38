@@ -1,11 +1,4 @@
-@php
-//    use \Illuminate\Foundation\Vite;
-//    $vite = new Vite();
-//    $languages = config('webtool.actions.user.4.language.4');
-//    $menu = config('webtool.actions.menu.4');
-//    $user = session('user');
-@endphp
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <head>
     <meta name="Generator" content="Maestro 3.0; http://maestro.org.br">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -89,8 +82,8 @@
     @vite(['resources/js/app.js'])
 </head>
 <body
-        class="prose"
-        hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
+    class="prose"
+    hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
 >
 
 <script src="/scripts/lodash/lodash.js"></script>

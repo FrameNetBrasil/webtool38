@@ -20,14 +20,14 @@ class UserController extends Controller
     {
         $this->data->search ??= (object)[];
         $this->data->search->_token = csrf_token();
-        return $this->render('browse');
+        return $this->render('pageBrowse');
     }
 
     #[Post(path: '/users/grid')]
     public function grid()
     {
         $this->data->search->_token = csrf_token();
-        $response = $this->render("grid");
+        $response = $this->render("slotGrid");
         $query = [
             'search_login' => $this->data->search->login,
             'search_email' => $this->data->search->email,
@@ -42,14 +42,14 @@ class UserController extends Controller
             'login' => $this->data->login ?? false,
             'email' => $this->data->email ?? false,
         ];
-        return UserService::listByFilter($filter);
+        return UserService::listForTree($filter);
     }
 
     #[Get(path: '/users/{id}/edit')]
     public function edit(string $id)
     {
         $this->data->user = new User($id);
-        return $this->render("edit");
+        return $this->render("pageEdit");
     }
 
     #[Get(path: '/users/{idUser}/formEdit')]
@@ -125,8 +125,21 @@ class UserController extends Controller
         try {
             $user = new User($id);
             $user->delete();
-            $this->data->deleteSuccess = true;
-            return $this->browse();
+            //$this->data->deleteSuccess = true;
+            return $this->clientRedirect("/users");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
+    }
+
+    #[Post(path: '/users/{id}/authorize')]
+    public function authorized(string $id)
+    {
+        try {
+            $user = new User($id);
+            $user->status = 1;
+            $user->save();
+            return $this->renderNotify("success", "User authorized.");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }

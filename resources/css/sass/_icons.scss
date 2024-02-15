@@ -29,6 +29,16 @@
     vertical-align: top;
 }
 
+.wt-datagrid-icon {
+    background: url(/images/blank.gif) no-repeat center center;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    font-size: 16px;
+    vertical-align: top;
+    padding: 2px;
+}
+
 .wt-grapher-icon {
     background: url(/images/blank.gif) no-repeat center center;
     height: 12px;
@@ -485,6 +495,13 @@
     content: var(--wt-qualia-icon);
 }
 
+.wt-icon-user {
+    color: var(--wt-user-color);
+}
+
+.wt-icon-user:after {
+    content: var(--wt-user-icon);
+}
 /*
  Annotation Status
  */

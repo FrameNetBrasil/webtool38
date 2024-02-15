@@ -7,7 +7,7 @@
 <x-link-button
     id="menuFEEntries"
     label="Translations"
-    hx-get="/fes/{{$data->frameElement->idFrameElement}}/formEntries"
+    hx-get="/fes/{{$data->frameElement->idFrameElement}}/entries"
     hx-target="#feEditPane"
 ></x-link-button>
 <x-link-button

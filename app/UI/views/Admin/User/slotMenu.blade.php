@@ -1,0 +1,12 @@
+<x-link-button
+    id="menuEdit"
+    label="Edit"
+    hx-get="/users/{{$data->user->idUser}}/formEdit"
+    hx-target="#userEditPane"
+></x-link-button>
+<x-link-button
+    id="menuGroups"
+    label="Groups"
+    hx-get="/users/{{$data->user->idUser}}/groups"
+    hx-target="#userEditPane"
+></x-link-button>

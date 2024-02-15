@@ -80,6 +80,7 @@ class FrameController extends Controller
     public function edit(string $id)
     {
         $this->data->frame = new Frame($id);
+        $this->data->classification = FrameService::getClassification($this->data->frame);
         return $this->render("pageEdit");
     }
 

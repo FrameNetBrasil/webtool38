@@ -73,13 +73,13 @@ class FEController extends Controller
         return $this->renderNotify("success", "FrameElement updated.");
     }
 
-    #[Get(path: '/fes/{idFrameElement}/formEntries')]
+    #[Get(path: '/fes/{idFrameElement}/entries')]
     public function formEntries(string $idFrameElement)
     {
         $this->data->frameElement = new FrameElement($idFrameElement);
         $this->data->entries = $this->data->frameElement->listEntries();
         $this->data->languages = AppService::availableLanguages();
-        return $this->render("formEntries");
+        return $this->render("entries");
     }
 
     #[Put(path: '/fes/{idFrame}/entries')]

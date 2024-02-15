@@ -13,7 +13,7 @@ class Language extends Repository {
     public function __construct(int $id = null) {
         parent::__construct(LanguageModel::class, $id);
     }
-    
+
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*')->orderBy('idLanguage');
         if ($filter->idLanguage){
@@ -24,20 +24,19 @@ class Language extends Repository {
         }
         return $criteria;
     }
-    
-    public function listForCombo(){
-        $criteria = $this->getCriteria()->select('idLanguage, language')->orderBy('language');
-        if (!\Manager::checkAccess('ADMIN', A_EXECUTE)) {
-            $idLanguage = \Manager::getSession()->idLanguage;
-            $criteria->where("idLanguage = {$idLanguage}");
-        }
+
+    public function listForSelection(){
+        $criteria = $this->getCriteria()
+            ->select(['idLanguage','language','description',"concat(language,' - ',description) as ldescription"])
+            ->where("idLanguage","<>",0)
+            ->orderBy('language');
         return $criteria;
     }
 
     public function getByLanguage($language){
         $criteria = $this->getCriteria()->select('*')->where("language = '{$language}'");
         $this->retrieveFromCriteria();
-        
+
     }
-    
+
 }

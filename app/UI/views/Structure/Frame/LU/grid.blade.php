@@ -11,13 +11,12 @@
         <tr hx-target="#framesLUPane" >
             <td class="wt-datagrid-action">
                 <div
-                    class="action material-icons-outlined wt-tree-icon wt-icon-delete"
+                    class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete LU"
                     hx-delete="/lus/{{$lu['idLU']}}"
                 ></div>
             </td>
             <td
-                style="width:180px"
                 hx-get="/lus/{{$lu['idLU']}}/edit"
                 hx-target="#childPane"
                 hx-swap="innerHTML"

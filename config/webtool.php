@@ -31,11 +31,11 @@ return [
             'framestructure' => ['Frame', '/frames', 'menu-frame', 'MASTER', 1, []],
             'corpusstructure' => ['Corpus', '/corpus', 'menu-corpus', 'MASTER', 1, []],
 //            'cxnstructure' => ['Construction', '/cxn', 'menu-cxn', 'MASTER', 1, []],
-            'lemmastructure' => ['Lemmas', '/lemmas', 'menu-lemma', 'MASTER', 1, []],
+            'lexiconstructure' => ['Lexicon', '/lexicon', 'menu-lemma', 'MASTER', 1, []],
 //            'qualia' => ['Qualia', '/qualia', 'menu-qualia', 'MASTER', 1, []],
 //            'constrainttype' => ['Constraint Type', '/constrainttype', 'menu-constraint', 'MASTER', 1, []],
 //            'conceptstructure' => ['Concept', '/concept', 'menu-concept', '', 1, []],
-            'semantictypestructure' => ['Semantic Types', '/semantictypes', 'menu-semantictype', 'MASTER', 1, []],
+            'semantictypetructure' => ['Semantic Type', '/semantictype', 'menu-semantictype', 'MASTER', 1, []],
         ]],
         'annotation' => ['Annotation', '/annotation', 'edit_note', 'MASTER', 1, [
 //            'lexicalAnnotation' => ['Frame Mode', '/lexicalAnnotation', 'lexicalAnnotation', '', 1, []],

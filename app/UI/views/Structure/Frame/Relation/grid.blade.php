@@ -11,12 +11,12 @@
         <tr class="">
             <td class="wt-datagrid-action">
                 <div
-                    class="action material-icons-outlined wt-tree-icon wt-icon-delete"
+                    class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
                     hx-delete="/frames/relations/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
-            <td style="width:180px"
+            <td
                 hx-get="/fes/relations/{{$relation['idEntityRelation']}}"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
@@ -24,7 +24,7 @@
             >
                 <span class="color_{{$relation['entry']}}">{{$relation['name']}}</span>
             </td>
-            <td class="">
+            <td>
                 <span>{{$relation['related']}}</span>
             </td>
         </tr>

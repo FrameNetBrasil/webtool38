@@ -1,0 +1,12 @@
+<x-link-button
+    id="menuEntries"
+    label="Translations"
+    hx-get="/corpus/{{$data->corpus->idCorpus}}/entries"
+    hx-target="#corpusEditPane"
+></x-link-button>
+<x-link-button
+    id="menuDocuments"
+    label="Documents"
+    hx-get="/corpus/{{$data->corpus->idCorpus}}/documents"
+    hx-target="#corpusEditPane"
+></x-link-button>

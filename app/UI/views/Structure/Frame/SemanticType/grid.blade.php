@@ -11,12 +11,12 @@
         <tr class="">
             <td class="wt-datagrid-action">
                 <div
-                    class="action material-icons-outlined wt-tree-icon wt-icon-delete"
+                    class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
                     hx-delete="/frames/semanticTypes/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
-            <td class="">
+            <td>
                 <span>{{$relation['name']}}</span>
             </td>
         </tr>

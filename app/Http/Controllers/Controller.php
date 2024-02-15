@@ -44,7 +44,7 @@ class Controller extends BaseController
             $response = response()
                 ->view($viewName, ['data' => $this->data]);
         } else {
-            $response = view()->renderFragment($viewName, $fragment,['data' => $this->data]);
+            $response = view()->renderFragment($viewName, $fragment, ['data' => $this->data]);
         }
         if ($this->notify != '') {
             $response->header('HX-Trigger', $this->notify);
@@ -91,6 +91,25 @@ class Controller extends BaseController
             $trigger = $this->notify($type, $message);
         }
         $response = response('', 204)->header('HX-Trigger', $trigger);
+        return $response;
+    }
+
+    public function renderNotifyRedirect(string $type, string $message, string $url)
+    {
+        if ($this->hx_trigger != '') {
+            $trigger = json_encode([
+                'notify' => [
+                    'type' => $type,
+                    'message' => $message
+                ],
+                $this->hx_trigger => []
+            ]);
+        } else {
+            $trigger = $this->notify($type, $message);
+        }
+        $response = response('', 200)
+            ->header('HX-Redirect', $url)
+            ->header('HX-Trigger', $trigger);
         return $response;
     }
 

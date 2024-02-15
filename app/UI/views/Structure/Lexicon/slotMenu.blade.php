@@ -1,0 +1,12 @@
+<x-link-button
+    id="menuEdit"
+    label="Edit"
+    hx-get="/lemma/{{$data->lemma->idLemma}}/edit"
+    hx-target="#lexiconEditPane"
+></x-link-button>
+<x-link-button
+    id="menuLexeme"
+    label="Lexemes"
+    hx-get="/lemma/{{$data->lemma->idLemma}}/lexemes"
+    hx-target="#lexiconEditPane"
+></x-link-button>

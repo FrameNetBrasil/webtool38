@@ -2,9 +2,13 @@
     @foreach($data->groups as $group)
         <tr hx-target="#usersGroupPane" >
             <td class="wt-datagrid-action">
-                <div class="action material-icons-outlined wt-tree-icon wt-icon-delete" title="delete fe"  hx-delete="/users/{{$data->idUser}}/groups/{{$group['idGroup']}}"></div>
+                <div
+                    class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
+                    title="delete user"
+                    hx-delete="/users/{{$data->idUser}}/groups/{{$group['idGroup']}}"
+                ></div>
             </td>
-            <td style="width:180px">
+            <td>
                 <span>{{$group['name']}}</span>
             </td>
         </tr>

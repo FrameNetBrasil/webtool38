@@ -327,5 +327,17 @@ class FrameService
         $semanticType->add($frameElement->idEntity);
     }
 
+    public static function getClassification($frame)
+    {
+        $classification = [];
+        $result = $frame->getClassification();
+        foreach($result as $framal => $values) {
+            foreach($values as $row) {
+                $classification[$framal][] = $row['name'];
+            }
+        }
+        $classification['id'][] = "#" . $frame->idFrame;
+        return $classification;
+    }
 
 }

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\LemmaModel;
 use Maestro\Persistence\Repository;
+
 //use Maestro\Types\MFile;
 
 class Lemma extends Repository
@@ -73,12 +74,19 @@ class Lemma extends Repository
 
     public function listByFilter($filter)
     {
-        $criteria = $this->getCriteria()->select('*')->orderBy('idLemma');
-        if ($filter->idLemma) {
+        $criteria = $this->getCriteria()
+            ->select('*')
+            ->orderBy('idLemma');
+        if ($filter->idLemma ?? false) {
             $criteria->where("idLemma LIKE '{$filter->idLemma}%'");
         }
-        if ($filter->lemma) {
-            $criteria->where("name = '{$filter->lemma}'");
+        if ($filter->lemma ?? false) {
+            if (strlen($filter->lemma) > 2) {
+                $criteria->where("name","startswith",$filter->lemma);
+            }
+        }
+        if ($filter->idLanguage ?? false) {
+            $criteria->where("idLanguage", "=", $filter->idLanguage);
         }
         return $criteria;
     }
@@ -101,7 +109,7 @@ class Lemma extends Repository
 
     public function listForSelect(string $name = '')
     {
-        $criteria = $this->getCriteria()->select(['idLemma',"concat(name,'  [',language.language,']') as name"])->orderBy('name');
+        $criteria = $this->getCriteria()->select(['idLemma', "concat(name,'  [',language.language,']') as name"])->orderBy('name');
         Base::entryLanguage($criteria);
         $name = (strlen($name) > 2) ? $name : 'none';
         $criteria->where("upper(name)", "startswith", strtoupper($name));
