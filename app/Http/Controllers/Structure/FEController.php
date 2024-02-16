@@ -24,7 +24,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 class FEController extends Controller
 {
 
-    #[Post(path: '/fes')]
+    #[Post(path: '/fe')]
     public function newFE()
     {
         try {
@@ -37,18 +37,18 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fes/{idFrameElement}/edit')]
-    public function edit(string $idFrameElement)
+    #[Get(path: '/fe/{id}/edit')]
+    public function edit(string $id)
     {
-        $this->data->frameElement = new FrameElement($idFrameElement);
+        $this->data->frameElement = new FrameElement($id);
         return $this->render("pageEdit");
     }
 
-    #[Delete(path: '/fes/{idFrameElement}')]
-    public function delete(string $idFrameElement)
+    #[Delete(path: '/fe/{id}')]
+    public function delete(string $id)
     {
         try {
-            $fe = new FrameElement($idFrameElement);
+            $fe = new FrameElement($id);
             $fe->delete();
             $this->trigger('reload-gridFE');
             return $this->renderNotify("success", "FrameElement deleted.");
@@ -57,33 +57,33 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fes/{idFrameElement}/formEdit')]
-    public function formEdit(string $idFrameElement)
+    #[Get(path: '/fe/{id}/formEdit')]
+    public function formEdit(string $id)
     {
-        $this->data->frameElement = new FrameElement($idFrameElement);
+        $this->data->frameElement = new FrameElement($id);
         return $this->render("formEdit");
     }
 
-    #[Put(path: '/fes/{idFrameElement}')]
-    public function update(string $idFrameElement)
+    #[Put(path: '/fe/{id}')]
+    public function update(string $id)
     {
-        $frameElement = new FrameElement($idFrameElement);
+        $frameElement = new FrameElement($id);
         $frameElement->update($this->data->update);
         $this->trigger('reload-gridFE');
         return $this->renderNotify("success", "FrameElement updated.");
     }
 
-    #[Get(path: '/fes/{idFrameElement}/entries')]
-    public function formEntries(string $idFrameElement)
+    #[Get(path: '/fe/{id}/entries')]
+    public function formEntries(string $id)
     {
-        $this->data->frameElement = new FrameElement($idFrameElement);
+        $this->data->frameElement = new FrameElement($id);
         $this->data->entries = $this->data->frameElement->listEntries();
         $this->data->languages = AppService::availableLanguages();
         return $this->render("entries");
     }
 
-    #[Put(path: '/fes/{idFrame}/entries')]
-    public function entries(int $idFrame)
+    #[Put(path: '/fe/{id}/entries')]
+    public function entries(int $id)
     {
         try {
             EntryService::updateEntries($this->data);
@@ -93,7 +93,7 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fes/relations/{idEntityRelation}')]
+    #[Get(path: '/fe/relations/{idEntityRelation}')]
     public function relations(string $idEntityRelation)
     {
         $config = config('webtool.relations');
@@ -109,7 +109,7 @@ class FEController extends Controller
         return $this->render("relations");
     }
 
-    #[Get(path: '/fes/relations/{idEntityRelation}/formNew')]
+    #[Get(path: '/fe/relations/{idEntityRelation}/formNew')]
     public function relationsFEFormNew(int $idEntityRelation)
     {
         $relation = new EntityRelation($idEntityRelation);
@@ -125,7 +125,7 @@ class FEController extends Controller
         return $this->render("Structure.FE.Relation.formNew");
     }
 
-    #[Get(path: '/fes/relations/{idEntityRelation}/grid')]
+    #[Get(path: '/fe/relations/{idEntityRelation}/grid')]
     public function gridRelationsFE(int $idEntityRelation)
     {
         $relation = new EntityRelation($idEntityRelation);
@@ -142,7 +142,7 @@ class FEController extends Controller
         return $this->render("Structure.FE.Relation.grid");
     }
 
-    #[Post(path: '/fes/{idEntityRelation}/relations')]
+    #[Post(path: '/fe/{idEntityRelation}/relations')]
     public function newRelationFE($idEntityRelation)
     {
         try {
@@ -155,7 +155,7 @@ class FEController extends Controller
         }
     }
 
-    #[Delete(path: '/fes/relations/{idEntityRelation}')]
+    #[Delete(path: '/fe/relations/{idEntityRelation}')]
     public function deleteRelation(int $idEntityRelation)
     {
         try {
@@ -167,52 +167,50 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fes/{idFrameElement}/constraints')]
-    public function constraints(string $idFrameElement)
+    #[Get(path: '/fe/{id}/constraints')]
+    public function constraints(string $id)
     {
-        $this->data->idFrameElement = $idFrameElement;
+        $this->data->idFrameElement = $id;
         return $this->render("constraints");
     }
 
-    #[Get(path: '/fes/{idFrameElement}/constraints/formNew/{fragment?}')]
-    public function constraintsFormNew(int $idFrameElement, ?string $fragment = null)
+    #[Get(path: '/fe/{id}/constraints/formNew/{fragment?}')]
+    public function constraintsFormNew(int $id, ?string $fragment = null)
     {
-        $this->data->idFrameElement = $idFrameElement;
-        $this->data->frameElement = new FrameElement($idFrameElement);
+        $this->data->idFrameElement = $id;
+        $this->data->frameElement = new FrameElement($id);
         $this->data->fragment = $fragment;
         return $this->render("Structure.FE.Constraint.formNew", $fragment);
     }
 
-    #[Get(path: '/fes/{idFrameElement}/constraints/grid')]
-    public function constraintsGrid(int $idFrameElement)
+    #[Get(path: '/fe/{id}/constraints/grid')]
+    public function constraintsGrid(int $id)
     {
-        debug($this->data);
-        $this->data->idFrameElement = $idFrameElement;
-        $fe = new FrameElement($idFrameElement);
+        $this->data->idFrameElement = $id;
+        $fe = new FrameElement($id);
         $constraint = new ViewConstraint();
         $this->data->constraints = $constraint->listByIdConstrained($fe->idEntity);
         return $this->render("Structure.FE.Constraint.grid");
     }
 
-    #[Post(path: '/fes/{idFrameElement}/constraints')]
-    public function constraintsNew($idFrameElement)
+    #[Post(path: '/fe/{id}/constraints')]
+    public function constraintsNew($id)
     {
         try {
-            debug($this->data);
-            $this->data->idFrameElement = $idFrameElement;
+            $this->data->idFrameElement = $id;
             if ($this->data->constraint == 'rel_constraint_frame') {
-                FrameService::newConstraintFE($this->data->constraint, $idFrameElement, $this->data->idFrameConstraint);
+                FrameService::newConstraintFE($this->data->constraint, $id, $this->data->idFrameConstraint);
             } else if ($this->data->constraint == 'rel_qualia') {
-                $fe = new FrameElement($idFrameElement);
+                $fe = new FrameElement($id);
                 $feQualia = new FrameElement($this->data->idFEQualiaConstraint);
                 $qualia = new Qualia($this->data->idQualiaConstraint);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feQualia->idEntity, $qualia->idEntity);
             } else if ($this->data->constraint == 'rel_festandsforfe') {
-                $fe = new FrameElement($idFrameElement);
+                $fe = new FrameElement($id);
                 $feMetonym = new FrameElement($this->data->idFEMetonymConstraint);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feMetonym->idEntity);
             } else if ($this->data->constraint == 'rel_festandsforlu') {
-                $fe = new FrameElement($idFrameElement);
+                $fe = new FrameElement($id);
                 $luMetonym = new LU($this->data->idLUMetonymConstraint);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $luMetonym->idEntity);
             }
@@ -223,7 +221,7 @@ class FEController extends Controller
         }
     }
 
-    #[Delete(path: '/fes/constraints/{idEntityRelation}')]
+    #[Delete(path: '/fe/constraints/{idEntityRelation}')]
     public function deleteConstraint(int $idEntityRelation)
     {
         try {
@@ -235,34 +233,34 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fes/{idFrameElement}/semanticTypes')]
-    public function semanticTypes(string $idFrameElement)
+    #[Get(path: '/fe/{id}/semanticTypes')]
+    public function semanticTypes(string $id)
     {
-        $this->data->idFrameElement = $idFrameElement;
-        $this->data->frameElement = new FrameElement($idFrameElement);
+        $this->data->idFrameElement = $id;
+        $this->data->frameElement = new FrameElement($id);
         return $this->render("semanticTypes");
     }
 
-    #[Get(path: '/fes/{idFrameElement}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $idFrameElement)
+    #[Get(path: '/fe/{id}/semanticTypes/formAdd')]
+    public function semanticTypesAdd(string $id)
     {
-        $this->data->idFrameElement = $idFrameElement;
+        $this->data->idFrameElement = $id;
         return $this->render("Structure.FE.SemanticType.formAdd");
     }
 
-    #[Get(path: '/fes/{idFrameElement}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $idFrameElement)
+    #[Get(path: '/fe/{id}/semanticTypes/grid')]
+    public function semanticTypesGrid(string $id)
     {
-        $this->data->idFrameElement = $idFrameElement;
-        $this->data->relations = FrameService::listFESemanticTypes($idFrameElement);
+        $this->data->idFrameElement = $id;
+        $this->data->relations = FrameService::listFESemanticTypes($id);
         return $this->render("Structure.FE.SemanticType.grid");
     }
 
-    #[Post(path: '/fes/{idFrameElement}/semanticTypes')]
-    public function addSemanticType(int $idFrameElement)
+    #[Post(path: '/fe/{id}/semanticTypes')]
+    public function addSemanticType(int $id)
     {
         try {
-            $this->data->new->idFrameElement = $idFrameElement;
+            $this->data->new->idFrameElement = $id;
             FrameService::addFESemanticType($this->data->new);
             $this->trigger('reload-gridSTFERelation');
             return $this->renderNotify("success", "Semantic Type added.");
@@ -271,7 +269,7 @@ class FEController extends Controller
         }
     }
 
-    #[Delete(path: '/fes/semanticTypes/{idEntityRelation}')]
+    #[Delete(path: '/fe/semanticTypes/{idEntityRelation}')]
     public function deleteSemanticType(int $idEntityRelation)
     {
         try {

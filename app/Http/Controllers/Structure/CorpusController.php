@@ -87,18 +87,18 @@ class CorpusController extends Controller
             return $this->renderNotify("error", $e->getMessage());
         }
     }
-    #[Get(path: '/corpus/{idCorpus}/entries')]
-    public function formEntries(string $idCorpus)
+    #[Get(path: '/corpus/{id}/entries')]
+    public function formEntries(string $id)
     {
-        $this->data->corpus = new Corpus($idCorpus);
+        $this->data->corpus = new Corpus($id);
         $entry = new Entry();
         $this->data->entries = $entry->listByIdEntity($this->data->corpus->idEntity);
         $this->data->languages = AppService::availableLanguages();
         return $this->render("entries");
     }
 
-    #[Put(path: '/corpus/{idCorpus}/entries')]
-    public function entries(int $idCorpus)
+    #[Put(path: '/corpus/{id}/entries')]
+    public function entries(int $id)
     {
         try {
             EntryService::updateEntries($this->data);
@@ -108,25 +108,25 @@ class CorpusController extends Controller
         }
     }
 
-    #[Get(path: '/corpus/{idCorpus}/documents')]
-    public function documents(string $idCorpus)
+    #[Get(path: '/corpus/{id}/documents')]
+    public function documents(string $id)
     {
-        $this->data->idCorpus = $idCorpus;
+        $this->data->idCorpus = $id;
         return $this->render("documents");
     }
 
-    #[Get(path: '/corpus/{idCorpus}/documents/formNew')]
-    public function formNewDocument(string $idCorpus)
+    #[Get(path: '/corpus/{id}/documents/formNew')]
+    public function formNewDocument(string $id)
     {
-        $this->data->idCorpus = $idCorpus;
+        $this->data->idCorpus = $id;
         return $this->render("Structure.Corpus.Document.formNew");
     }
 
     #[Get(path: '/corpus/{idCorpus}/documents/grid')]
-    public function gridDocument(string $idCorpus)
+    public function gridDocument(string $id)
     {
-        $this->data->idCorpus = $idCorpus;
-        $this->data->documents = CorpusService::listDocumentForGrid($idCorpus);
+        $this->data->idCorpus = $id;
+        $this->data->documents = CorpusService::listDocumentForGrid($id);
         return $this->render("Structure.Corpus.Document.grid");
     }
 

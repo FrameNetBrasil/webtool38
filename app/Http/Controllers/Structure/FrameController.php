@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Request;
 #[Middleware(name: 'auth')]
 class FrameController extends Controller
 {
-    #[Get(path: '/frames')]
+    #[Get(path: '/frame')]
     public function browse()
     {
         $this->data->search ??= (object)[];
@@ -29,26 +29,26 @@ class FrameController extends Controller
         return $this->render('pageBrowse');
     }
 
-    #[Get(path: '/frames/new')]
+    #[Get(path: '/frame/new')]
     public function new()
     {
         return $this->render("pageNew");
     }
 
-    #[Post(path: '/frames')]
+    #[Post(path: '/frame')]
     public function newFrame()
     {
         try {
             $frame = new Frame();
             $frame->create($this->data->new);
             $this->data->frame = $frame;
-            return $this->clientRedirect("/frames/{$frame->idFrame}/edit");
+            return $this->clientRedirect("/frame/{$frame->idFrame}/edit");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
     }
 
-    #[Post(path: '/frames/grid')]
+    #[Post(path: '/frame/grid')]
     public function grid()
     {
         $this->data->search->_token = csrf_token();
@@ -60,23 +60,23 @@ class FrameController extends Controller
             'search_lu' => $this->data->search->lu,
             'search_listBy' => $this->data->search->listBy,
         ];
-        $response->header('HX-Replace-Url', '/frames?' . http_build_query($query));
+        $response->header('HX-Replace-Url', '/frame?' . http_build_query($query));
         return $response;
     }
 
-    #[Get(path: '/frames/listForSelect')]
+    #[Get(path: '/frame/listForSelect')]
     public function listForSelect()
     {
         return FrameService::listForSelect();
     }
 
-    #[Post(path: '/frames/listForTree')]
+    #[Post(path: '/frame/listForTree')]
     public function listForTree()
     {
         return FrameService::listForTree();
     }
 
-    #[Get(path: '/frames/{id}/edit')]
+    #[Get(path: '/frame/{id}/edit')]
     public function edit(string $id)
     {
         $this->data->frame = new Frame($id);
@@ -84,18 +84,18 @@ class FrameController extends Controller
         return $this->render("pageEdit");
     }
 
-    #[Get(path: '/frames/{idFrame}/entries')]
-    public function formEntries(string $idFrame)
+    #[Get(path: '/frame/{id}/entries')]
+    public function formEntries(string $id)
     {
-        $this->data->frame = new Frame($idFrame);
+        $this->data->frame = new Frame($id);
         $entry = new Entry();
         $this->data->entries = $entry->listByIdEntity($this->data->frame->idEntity);
         $this->data->languages = AppService::availableLanguages();
         return $this->render("entries");
     }
 
-    #[Put(path: '/frames/{idFrame}/entries')]
-    public function entries(int $idFrame)
+    #[Put(path: '/frame/{id}/entries')]
+    public function entries(int $id)
     {
         try {
             EntryService::updateEntries($this->data);
@@ -105,84 +105,84 @@ class FrameController extends Controller
         }
     }
 
-    #[Get(path: '/frames/{idFrame}/fes')]
-    public function fes(string $idFrame)
+    #[Get(path: '/frame/{id}/fes')]
+    public function fes(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("fes");
     }
 
-    #[Get(path: '/frames/{idFrame}/fes/formNew')]
-    public function formNewFE(string $idFrame)
+    #[Get(path: '/frame/{id}/fes/formNew')]
+    public function formNewFE(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("Structure.Frame.FE.formNew");
     }
 
-    #[Get(path: '/frames/{idFrame}/fes/grid')]
-    public function gridFE(string $idFrame)
+    #[Get(path: '/frame/{id}/fes/grid')]
+    public function gridFE(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->fes = FrameService::listFEForGrid($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->fes = FrameService::listFEForGrid($id);
         return $this->render("Structure.Frame.FE.grid");
     }
 
-    #[Get(path: '/frames/{idFrame}/lus')]
-    public function lus(string $idFrame)
+    #[Get(path: '/frame/{id}/lus')]
+    public function lus(string $id)
     {
-        $this->data->frame = new Frame($idFrame);
+        $this->data->frame = new Frame($id);
         return $this->render("lus");
     }
 
-    #[Get(path: '/frames/{idFrame}/lus/formNew')]
-    public function formNewLU(string $idFrame)
+    #[Get(path: '/frame/{id}/lus/formNew')]
+    public function formNewLU(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("Structure.Frame.LU.formNew");
     }
 
-    #[Get(path: '/frames/{idFrame}/lus/grid')]
-    public function gridLU(string $idFrame)
+    #[Get(path: '/frame/{id}/lus/grid')]
+    public function gridLU(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->lus = FrameService::listLUForGrid($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->lus = FrameService::listLUForGrid($id);
         return $this->render("Structure.Frame.LU.grid");
     }
 
-    #[Get(path: '/frames/{id}/classification')]
+    #[Get(path: '/frame/{id}/classification')]
     public function classification(string $id)
     {
     }
 
-    #[Get(path: '/frames/{idFrame}/relations')]
-    public function relations(string $idFrame)
+    #[Get(path: '/frame/{id}/relations')]
+    public function relations(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->frame = new Frame($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->frame = new Frame($id);
         return $this->render("relations");
     }
 
-    #[Get(path: '/frames/{idFrame}/relations/formNew')]
-    public function formNewRelation(string $idFrame)
+    #[Get(path: '/frame/{id}/relations/formNew')]
+    public function formNewRelation(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("Structure.Frame.Relation.formNew");
     }
 
 
-    #[Get(path: '/frames/{idFrame}/relations/grid')]
-    public function gridRelation(string $idFrame)
+    #[Get(path: '/frame/{id}/relations/grid')]
+    public function gridRelation(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->relations = FrameService::listRelations($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->relations = FrameService::listRelations($id);
         return $this->render("Structure.Frame.Relation.grid");
     }
 
-    #[Post(path: '/frames/{idFrame}/relations')]
-    public function newRelation(int $idFrame)
+    #[Post(path: '/frame/{id}/relations')]
+    public function newRelation(int $id)
     {
         try {
-            $this->data->new->idFrame = $idFrame;
+            $this->data->new->idFrame = $id;
             FrameService::newRelation($this->data->new);
             $this->trigger('reload-gridRelation');
             return $this->renderNotify("success", "Relation created.");
@@ -191,7 +191,7 @@ class FrameController extends Controller
         }
     }
 
-    #[Delete(path: '/frames/relations/{idEntityRelation}')]
+    #[Delete(path: '/frame/relations/{idEntityRelation}')]
     public function deleteRelation(int $idEntityRelation)
     {
         try {
@@ -203,30 +203,30 @@ class FrameController extends Controller
         }
     }
 
-    #[Get(path: '/frames/{idFrame}/fes/relations')]
-    public function fesRelations(string $idFrame)
+    #[Get(path: '/frame/{id}/fes/relations')]
+    public function fesRelations(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("fesRelations");
     }
 
-    #[Get(path: '/frames/{idFrame}/fes/relations/formNew')]
-    public function fesRelationsFormNew(string $idFrame)
+    #[Get(path: '/frame/{id}/fes/relations/formNew')]
+    public function fesRelationsFormNew(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("Structure.Frame.FERelation.formNew");
     }
 
-    #[Get(path: '/frames/{idFrame}/fes/relations/grid')]
-    public function fesRelationsGrid(string $idFrame)
+    #[Get(path: '/frame/{id}/fes/relations/grid')]
+    public function fesRelationsGrid(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->relations = FrameService::listInternalRelationsFE($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->relations = FrameService::listInternalRelationsFE($id);
         return $this->render("Structure.Frame.FERelation.grid");
     }
 
-    #[Post(path: '/frames/{idFrame}/fes/relations')]
-    public function feRelationsNew(string $idFrame)
+    #[Post(path: '/frame/{id}/fes/relations')]
+    public function feRelationsNew(string $id)
     {
         try {
             FrameService::newInternalRelationFE($this->data);
@@ -237,7 +237,7 @@ class FrameController extends Controller
         }
     }
 
-    #[Delete(path: '/frames/fes/relations/{idEntityRelation}')]
+    #[Delete(path: '/frame/fes/relations/{idEntityRelation}')]
     public function fesRelationDelete(int $idEntityRelation)
     {
         try {
@@ -249,34 +249,34 @@ class FrameController extends Controller
         }
     }
 
-    #[Get(path: '/frames/{idFrame}/semanticTypes')]
-    public function semanticTypes(string $idFrame)
+    #[Get(path: '/frame/{id}/semanticTypes')]
+    public function semanticTypes(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->frame = new Frame($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->frame = new Frame($id);
         return $this->render("semanticTypes");
     }
 
-    #[Get(path: '/frames/{idFrame}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $idFrame)
+    #[Get(path: '/frame/{id}/semanticTypes/formAdd')]
+    public function semanticTypesAdd(string $id)
     {
-        $this->data->idFrame = $idFrame;
+        $this->data->idFrame = $id;
         return $this->render("Structure.Frame.SemanticType.formAdd");
     }
 
-    #[Get(path: '/frames/{idFrame}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $idFrame)
+    #[Get(path: '/frame/{id}/semanticTypes/grid')]
+    public function semanticTypesGrid(string $id)
     {
-        $this->data->idFrame = $idFrame;
-        $this->data->relations = FrameService::listSemanticTypes($idFrame);
+        $this->data->idFrame = $id;
+        $this->data->relations = FrameService::listSemanticTypes($id);
         return $this->render("Structure.Frame.SemanticType.grid");
     }
 
-    #[Post(path: '/frames/{idFrame}/semanticTypes')]
-    public function addSemanticType(int $idFrame)
+    #[Post(path: '/frame/{id}/semanticTypes')]
+    public function addSemanticType(int $id)
     {
         try {
-            $this->data->new->idFrame = $idFrame;
+            $this->data->new->idFrame = $id;
             $this->trigger('reload-gridSTRelation');
             return $this->renderNotify("success", "Semantic Type added.");
         } catch (\Exception $e) {
@@ -284,7 +284,7 @@ class FrameController extends Controller
         }
     }
 
-    #[Delete(path: '/frames/semanticTypes/{idEntityRelation}')]
+    #[Delete(path: '/frame/semanticTypes/{idEntityRelation}')]
     public function deleteSemanticType(int $idEntityRelation)
     {
         try {

@@ -25,7 +25,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 class LUController extends Controller
 {
 
-    #[Post(path: '/lus')]
+    #[Post(path: '/lu')]
     public function newLU()
     {
         try {
@@ -38,29 +38,29 @@ class LUController extends Controller
         }
     }
 
-    #[Get(path: '/lus/listForSelect')]
+    #[Get(path: '/lu/listForSelect')]
     public function listForSelect()
     {
         return LUService::listForSelect();
     }
 
-    #[Get(path: '/lus/listForEvent')]
+    #[Get(path: '/lu/listForEvent')]
     public function listForEvent()
     {
         return LUService::listForEvent();
     }
-    #[Get(path: '/lus/{idLU}/edit')]
-    public function edit(string $idLU)
+    #[Get(path: '/lu/{id}/edit')]
+    public function edit(string $id)
     {
-        $this->data->lu = new LU($idLU);
+        $this->data->lu = new LU($id);
         return $this->render("pageEdit");
     }
 
-    #[Delete(path: '/lus/{idLU}')]
-    public function delete(string $idLU)
+    #[Delete(path: '/lu/{id}')]
+    public function delete(string $id)
     {
         try {
-            $fe = new LU($idLU);
+            $fe = new LU($id);
             $fe->delete();
             $this->trigger('reload-gridLU');
             return $this->renderNotify("success", "LU deleted.");
@@ -69,61 +69,61 @@ class LUController extends Controller
         }
     }
 
-    #[Get(path: '/lus/{idLU}/formEdit')]
-    public function formEdit(string $idLU)
+    #[Get(path: '/lu/{id}/formEdit')]
+    public function formEdit(string $id)
     {
-        $this->data->lu = new LU($idLU);
+        $this->data->lu = new LU($id);
         return $this->render("formEdit");
     }
 
-    #[Put(path: '/lus/{idLU}')]
-    public function update(string $idLU)
+    #[Put(path: '/lu/{id}')]
+    public function update(string $id)
     {
-        $lu = new LU($idLU);
+        $lu = new LU($id);
         $lu->update($this->data->update);
         $this->trigger('reload-gridLU');
         return $this->renderNotify("success", "LU updated.");
     }
 
-    #[Get(path: '/lus/{idLU}/constraints')]
-    public function constraints(string $idLU)
+    #[Get(path: '/lu/{id}/constraints')]
+    public function constraints(string $id)
     {
-        $this->data->idLU = $idLU;
+        $this->data->idLU = $id;
         return $this->render("constraints");
     }
 
-    #[Get(path: '/lus/{idLU}/constraints/formNew/{fragment?}')]
-    public function constraintsFormNew(int $idLU, ?string $fragment = null)
+    #[Get(path: '/lu/{id}/constraints/formNew/{fragment?}')]
+    public function constraintsFormNew(int $id, ?string $fragment = null)
     {
-        $this->data->idLU = $idLU;
-        $this->data->lu = new LU($idLU);
+        $this->data->idLU = $id;
+        $this->data->lu = new LU($id);
         $this->data->fragment = $fragment;
         return $this->render("Structure.LU.Constraint.formNew", $fragment);
     }
 
-    #[Get(path: '/lus/{idLU}/constraints/grid')]
-    public function constraintsGrid(int $idLU)
+    #[Get(path: '/lu/{id}/constraints/grid')]
+    public function constraintsGrid(int $id)
     {
         debug($this->data);
-        $this->data->idLU = $idLU;
-        $lu = new LU($idLU);
+        $this->data->idLU = $id;
+        $lu = new LU($id);
         $constraint = new ViewConstraint();
         $this->data->constraints = $constraint->listByIdConstrained($lu->idEntity);
         return $this->render("Structure.LU.Constraint.grid");
     }
 
-    #[Post(path: '/lus/{idLU}/constraints')]
-    public function constraintsNew($idLU)
+    #[Post(path: '/lu/{id}/constraints')]
+    public function constraintsNew($id)
     {
         try {
             debug($this->data);
-            $this->data->idLU = $idLU;
+            $this->data->idLU = $id;
             if ($this->data->constraint == 'rel_lustandsforlu') {
-                $lu = new LU($idLU);
+                $lu = new LU($id);
                 $luMetonym = new LU($this->data->idLUMetonymConstraint);
                 Base::createEntityRelation($lu->idEntity, $this->data->constraint, $luMetonym->idEntity);
             } else if ($this->data->constraint == 'rel_luequivalence') {
-                $lu = new LU($idLU);
+                $lu = new LU($id);
                 $luEquivalence = new LU($this->data->idLUEquivalenceConstraint);
                 Base::createEntityRelation($lu->idEntity, $this->data->constraint, $luEquivalence->idEntity);
             }
@@ -134,7 +134,7 @@ class LUController extends Controller
         }
     }
 
-    #[Delete(path: '/lus/constraints/{idEntityRelation}')]
+    #[Delete(path: '/lu/constraints/{idEntityRelation}')]
     public function deleteConstraint(int $idEntityRelation)
     {
         try {
@@ -146,34 +146,34 @@ class LUController extends Controller
         }
     }
 
-    #[Get(path: '/lus/{idLU}/semanticTypes')]
-    public function semanticTypes(string $idLU)
+    #[Get(path: '/lu/{id}/semanticTypes')]
+    public function semanticTypes(string $id)
     {
-        $this->data->idLU = $idLU;
-        $this->data->lu = new LU($idLU);
+        $this->data->idLU = $id;
+        $this->data->lu = new LU($id);
         return $this->render("semanticTypes");
     }
 
-    #[Get(path: '/lus/{idLU}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $idLU)
+    #[Get(path: '/lu/{id}/semanticTypes/formAdd')]
+    public function semanticTypesAdd(string $id)
     {
-        $this->data->idLU = $idLU;
+        $this->data->idLU = $id;
         return $this->render("Structure.LU.SemanticType.formAdd");
     }
 
-    #[Get(path: '/lus/{idLU}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $idLU)
+    #[Get(path: '/lu/{id}/semanticTypes/grid')]
+    public function semanticTypesGrid(string $id)
     {
-        $this->data->idLU = $idLU;
-        $this->data->relations = LUService::listSemanticTypes($idLU);
+        $this->data->idLU = $id;
+        $this->data->relations = LUService::listSemanticTypes($id);
         return $this->render("Structure.LU.SemanticType.grid");
     }
 
-    #[Post(path: '/lus/{idLU}/semanticTypes')]
-    public function addSemanticType(int $idLU)
+    #[Post(path: '/lu/{id}/semanticTypes')]
+    public function addSemanticType(int $id)
     {
         try {
-            $this->data->new->idLU = $idLU;
+            $this->data->new->idLU = $id;
             LUService::addSemanticType($this->data->new);
             $this->trigger('reload-gridSTLURelation');
             return $this->renderNotify("success", "Semantic Type added.");
@@ -182,7 +182,7 @@ class LUController extends Controller
         }
     }
 
-    #[Delete(path: '/lus/relations/{idEntityRelation}')]
+    #[Delete(path: '/lu/relations/{idEntityRelation}')]
     public function deleteSemanticType(int $idEntityRelation)
     {
         try {

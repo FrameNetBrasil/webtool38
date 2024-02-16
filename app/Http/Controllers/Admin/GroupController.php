@@ -15,7 +15,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 class GroupController extends Controller
 {
 
-    #[Get(path: '/groups')]
+    #[Get(path: '/group')]
     public function browse()
     {
         $this->data->search ??= (object)[];
@@ -23,7 +23,7 @@ class GroupController extends Controller
         return $this->render('browse');
     }
 
-    #[Post(path: '/groups/grid')]
+    #[Post(path: '/group/grid')]
     public function grid()
     {
         $this->data->search->_token = csrf_token();
@@ -35,7 +35,7 @@ class GroupController extends Controller
         return $response->header('HX-Replace-Url', '/user?' . http_build_query($query));
     }
 
-    #[Post(path: '/groups/listForGrid')]
+    #[Post(path: '/group/listForGrid')]
     public function listForGrid()
     {
         $filter = (object)[
@@ -45,26 +45,26 @@ class GroupController extends Controller
         return UserService::listByFilter($filter);
     }
 
-    #[Get(path: '/groups/listForSelect')]
+    #[Get(path: '/group/listForSelect')]
     public function listForSelect()
     {
         return GroupService::listForSelect();
     }
-    #[Get(path: '/groups/{id}/edit')]
+    #[Get(path: '/group/{id}/edit')]
     public function edit(string $id)
     {
         $this->data->user = new User($id);
         return $this->render("edit");
     }
 
-    #[Get(path: '/groups/{idUser}/formEdit')]
+    #[Get(path: '/group/{id}/formEdit')]
     public function formEdit(string $idUser)
     {
         $this->data->user = new User($idUser);
         return $this->render("formEdit");
     }
 
-    #[Put(path: '/groups/{idUser}')]
+    #[Put(path: '/group/{id}')]
     public function update(int $idUser)
     {
         try {
@@ -76,21 +76,21 @@ class GroupController extends Controller
         }
     }
 
-    #[Get(path: '/groups/{idUser}/groups')]
+    #[Get(path: '/group/{id}/groups')]
     public function groups(string $idUser)
     {
         $this->data->user = new User($idUser);
         return $this->render("groups");
     }
 
-    #[Get(path: '/groups/{idUser}/groups/formNew')]
+    #[Get(path: '/group/{id}/groups/formNew')]
     public function formNewGroup(string $idUser)
     {
         $this->data->idUser = $idUser;
         return $this->render("Admin.User.Group.formNew");
     }
 
-    #[Get(path: '/groups/{idUser}/groups/grid')]
+    #[Get(path: '/group/{id}/groups/grid')]
     public function gridGroup(string $idUser)
     {
         $this->data->idUser = $idUser;

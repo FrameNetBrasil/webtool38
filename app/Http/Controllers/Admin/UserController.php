@@ -15,7 +15,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 class UserController extends Controller
 {
 
-    #[Get(path: '/users')]
+    #[Get(path: '/user')]
     public function browse()
     {
         $this->data->search ??= (object)[];
@@ -23,7 +23,7 @@ class UserController extends Controller
         return $this->render('pageBrowse');
     }
 
-    #[Post(path: '/users/grid')]
+    #[Post(path: '/user/grid')]
     public function grid()
     {
         $this->data->search->_token = csrf_token();
@@ -35,7 +35,7 @@ class UserController extends Controller
         return $response->header('HX-Replace-Url', '/user?' . http_build_query($query));
     }
 
-    #[Post(path: '/users/listForGrid')]
+    #[Post(path: '/user/listForGrid')]
     public function listForGrid()
     {
         $filter = (object)[
@@ -45,25 +45,25 @@ class UserController extends Controller
         return UserService::listForTree($filter);
     }
 
-    #[Get(path: '/users/{id}/edit')]
+    #[Get(path: '/user/{id}/edit')]
     public function edit(string $id)
     {
         $this->data->user = new User($id);
         return $this->render("pageEdit");
     }
 
-    #[Get(path: '/users/{idUser}/formEdit')]
-    public function formEdit(string $idUser)
+    #[Get(path: '/user/{id}/formEdit')]
+    public function formEdit(string $id)
     {
-        $this->data->user = new User($idUser);
+        $this->data->user = new User($id);
         return $this->render("formEdit");
     }
 
-    #[Put(path: '/users/{idUser}')]
-    public function update(int $idUser)
+    #[Put(path: '/user/{id}')]
+    public function update(int $id)
     {
         try {
-            $user = new User($idUser);
+            $user = new User($id);
             $user->saveData($this->data);
             return $this->renderNotify("success", "User updated.");
         } catch (\Exception $e) {
@@ -71,33 +71,33 @@ class UserController extends Controller
         }
     }
 
-    #[Get(path: '/users/{idUser}/groups')]
-    public function groups(string $idUser)
+    #[Get(path: '/user/{id}/groups')]
+    public function groups(string $id)
     {
-        $this->data->user = new User($idUser);
+        $this->data->user = new User($id);
         return $this->render("groups");
     }
 
-    #[Get(path: '/users/{idUser}/groups/formNew')]
-    public function formNewGroup(string $idUser)
+    #[Get(path: '/user/{id}/groups/formNew')]
+    public function formNewGroup(string $id)
     {
-        $this->data->idUser = $idUser;
+        $this->data->idUser = $id;
         return $this->render("Admin.User.Group.formNew");
     }
 
-    #[Get(path: '/users/{idUser}/groups/grid')]
-    public function gridGroup(string $idUser)
+    #[Get(path: '/user/{id}/groups/grid')]
+    public function gridGroup(string $id)
     {
-        $this->data->idUser = $idUser;
-        $this->data->groups = UserService::listGroupsForGrid($idUser);
+        $this->data->idUser = $id;
+        $this->data->groups = UserService::listGroupsForGrid($id);
         return $this->render("Admin.User.Group.grid");
     }
 
-    #[Post(path: '/users/{idUser}/group')]
-    public function addGroup(string $idUser)
+    #[Post(path: '/user/{id}/group')]
+    public function addGroup(string $id)
     {
         try {
-            $user = new User($idUser);
+            $user = new User($id);
             $user->addToGroup($this->data->idGroup);
             $this->trigger('reload-gridGroup');
             return $this->renderNotify("success", "User updated.");
@@ -106,11 +106,11 @@ class UserController extends Controller
         }
     }
 
-    #[Delete(path: '/users/{idUser}/groups/{idGroup}')]
-    public function deleteGroupn(int $idUser, int $idGroup)
+    #[Delete(path: '/user/{id}/groups/{idGroup}')]
+    public function deleteGroup(int $id, int $idGroup)
     {
         try {
-            $user = new User($idUser);
+            $user = new User($id);
             $user->deleteFromGroup($idGroup);
             $this->trigger('reload-gridGroup');
             return $this->renderNotify("success", "User updated.");
@@ -119,20 +119,19 @@ class UserController extends Controller
         }
     }
 
-    #[Delete(path: '/users/{id}/delete')]
+    #[Delete(path: '/user/{id}/delete')]
     public function delete(string $id)
     {
         try {
             $user = new User($id);
             $user->delete();
-            //$this->data->deleteSuccess = true;
-            return $this->clientRedirect("/users");
+            return $this->clientRedirect("/user");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
     }
 
-    #[Post(path: '/users/{id}/authorize')]
+    #[Post(path: '/user/{id}/authorize')]
     public function authorized(string $id)
     {
         try {
