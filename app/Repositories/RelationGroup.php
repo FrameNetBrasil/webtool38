@@ -1,58 +1,97 @@
 <?php
 /**
- * 
+ *
  *
  * @category   Maestro
  * @package    UFJF
- *  @subpackage fnbr
+ * @subpackage fnbr
  * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
  * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
+ * @version
+ * @since
  */
 
 namespace App\Repositories;
 
-class RelationGroup extends Repository {
+use App\Models\RelationGroupModel;
+use App\Services\AppService;
+use Maestro\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getEntry();
-    }
-    
-    public function getName() {
-        $criteria = $this->getCriteria()->select('entries.name as name');
-        $criteria->where("idRelationGroup = {$this->getId()}");
-        Base::entryLanguage($criteria);
-        return $criteria->asQuery()->fields('name');
-    }
-    
+class RelationGroup extends Repository
+{
 
-    public function listByFilter($filter){
+    public ?int $idRelationGroup;
+    public ?string $entry;
+    public ?int $idEntity;
+    public ?string $name;
+    public ?string $description;
+    public ?int $idLanguage;
+    public ?array $entries;
+    public ?object $entity;
+
+    public function __construct(int $id = null)
+    {
+        parent::__construct(RelationGroupModel::class, $id);
+    }
+
+    public function listByFilter($filter)
+    {
         $criteria = $this->getCriteria()->select('*')->orderBy('idRelationGroup');
-        if ($filter->idRelationGroup){
-            $criteria->where("idRelationGroup = {$filter->idRelationGroup}");
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
+        if (isset($filter->idRelationGroup)) {
+            $criteria->where("idRelationGroup", "=", $filter->idRelationGroup);
         }
-        if ($filter->entry) {
-            $criteria->where("entry LIKE '%{$filter->entry}%'");
+        if (isset($filter->entry)) {
+            $criteria->where("entry", "startswith", $filter->entry);
+        }
+        if (isset($filter->name)) {
+            $criteria->where("name", "startswith", $filter->name);
         }
         return $criteria;
     }
-    
-    public function listAll(){
+
+    public function listRelationType()
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $rt = new RelationType();
+        $criteria = $rt->getCriteria()
+            ->select('*')
+            ->where("idLanguage", "=", $idLanguage)
+            ->where("idRelationGroup", "=", $this->idRelationGroup)
+            ->orderBy('name');
+        return $criteria;
+    }
+
+    public function create($data)
+    {
+        $this->beginTransaction();
+        try {
+            $baseEntry = strtolower('rgp_' . $data->nameEn);
+            $entity = new Entity();
+            $idEntity = $entity->create('RG', $baseEntry);
+            $entry = new Entry();
+            $entry->create($baseEntry, $data->nameEn, $idEntity);
+            $id = $this->saveData([
+                'entry' => $baseEntry,
+                'idEntity' => $idEntity
+            ]);
+            Timeline::addTimeline("relationgroup", $id, "C");
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    /*
+    public function listAll()
+    {
         $criteria = $this->getCriteria()->select('idRelationGroup, entry, entries.name as name')->orderBy('entries.name');
         Base::entryLanguage($criteria);
         return $criteria;
     }
-    
+
     public function save($data)
     {
         $transaction = $this->beginTransaction();
@@ -64,7 +103,7 @@ class RelationGroup extends Repository {
                 $entity->save();
                 $this->setIdEntity($entity->getId());
                 $entry = new Entry();
-                $entry->newEntry($this->getEntry(),$entity->getId());
+                $entry->newEntry($this->getEntry(), $entity->getId());
             }
             parent::save();
             $transaction->commit();
@@ -87,6 +126,7 @@ class RelationGroup extends Repository {
             $transaction->rollback();
             throw new \Exception($e->getMessage());
         }
-    }    
+    }
+    */
 }
 

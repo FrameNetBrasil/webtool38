@@ -22,7 +22,7 @@ return [
             'user' => ['Users', '/user', 'edit', 'ADMIN', 1, []],
             'group' => ['Groups', '/group', 'edit', 'ADMIN', 1, []],
             'type' => ['Types', '/type', 'edit', 'ADMIN', 1, []],
-            'relation' => ['Relations', '/relation', 'edit', 'ADMIN', 1, []],
+            'relation' => ['Relations', '/relationgroup', 'edit', 'ADMIN', 1, []],
             'genre' => ['Genres', '/genre', 'edit', 'ADMIN', 1, []],
             'layer' => ['Layers', '/layer', 'edit', 'ADMIN', 1, []],
             'constraint' => ['Constraints', '/constraint', 'edit', 'ADMIN', 1, []],

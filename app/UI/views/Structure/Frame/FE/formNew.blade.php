@@ -7,7 +7,7 @@
             <x-combobox.color id="new_idColor" label="Color" value=""></x-combobox.color>
         </x-slot:fields>
         <x-slot:buttons>
-            <x-submit label="Add FE" hx-post="/fes"></x-submit>
+            <x-submit label="Add FE" hx-post="/fe"></x-submit>
         </x-slot:buttons>
     </x-form>
 </x-layout.content>

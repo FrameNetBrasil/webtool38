@@ -13,7 +13,7 @@ class RelationGroupModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('relationgroup');
         self::attribute('idRelationGroup', key: Key::PRIMARY);
         self::attribute('entry');
@@ -23,7 +23,6 @@ class RelationGroupModel extends Model
         self::attribute('idLanguage', reference: 'entries.idLanguage');
         self::associationOne('entity', model: EntityModel::class);
         self::associationMany('entries', model: EntryModel::class, keys: 'entry:entry');
-        self::associationOne('entity', model: EntityModel::class);
     }
 
 }

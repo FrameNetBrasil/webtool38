@@ -502,6 +502,23 @@
 .wt-icon-user:after {
     content: var(--wt-user-icon);
 }
+
+.wt-icon-master {
+    color: var(--wt-master-color);
+}
+
+.wt-icon-master:after {
+    content: var(--wt-master-icon);
+}
+
+.wt-icon-detail {
+    color: var(--wt-detail-color);
+}
+
+.wt-icon-detail:after {
+    content: var(--wt-detail-icon);
+}
+
 /*
  Annotation Status
  */

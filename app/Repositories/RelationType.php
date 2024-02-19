@@ -36,13 +36,8 @@ class RelationType extends Repository
     {
         $criteria = $this->getCriteria()
             ->where('idRelationType', '=', $id)
-            ->where('idLanguage','=', AppService::getCurrentIdLanguage());
+            ->where('idLanguage', '=', AppService::getCurrentIdLanguage());
         $this->retrieveFromCriteria($criteria);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdRelationType();
     }
 
     public function getName()
@@ -55,8 +50,11 @@ class RelationType extends Repository
 
     public function listByFilter($filter)
     {
-        $criteria = $this->getCriteria()->select('idRelationType,entry,entries.name')->orderBy('entries.name');
-        Base::entryLanguage($criteria);
+        $criteria = $this->getCriteria()
+            ->select(['idRelationType', 'entry', 'name', 'description'])
+            ->orderBy('name');
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
         if (isset($filter->idRelationType)) {
             $criteria->where("idRelationType", "=", $filter->idRelationType);
         }
@@ -66,7 +64,48 @@ class RelationType extends Repository
         if (isset($filter->group)) {
             $criteria->where("relationGroup.entry", "=", $filter->group);
         }
+        if (isset($filter->name)) {
+            $criteria->where("name", "startswith", $filter->name);
+        }
         return $criteria;
+    }
+
+    public function create($data)
+    {
+        $this->beginTransaction();
+        try {
+            $baseEntry = strtolower('rty_' . $data->nameEn . '_' . $data->idRelationGroup);
+            $entity = new Entity();
+            $idEntity = $entity->create('RT', $baseEntry);
+            $entry = new Entry();
+            $entry->create($baseEntry, $data->nameEn, $idEntity);
+            $id = $this->saveData([
+                'entry' => $baseEntry,
+                'idDomain' => $data->idDomain,
+                'idRelationGroup' => $data->idRelationGroup,
+                'nameEntity1' => '',
+                'nameEntity2' => '',
+                'nameEntity3' => '',
+                'idEntity' => $idEntity
+            ]);
+            Timeline::addTimeline("relationtype", $id, "C");
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+    public function update($data)
+    {
+        $this->beginTransaction();
+        try {
+            $this->saveData($data);
+            Timeline::addTimeline("relationtype", $this->getId(), "U");
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 
 //    public function listAll()
@@ -76,11 +115,12 @@ class RelationType extends Repository
 //        return $criteria;
 //    }
 
+/*
     public function getByEntry(string $entry)
     {
         $criteria = $this->getCriteria()
             ->select('*')
-            ->where("entry","=",$entry);
+            ->where("entry", "=", $entry);
         $this->retrieveFromCriteria($criteria);
     }
 
@@ -123,6 +163,6 @@ class RelationType extends Repository
             throw new \Exception($e->getMessage());
         }
     }
-
+*/
 
 }

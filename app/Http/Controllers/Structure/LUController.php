@@ -79,8 +79,8 @@ class LUController extends Controller
     public function delete(string $id)
     {
         try {
-            $fe = new LU($id);
-            $fe->delete();
+            $lu = new LU($id);
+            $lu->delete();
             $this->trigger('reload-gridLU');
             return $this->renderNotify("success", "LU deleted.");
         } catch (\Exception $e) {

@@ -2,7 +2,12 @@
     <x-form id="entryForm" title="Translations" center="true">
         <x-slot:fields>
             @foreach($data->languages as $language)
-                @php($idLanguage = $language['idLanguage'])
+                @php
+                    $idLanguage = $language['idLanguage'];
+                    debug($data->entries[$idLanguage]['description']);
+                    $description = mb_ereg_replace("\r\n","\\n",$data->entries[$idLanguage]['description']);
+                    debug($description);
+                @endphp
                 <x-card
                     title="{{$language['description']}}"
                     class="mb-4"
@@ -19,7 +24,7 @@
                     <x-multiline-field
                         label="Definition"
                         id="description_{{$idLanguage}}"
-                        :value="$data->entries[$idLanguage]['description']"
+                        value="{{$description}}"
                     >
                     </x-multiline-field>
                 </x-card>
