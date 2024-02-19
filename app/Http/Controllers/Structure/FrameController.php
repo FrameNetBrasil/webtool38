@@ -8,6 +8,9 @@ use App\Repositories\EntityRelation;
 use App\Repositories\Entry;
 use App\Repositories\Frame;
 use App\Repositories\FrameElement;
+use App\Repositories\ViewFrame;
+use App\Repositories\ViewFrameElement;
+use App\Repositories\ViewLU;
 use App\Services\AppService;
 use App\Services\EntryService;
 use App\Services\FrameService;
@@ -17,6 +20,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
 use Collective\Annotations\Routing\Attributes\Attributes\Put;
 use Illuminate\Support\Facades\Request;
+use Orkester\Manager;
 
 #[Middleware(name: 'auth')]
 class FrameController extends Controller
@@ -26,13 +30,15 @@ class FrameController extends Controller
     {
         $this->data->search ??= (object)[];
         $this->data->search->_token = csrf_token();
-        return $this->render('pageBrowse');
+        $this->data->_action = 'browse';
+        return $this->render('main');
     }
 
     #[Get(path: '/frame/new')]
     public function new()
     {
-        return $this->render("pageNew");
+        $this->data->_action = 'new';
+        return $this->render("main");
     }
 
     #[Post(path: '/frame')]
@@ -52,9 +58,8 @@ class FrameController extends Controller
     public function grid()
     {
         $this->data->search->_token = csrf_token();
-        $response = $this->render("slotGrid");
+        $response = $this->render("grid");
         $query = [
-            'search_idDomain' => $this->data->search->idDomain,
             'search_frame' => $this->data->search->frame,
             'search_fe' => $this->data->search->fe,
             'search_lu' => $this->data->search->lu,
@@ -73,7 +78,111 @@ class FrameController extends Controller
     #[Post(path: '/frame/listForTree')]
     public function listForTree()
     {
-        return FrameService::listForTree();
+        $data = Manager::getData();
+        debug($data);
+        $result = [];
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $id = $data->id ?? '';
+        if ($id != '') {
+            $idFrame = substr($id, 1);
+            $icon = config('webtool.fe.icon.tree');
+            $frame = new Frame($idFrame);
+            $fes = $frame->listFE()->asQuery()->getResult();
+            $orderedFe = [];
+            foreach ($icon as $i => $j) {
+                foreach ($fes as $fe) {
+                    if ($fe['coreType'] == $i) {
+                        $orderedFe[] = $fe;
+                    }
+                }
+            }
+            foreach ($orderedFe as $fe) {
+                $node = [];
+                $node['id'] = 'e' . $fe['idFrameElement'];
+                $node['type'] = 'fe';
+                $node['name'] = [$fe['name'], $fe['description']];
+                $node['idColor'] = $fe['idColor'];
+                $node['state'] = 'open';
+                $node['iconCls'] = $icon[$fe['coreType']];
+                $node['children'] = null;
+                $result[] = $node;
+            }
+            $lu = new ViewLU();
+            $lus = $lu->listByFrame($idFrame, $idLanguage)->asQuery()->getResult();
+            foreach ($lus as $lu) {
+                $node = [];
+                $node['id'] = 'l' . $lu['idLU'];
+                $node['type'] = 'lu';
+                $node['name'] = [$lu['name'], $lu['senseDescription']];;
+                $node['state'] = 'open';
+                $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
+                $node['children'] = null;
+                $result[] = $node;
+            }
+            return $result;
+        } else {
+            $filter = $data;
+            if (!(($filter->fe ?? false) || ($filter->lu ?? false))) {
+                $frame = new ViewFrame();
+                $frames = $frame->listByFilter($filter)->asQuery()->getResult();
+                foreach ($frames as $row) {
+                    $node = [];
+                    $node['id'] = 'f' . $row['idFrame'];
+                    $node['type'] = 'frame';
+                    $node['name'] = [$row['name'], $row['description']];
+                    $node['state'] = 'closed';
+                    $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-frame';
+                    $node['children'] = [];
+                    $result[] = $node;
+                }
+            } else {
+                if ($filter->fe ?? false) {
+                    $icon = config('webtool.fe.icon.tree');
+                    $fe = new ViewFrameElement();
+                    $fes = $fe->listByFilter($filter)->asQuery()->getResult();
+                    foreach ($fes as $row) {
+                        $node = [];
+                        $node['id'] = 'e' . $row['idFrameElement'];
+                        $node['type'] = 'feFrame';
+                        $node['name'] = [$row['name'], $row['description'], $row['frameName']];
+                        $node['idColor'] = $row['idColor'];
+                        $node['state'] = 'closed';
+                        $node['iconCls'] = $icon[$row['coreType']];
+                        $node['children'] = [];
+                        $result[] = $node;
+                    }
+                } else if ($filter->lu ?? false) {
+                    $lu = new ViewLU();
+                    $lus = $lu->listByFilter($filter)->asQuery()->getResult();
+                    foreach ($lus as $i => $row) {
+                        if ($i == 0) {
+                            debug($row);
+                        }
+
+                        $node = [];
+                        $node['id'] = 'l' . $row['idLU'];
+                        $node['type'] = 'luFrame';
+                        $node['name'] = [$row['name'], $row['senseDescription'], $row['frameName']];
+                        $node['state'] = 'closed';
+                        $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
+                        $node['children'] = [];
+                        $result[] = $node;
+                    }
+                }
+            }
+            $total = count($result);
+            return [
+                'total' => $total,
+                'rows' => $result,
+                'footer' => [
+                    [
+                        'type' => 'frame',
+                        'name' => ["{$total} record(s)", ''],
+                        'iconCls' => 'material-icons-outlined wt-tree-icon wt-icon-frame'
+                    ]
+                ]
+            ];
+        }
     }
 
     #[Get(path: '/frame/{id}/edit')]
@@ -81,7 +190,8 @@ class FrameController extends Controller
     {
         $this->data->frame = new Frame($id);
         $this->data->classification = FrameService::getClassification($this->data->frame);
-        return $this->render("pageEdit");
+        $this->data->_action = 'edit';
+        return $this->render("main");
     }
 
     #[Get(path: '/frame/{id}/entries')]
@@ -91,25 +201,14 @@ class FrameController extends Controller
         $entry = new Entry();
         $this->data->entries = $entry->listByIdEntity($this->data->frame->idEntity);
         $this->data->languages = AppService::availableLanguages();
-        return $this->render("entries");
-    }
-
-    #[Put(path: '/frame/{id}/entries')]
-    public function entries(int $id)
-    {
-        try {
-            EntryService::updateEntries($this->data);
-            return $this->renderNotify("success", "Translations recorded.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
+        return $this->render("Structure.Entry.main");
     }
 
     #[Get(path: '/frame/{id}/fes')]
     public function fes(string $id)
     {
         $this->data->idFrame = $id;
-        return $this->render("fes");
+        return $this->render("Structure.Frame.FE.child");
     }
 
     #[Get(path: '/frame/{id}/fes/formNew')]
@@ -131,7 +230,7 @@ class FrameController extends Controller
     public function lus(string $id)
     {
         $this->data->frame = new Frame($id);
-        return $this->render("lus");
+        return $this->render("Structure.Frame.LU.child");
     }
 
     #[Get(path: '/frame/{id}/lus/formNew')]
@@ -145,7 +244,8 @@ class FrameController extends Controller
     public function gridLU(string $id)
     {
         $this->data->idFrame = $id;
-        $this->data->lus = FrameService::listLUForGrid($id);
+        $frame = new Frame($id);
+        $this->data->lus = $frame->listLU()->asQuery()->getResult();
         return $this->render("Structure.Frame.LU.grid");
     }
 
@@ -195,7 +295,8 @@ class FrameController extends Controller
     public function deleteRelation(int $idEntityRelation)
     {
         try {
-            FrameService::deleteRelation($idEntityRelation);
+            $relation = new EntityRelation($idEntityRelation);
+            $relation->delete();
             $this->trigger('reload-gridRelation');
             return $this->renderNotify("success", "Relation deleted.");
         } catch (\Exception $e) {
@@ -241,7 +342,8 @@ class FrameController extends Controller
     public function fesRelationDelete(int $idEntityRelation)
     {
         try {
-            FrameService::deleteRelation($idEntityRelation);
+            $relation = new EntityRelation($idEntityRelation);
+            $relation->delete();
             $this->trigger('reload-gridFEInternalRelation');
             return $this->renderNotify("success", "Relation deleted.");
         } catch (\Exception $e) {
@@ -252,47 +354,10 @@ class FrameController extends Controller
     #[Get(path: '/frame/{id}/semanticTypes')]
     public function semanticTypes(string $id)
     {
-        $this->data->idFrame = $id;
-        $this->data->frame = new Frame($id);
-        return $this->render("semanticTypes");
+        $frame = new Frame($id);
+        $this->data->idEntity = $frame->idEntity;
+        $this->data->root = "@framal_type";
+        return $this->render("Structure.SemanticType.child");
     }
 
-    #[Get(path: '/frame/{id}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $id)
-    {
-        $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.SemanticType.formAdd");
-    }
-
-    #[Get(path: '/frame/{id}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $id)
-    {
-        $this->data->idFrame = $id;
-        $this->data->relations = FrameService::listSemanticTypes($id);
-        return $this->render("Structure.Frame.SemanticType.grid");
-    }
-
-    #[Post(path: '/frame/{id}/semanticTypes')]
-    public function addSemanticType(int $id)
-    {
-        try {
-            $this->data->new->idFrame = $id;
-            $this->trigger('reload-gridSTRelation');
-            return $this->renderNotify("success", "Semantic Type added.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/frame/semanticTypes/{idEntityRelation}')]
-    public function deleteSemanticType(int $idEntityRelation)
-    {
-        try {
-            FrameService::deleteRelation($idEntityRelation);
-            $this->trigger('reload-gridSTRelation');
-            return $this->renderNotify("success", "Semantic Type deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
 }

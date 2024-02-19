@@ -142,13 +142,6 @@ class FrameService
         return $result;
     }
 
-    public static function listLUForGrid(int $idFrame)
-    {
-        $result = [];
-        $frame = new Frame($idFrame);
-        $lus = $frame->listLU()->asQuery()->getResult();
-        return $lus;
-    }
     public static function listRelations(int $idFrame)
     {
         $frame = new Frame($idFrame);
@@ -224,12 +217,6 @@ class FrameService
             'idEntity1' => $idEntity1,
             'idEntity2' => $idEntity2,
         ]);
-    }
-
-    public static function deleteRelation(int $idEntityRelation)
-    {
-        $relation = new EntityRelation($idEntityRelation);
-        $relation->delete();
     }
 
     public static function newRelationFE(object $data)

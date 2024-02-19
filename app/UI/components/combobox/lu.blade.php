@@ -16,6 +16,6 @@
                 pos: '{{$pos}}'
             },
         @endif
-        url: "/lus/listForSelect",
+        url: "/lu/listForSelect",
     });
 @endpush

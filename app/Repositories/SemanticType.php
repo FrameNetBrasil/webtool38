@@ -152,6 +152,21 @@ class SemanticType extends Repository
 //        return $criteria;
 //    }
 
+    public function listForComboGrid(string $root = '')
+    {
+        $this->retrieveFromName($root);
+        $list = $this->listChildren($this->idSemanticType, (object)[])->getResult();
+        $result = [];
+        foreach ($list as $row) {
+            $node = $row;
+            $node['state'] = 'open';
+            $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-semantictype';
+            $children = $this->listForComboGrid($row['name']);
+            $node['children'] = !empty($children) ? $children : null;
+            $result[] = $node;
+        }
+        return $result;
+    }
     public function listForLookup($filter)
     {
         $criteria = $this->getCriteria()->select("idSemanticType,concat(entries.name, '.',  dEntries.name) as name")->orderBy('concat(entries.name, dEntries.name)');

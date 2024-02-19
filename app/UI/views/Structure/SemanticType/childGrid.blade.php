@@ -1,10 +1,10 @@
 <x-datagrid
-    id="frameSemanticTypeGrid"
+    id="gridChildST"
     title="SemanticTypes"
-    hx-trigger="reload-gridSTRelation from:body"
+    hx-trigger="reload-gridChildST from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/frames/{{$data->idFrame}}/semanticTypes/grid"
+    hx-get="/semanticType/{{$data->idEntity}}/childGrid"
     height="250px"
 >
     @foreach($data->relations as $relation)
@@ -13,7 +13,7 @@
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
-                    hx-delete="/frames/semanticTypes/{{$relation['idEntityRelation']}}"
+                    hx-delete="/semanticType/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
             <td>

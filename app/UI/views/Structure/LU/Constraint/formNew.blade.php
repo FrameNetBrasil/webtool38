@@ -8,13 +8,13 @@
             <x-link-button
                 id="luConstraintFormNewMetonymLU"
                 label="Metonym-LU"
-                hx-get="/lus/{{$data->idLU}}/constraints/formNew/metonymLU"
+                hx-get="/lu/{{$data->idLU}}/constraints/formNew/metonymLU"
                 hx-target="#luConstraintFormNewFields"
             ></x-link-button>
             <x-link-button
                 id="luConstraintFormNewEquivalentLU"
                 label="Equivalent-LU"
-                hx-get="/lus/{{$data->idLU}}/constraints/formNew/equivalenceLU"
+                hx-get="/lu/{{$data->idLU}}/constraints/formNew/equivalenceLU"
                 hx-target="#luConstraintFormNewFields"
             ></x-link-button>
         </x-slot:toolbar>
@@ -49,7 +49,7 @@
             </div>
         </x-slot:fields>
         <x-slot:buttons>
-            <x-submit label="Add Constraint" hx-post="/lus/{{$data->idLU}}/constraints"></x-submit>
+            <x-submit label="Add Constraint" hx-post="/lu/{{$data->idLU}}/constraints"></x-submit>
         </x-slot:buttons>
     </x-form>
 </x-layout.content>

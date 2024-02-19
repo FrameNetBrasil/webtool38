@@ -1,5 +1,5 @@
 <x-layout.content>
-    <x-form id="frameFEFormNew" title="New Frame Element" center="true">
+    <x-form id="formNew" title="New Frame Element" center="true">
         <x-slot:fields>
             <x-hidden-field id="new_idFrame" :value="$data->idFrame"></x-hidden-field>
             <x-text-field id="new_nameEn" label="English Name" value=""></x-text-field>

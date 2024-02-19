@@ -37,11 +37,23 @@ class FEController extends Controller
         }
     }
 
+    #[Get(path: '/fe/{id}/main')]
+    public function main(string $id)
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $this->data->frameElement = new FrameElement($id);
+        $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
+        $this->data->_layout = 'page';
+        return $this->render("edit");
+    }
     #[Get(path: '/fe/{id}/edit')]
     public function edit(string $id)
     {
+        $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->frameElement = new FrameElement($id);
-        return $this->render("pageEdit");
+        $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
+        $this->data->_layout = 'edit';
+        return $this->render("edit");
     }
 
     #[Delete(path: '/fe/{id}')]
@@ -79,18 +91,7 @@ class FEController extends Controller
         $this->data->frameElement = new FrameElement($id);
         $this->data->entries = $this->data->frameElement->listEntries();
         $this->data->languages = AppService::availableLanguages();
-        return $this->render("entries");
-    }
-
-    #[Put(path: '/fe/{id}/entries')]
-    public function entries(int $id)
-    {
-        try {
-            EntryService::updateEntries($this->data);
-            return $this->renderNotify("success", "Translations recorded.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
+        return $this->render("Structure.Entry.main");
     }
 
     #[Get(path: '/fe/relations/{idEntityRelation}')]
@@ -171,7 +172,7 @@ class FEController extends Controller
     public function constraints(string $id)
     {
         $this->data->idFrameElement = $id;
-        return $this->render("constraints");
+        return $this->render("Structure.FE.Constraint.child");
     }
 
     #[Get(path: '/fe/{id}/constraints/formNew/{fragment?}')]
@@ -236,48 +237,10 @@ class FEController extends Controller
     #[Get(path: '/fe/{id}/semanticTypes')]
     public function semanticTypes(string $id)
     {
-        $this->data->idFrameElement = $id;
-        $this->data->frameElement = new FrameElement($id);
-        return $this->render("semanticTypes");
+        $fe = new FrameElement($id);
+        $this->data->idEntity = $fe->idEntity;
+        $this->data->root = "@ontological_type";
+        return $this->render("Structure.SemanticType.child");
     }
 
-    #[Get(path: '/fe/{id}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $id)
-    {
-        $this->data->idFrameElement = $id;
-        return $this->render("Structure.FE.SemanticType.formAdd");
-    }
-
-    #[Get(path: '/fe/{id}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $id)
-    {
-        $this->data->idFrameElement = $id;
-        $this->data->relations = FrameService::listFESemanticTypes($id);
-        return $this->render("Structure.FE.SemanticType.grid");
-    }
-
-    #[Post(path: '/fe/{id}/semanticTypes')]
-    public function addSemanticType(int $id)
-    {
-        try {
-            $this->data->new->idFrameElement = $id;
-            FrameService::addFESemanticType($this->data->new);
-            $this->trigger('reload-gridSTFERelation');
-            return $this->renderNotify("success", "Semantic Type added.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/fe/semanticTypes/{idEntityRelation}')]
-    public function deleteSemanticType(int $idEntityRelation)
-    {
-        try {
-            FrameService::deleteRelation($idEntityRelation);
-            $this->trigger('reload-gridSTFERelation');
-            return $this->renderNotify("success", "Semantic Type deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
 }

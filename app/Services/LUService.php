@@ -11,15 +11,7 @@ use Orkester\Manager;
 class LUService
 {
 
-    public static function listForSelect()
-    {
-        $data = Manager::getData();
-        $q = $data->q ?? '';
-        $pos = $data->pos ?? '';
-        $lu = new LU();
-        return $lu->listForSelect($q, $pos)->getResult();
-    }
-
+    /*
     public static function listForEvent()
     {
         $data = Manager::getData();
@@ -47,4 +39,5 @@ class LUService
         $relation = new EntityRelation($idEntityRelation);
         $relation->delete();
     }
+    */
 }

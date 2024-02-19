@@ -2,10 +2,10 @@
 
 namespace App\View\Components\Combobox;
 
-use App\Services\SemanticTypeService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Repositories\SemanticType as SemanticTypeRepository;
 
 class SemanticType extends Component
 {
@@ -20,7 +20,8 @@ class SemanticType extends Component
         public string $root = ''
     )
     {
-        $this->list = SemanticTypeService::listForComboGrid($root);
+        $st = new SemanticTypeRepository();
+        $this->list = $st->listForComboGrid($root);
     }
 
     /**

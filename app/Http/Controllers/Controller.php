@@ -94,23 +94,4 @@ class Controller extends BaseController
         return $response;
     }
 
-    public function renderNotifyRedirect(string $type, string $message, string $url)
-    {
-        if ($this->hx_trigger != '') {
-            $trigger = json_encode([
-                'notify' => [
-                    'type' => $type,
-                    'message' => $message
-                ],
-                $this->hx_trigger => []
-            ]);
-        } else {
-            $trigger = $this->notify($type, $message);
-        }
-        $response = response('', 200)
-            ->header('HX-Redirect', $url)
-            ->header('HX-Trigger', $trigger);
-        return $response;
-    }
-
 }

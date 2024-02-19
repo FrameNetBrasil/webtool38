@@ -1,0 +1,18 @@
+<x-layout.child>
+    <x-slot:left>
+        <div
+            hx-trigger="load"
+            hx-target="this"
+            hx-swap="outerHTML"
+            hx-get="/semanticType/{{$data->idEntity}}/childAdd/{{$data->root}}"
+        ></div>
+    </x-slot:left>
+    <x-slot:right>
+        <div
+            hx-trigger="load"
+            hx-target="this"
+            hx-swap="outerHTML"
+            hx-get="/semanticType/{{$data->idEntity}}/childGrid"
+        ></div>
+    </x-slot:right>
+</x-layout.child>

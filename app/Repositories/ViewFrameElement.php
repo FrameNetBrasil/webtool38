@@ -69,7 +69,7 @@ class ViewFrameElement extends Repository
         if ($filter->fe ?? false) {
             $criteria->where("name","startswith",$filter->fe);
         }
-        $criteria->orderBy("name,frame.name");
+        $criteria->order([["name"],["frame.name"]]);
         return $criteria;
     }
 

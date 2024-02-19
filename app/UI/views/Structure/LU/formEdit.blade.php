@@ -12,7 +12,7 @@
             ></x-combobox.fe-frame>
         </x-slot:fields>
         <x-slot:buttons>
-            <x-submit label="Update LU" hx-put="/lus/{{$data->lu->idLU}}"></x-submit>
+            <x-submit label="Update LU" hx-put="/lu/{{$data->lu->idLU}}"></x-submit>
         </x-slot:buttons>
     </x-form>
 </x-layout.content>

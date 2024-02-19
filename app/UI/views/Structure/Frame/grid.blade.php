@@ -1,15 +1,16 @@
-<table id="frameSlotGridTable">
+<table id="mainGridTable">
 </table>
 <script>
     $(function () {
-        $('#frameSlotGridTable').treegrid({
+        $('#mainGridTable').treegrid({
             fit: true,
-            url: "/frames/listForTree",
+            url: "/frame/listForTree",
             queryParams: {{ Js::from($data->search) }},
             showHeader: false,
             rownumbers: false,
             idField: 'id',
             treeField: 'name',
+            showFooter:true,
             border: false,
             columns: [[
                 {
@@ -24,13 +25,27 @@
                         if (rowData.type === 'lu') {
                             return `<div><div class='color-lu'>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
                         }
+                        if (rowData.type === 'feFrame') {
+                            return `<div><div><span class='fe-name color_${rowData.idColor}'>${value[0]}</span>&nbsp;<span class='fe-name'>[${value[2]}]</span></div><div class='definition'>${value[1]}</div></div>`;
+                        }
+                        if (rowData.type === 'luFrame') {
+                            return `<div><div class='color-lu'>${value[0]}&nbsp;<span class='fe-name'>[${value[2]}]</span></div><div class='definition'>${value[1]}</div></div>`;
+                        }
                     }
                 },
             ]],
             onClickRow: (row) => {
                 if (row.type === 'frame') {
                     let idFrame = row.id.substring(1);
-                    window.location.href = `/frames/${idFrame}/edit`;
+                    window.location.href = `/frame/${idFrame}/edit`;
+                }
+                if (row.type === 'feFrame') {
+                    let idFE = row.id.substring(1);
+                    window.location.href = `/fe/${idFE}/main`;
+                }
+                if (row.type === 'luFrame') {
+                    let idLU = row.id.substring(1);
+                    window.location.href = `/lu/${idLU}/main`;
                 }
             },
         });

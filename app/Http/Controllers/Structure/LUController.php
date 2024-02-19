@@ -20,6 +20,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
 use Collective\Annotations\Routing\Attributes\Attributes\Put;
+use Orkester\Manager;
 
 #[Middleware(name: 'auth')]
 class LUController extends Controller
@@ -41,7 +42,11 @@ class LUController extends Controller
     #[Get(path: '/lu/listForSelect')]
     public function listForSelect()
     {
-        return LUService::listForSelect();
+        $data = Manager::getData();
+        $q = $data->q ?? '';
+        $pos = $data->pos ?? '';
+        $lu = new LU();
+        return $lu->listForSelect($q, $pos)->getResult();
     }
 
     #[Get(path: '/lu/listForEvent')]
@@ -49,11 +54,25 @@ class LUController extends Controller
     {
         return LUService::listForEvent();
     }
+
+    #[Get(path: '/lu/{id}/main')]
+    public function main(string $id)
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $this->data->lu = new LU($id);
+        $this->data->lu->retrieveAssociation("frame", $idLanguage);
+        $this->data->_layout = 'page';
+        return $this->render("edit");
+    }
+
     #[Get(path: '/lu/{id}/edit')]
     public function edit(string $id)
     {
+        $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->lu = new LU($id);
-        return $this->render("pageEdit");
+        $this->data->lu->retrieveAssociation("frame", $idLanguage);
+        $this->data->_layout = 'edit';
+        return $this->render("edit");
     }
 
     #[Delete(path: '/lu/{id}')]
@@ -89,7 +108,7 @@ class LUController extends Controller
     public function constraints(string $id)
     {
         $this->data->idLU = $id;
-        return $this->render("constraints");
+        return $this->render("Structure.LU.Constraint.child");
     }
 
     #[Get(path: '/lu/{id}/constraints/formNew/{fragment?}')]
@@ -138,7 +157,8 @@ class LUController extends Controller
     public function deleteConstraint(int $idEntityRelation)
     {
         try {
-            FrameService::deleteRelation($idEntityRelation);
+            $relation = new EntityRelation($idEntityRelation);
+            $relation->delete();
             $this->trigger('reload-gridConstraintLU');
             return $this->renderNotify("success", "Constraint deleted.");
         } catch (\Exception $e) {
@@ -149,49 +169,10 @@ class LUController extends Controller
     #[Get(path: '/lu/{id}/semanticTypes')]
     public function semanticTypes(string $id)
     {
-        $this->data->idLU = $id;
-        $this->data->lu = new LU($id);
-        return $this->render("semanticTypes");
-    }
-
-    #[Get(path: '/lu/{id}/semanticTypes/formAdd')]
-    public function semanticTypesAdd(string $id)
-    {
-        $this->data->idLU = $id;
-        return $this->render("Structure.LU.SemanticType.formAdd");
-    }
-
-    #[Get(path: '/lu/{id}/semanticTypes/grid')]
-    public function semanticTypesGrid(string $id)
-    {
-        $this->data->idLU = $id;
-        $this->data->relations = LUService::listSemanticTypes($id);
-        return $this->render("Structure.LU.SemanticType.grid");
-    }
-
-    #[Post(path: '/lu/{id}/semanticTypes')]
-    public function addSemanticType(int $id)
-    {
-        try {
-            $this->data->new->idLU = $id;
-            LUService::addSemanticType($this->data->new);
-            $this->trigger('reload-gridSTLURelation');
-            return $this->renderNotify("success", "Semantic Type added.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/lu/relations/{idEntityRelation}')]
-    public function deleteSemanticType(int $idEntityRelation)
-    {
-        try {
-            LUService::deleteRelation($idEntityRelation);
-            $this->trigger('reload-gridSTLURelation');
-            return $this->renderNotify("success", "Semantic Type deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
+        $lu = new LU($id);
+        $this->data->idEntity = $lu->idEntity;
+        $this->data->root = "@lexical_type";
+        return $this->render("Structure.SemanticType.child");
     }
 
 }

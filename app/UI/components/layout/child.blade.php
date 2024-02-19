@@ -1,3 +1,4 @@
+<x-layout.content>
     <div class="grid">
         <div class="col">
             {{$left}}
@@ -8,3 +9,4 @@
     </div>
     <div id="childPane">
     </div>
+</x-layout.content>

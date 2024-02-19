@@ -1,10 +1,10 @@
 <x-datagrid
-    id="frameFEGrid"
+    id="gridFE"
     title="Frame Elements"
     hx-trigger="reload-gridFE from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/frames/{{$data->idFrame}}/fes/grid"
+    hx-get="/frame/{{$data->idFrame}}/fes/grid"
     height="250px"
 >
     @foreach($data->fes as $fe)
@@ -17,7 +17,7 @@
                 ></div>
             </td>
             <td
-                hx-get="/fes/{{$fe['idFrameElement']}}/edit"
+                hx-get="/fe/{{$fe['idFrameElement']}}/edit"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"
@@ -26,7 +26,7 @@
                 <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
             </td>
             <td
-                hx-get="/fes/{{$fe['idFrameElement']}}/edit"
+                hx-get="/fe/{{$fe['idFrameElement']}}/edit"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"

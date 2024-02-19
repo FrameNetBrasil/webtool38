@@ -4,7 +4,7 @@
     hx-trigger="reload-gridConstraintLU from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/lus/{{$data->idLU}}/constraints/grid" height="250px"
+    hx-get="/lu/{{$data->idLU}}/constraints/grid" height="250px"
 >
     @foreach($data->constraints as $constraint)
         <tr>
@@ -12,7 +12,7 @@
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete constraint"
-                    hx-delete="/lus/constraints/{{$constraint['idConstraint']}}"
+                    hx-delete="/lu/constraints/{{$constraint['idConstraint']}}"
                 ></div>
             </td>
             <td>
