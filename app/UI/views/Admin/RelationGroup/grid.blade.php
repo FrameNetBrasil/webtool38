@@ -15,15 +15,16 @@
             columns: [[
                 {
                     field: 'name',
+                    width: "100%",
                     formatter: (value, rowData) => {
                         if (rowData.type === 'relationGroup') {
-                            return `<div><div class='color-frame'>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
+                            return `<div><div>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
                         }
                         if (rowData.type === 'rgRelationType') {
-                            return `<div><div><span class='fe-name color_${rowData.idColor}'>${value[0]}</span></div><div class='definition'>${value[1]}</div></div>`;
+                            return `<div><div><span>${value[0]}</span></div><div class='definition'>${value[1]}</div></div>`;
                         }
                         if (rowData.type === 'relationType') {
-                            return `<div><div class='color-lu'>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
+                            return `<div><div>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
                         }
                     }
                 },

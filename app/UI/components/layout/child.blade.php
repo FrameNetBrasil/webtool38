@@ -1,4 +1,4 @@
-<div class="grid grid-nogutter">
+<div class="grid ">
     <div class="col">
         {{$left}}
     </div>

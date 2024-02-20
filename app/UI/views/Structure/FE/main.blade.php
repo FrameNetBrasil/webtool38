@@ -41,7 +41,7 @@
         </div>
     </x-slot:nav>
     <x-slot:main>
-        <div id="childEditPane">
+        <div id="childEditPane" class="mainPane">
         </div>
     </x-slot:main>
 </x-dynamic-component>

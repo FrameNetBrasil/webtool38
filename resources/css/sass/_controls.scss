@@ -379,6 +379,21 @@
     }
 }
 
+.wt-tag {
+    position: relative;
+    display: inline-block;
+    margin: var(--wt-mini-unit);
+    padding:var(--wt-mini-unit);
+    vertical-align: top;
+    text-decoration: none;
+    -moz-border-radius: var(--wt-controls-border-radius);
+    -webkit-border-radius: var(--wt-controls-border-radius);
+    border-radius: var(--wt-controls-border-radius);
+    background: var(--wt-theme-5);
+    color: var(--wt-text-color);
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+}
 
 /*
 <div class="panel window wt-messager panel-htop" style="top: 0px; background-color: red; display: block; width: 288px; left: 854px; position: absolute; z-index: 9001;"><div class="panel-header panel-header-noborder window-header" style="width: 286px;"><div class="panel-title">success</div><div class="panel-tool"><a href="javascript:;" class="panel-tool-close"></a></div></div><div class="messager-body panel-body panel-body-noborder window-body" title="" id="" style="width: 286px; height: 105px;">Entries recorded.</div></div>

@@ -1,4 +1,3 @@
-<x-layout.content>
     <x-datagrid
         id="gridFE"
         title="Frame Elements"
@@ -14,7 +13,7 @@
                     <div
                         class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                         title="delete FE"
-                        hx-delete="/fes/{{$fe['idFrameElement']}}"
+                        hx-delete="/fe/{{$fe['idFrameElement']}}"
                     ></div>
                 </td>
                 <td
@@ -22,6 +21,7 @@
                     hx-target="#childPane"
                     hx-swap="innerHTML"
                     class="cursor-pointer"
+                    style="min-width:120px"
                 >
                     <span class="{{$fe['iconCls']}}"></span>
                     <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
@@ -37,4 +37,3 @@
             </tr>
         @endforeach
     </x-datagrid>
-</x-layout.content>

@@ -22,7 +22,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 use Illuminate\Support\Facades\Request;
 use Orkester\Manager;
 
-#[Middleware(name: 'auth')]
+#[Middleware(name: 'admin')]
 class RelationGroupController extends Controller
 {
     #[Get(path: '/relationgroup')]
@@ -174,5 +174,17 @@ class RelationGroupController extends Controller
         $relationGroup = new RelationGroup($id);
         $this->data->rts = $relationGroup->listRelationType()->getResult();
         return $this->render("Admin.RelationGroup.RelationType.grid");
+    }
+
+    #[Delete(path: '/relationgroup/{id}')]
+    public function delete(string $id)
+    {
+        try {
+            $relationGroup = new RelationGroup($id);
+            $relationGroup->delete();
+            return $this->clientRedirect("/relationgroup");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
     }
 }

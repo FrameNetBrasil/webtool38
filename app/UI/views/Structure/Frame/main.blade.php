@@ -1,6 +1,6 @@
 <x-layout.main>
     <x-slot:title>
-        Frames
+        Frame
     </x-slot:title>
     <x-slot:actions>
         <x-button label="List" color="primary" href="/frame"></x-button>
@@ -8,18 +8,23 @@
     </x-slot:actions>
     <x-slot:edit>
         @if($data->_action == 'edit')
-            <div class="grid grid-nogutter">
+            <div class="grid grid-nogutter editHeader">
                 <div class="col-8 title">
                     <span class="color_frame">{{$data->frame?->name}}</span>
                 </div>
                 <div class="col-4 text-right description">
                     @foreach ($data->classification as $name => $values)
-                        [
                         @foreach ($values as $value)
-                            {{$value}}
+                            <x-tag label="{{$value}}"></x-tag>
                         @endforeach
-                        ]
                     @endforeach
+                    @if($data->isAdmin)
+                        <x-button
+                            label="Delete"
+                            color="danger"
+                            onclick="manager.confirmDelete(`Removing Frame '{{$data->frame?->name}}'. Confirm?`, '/frame/{{$data->frame->idFrame}}')"
+                        ></x-button>
+                    @endif
                 </div>
             </div>
             <div class="description">{{$data->frame?->description}}</div>
@@ -27,7 +32,7 @@
     </x-slot:edit>
     <x-slot:nav>
         @if($data->_action == 'browse')
-            <x-form-search id="frameSlotSearch">
+            <x-form-search id="frameSearch">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                 <x-input-field id="search_frame" :value="$data->search->frame ?? ''"
                                placeholder="Search Frame"></x-input-field>
@@ -35,7 +40,7 @@
                 <x-input-field id="search_lu" :value="$data->search->lu ?? ''" placeholder="Search LU"></x-input-field>
                 <x-combobox.frame-classification id="search_listBy" placeholder="List by"
                                                  value=""></x-combobox.frame-classification>
-                <x-submit label="Search" hx-post="/frame/grid" hx-target="#framePane"></x-submit>
+                <x-submit label="Search" hx-post="/frame/grid" hx-target="#frameGrid"></x-submit>
             </x-form-search>
         @endif
         @if($data->_action == 'edit')
@@ -86,20 +91,23 @@
         @endif
     </x-slot:nav>
     <x-slot:main>
-        <div id="framePane" class="main">
-            @if($data->_action == 'browse')
+        @if($data->_action == 'browse')
+            <div id="frameGrid" class="mainGrid">
                 @include('Structure.Frame.grid')
-            @endif
-            @if($data->_action == 'new')
-                <x-form id="formNew" title="New Frame" center="true">
-                    <x-slot:fields>
-                        <x-text-field id="new_nameEn" label="English Name" value=""></x-text-field>
-                    </x-slot:fields>
-                    <x-slot:buttons>
-                        <x-submit label="Add Frame" hx-post="/frame"></x-submit>
-                    </x-slot:buttons>
-                </x-form>
-            @endif
-        </div>
+            </div>
+        @else
+            <div id="framePane" class="mainPane">
+                @if($data->_action == 'new')
+                    <x-form id="formNew" title="New Frame" center="true">
+                        <x-slot:fields>
+                            <x-text-field id="new_nameEn" label="English Name" value=""></x-text-field>
+                        </x-slot:fields>
+                        <x-slot:buttons>
+                            <x-submit label="Add Frame" hx-post="/frame"></x-submit>
+                        </x-slot:buttons>
+                    </x-form>
+                @endif
+            </div>
+        @endif
     </x-slot:main>
 </x-layout.main>

@@ -22,7 +22,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 use Illuminate\Support\Facades\Request;
 use Orkester\Manager;
 
-#[Middleware(name: 'auth')]
+#[Middleware("master")]
 class FrameController extends Controller
 {
     #[Get(path: '/frame')]

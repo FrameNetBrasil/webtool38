@@ -165,7 +165,7 @@ class User extends Repository
             ->select("groups.idGroup,groups.name")
             ->orderBy("groups.name");
         if ($this->idUser) {
-            $criteria->where("idUser","=",$this->idUser);
+            $criteria->where("idUser", "=", $this->idUser);
         }
         return $criteria;
     }
@@ -179,20 +179,21 @@ class User extends Repository
         } else {
             $config = unserialize($config);
         }
-        return $config->$attr;
+        return $config->$attr ?? null;
     }
 
     public function setConfigData($attr, $value)
     {
-        $config = parent::getConfig();
+        $config = $this->config;
         if ($config == '') {
-            $config = new \StdClass();
-            $config->$attr = '';
+            $config = (object)[
+                $attr => ''
+            ];
         } else {
             $config = unserialize($config);
         }
         $config->$attr = $value;
-        parent::setConfig(serialize($config));
+        $this->config = serialize($config);
         parent::save();
     }
 
@@ -214,7 +215,7 @@ class User extends Repository
         $levels = [];
         $criteria = $this->getCriteria()
             ->select('idUser')
-            ->where("idUser","=", $this->idUser);
+            ->where("idUser", "=", $this->idUser);
         $users = $criteria->asQuery()->getResult();
         foreach ($users as $row) {
             $idUser = $row['idUser'];
@@ -311,12 +312,14 @@ class User extends Repository
         return parent::save();
     }
 
-    public function addToGroup(int $idGroup) {
+    public function addToGroup(int $idGroup)
+    {
         $this->groups[$idGroup] = new Group($idGroup);
         $this->saveAssociation('groups');
     }
 
-    public function deleteFromGroup(int $idGroup) {
+    public function deleteFromGroup(int $idGroup)
+    {
         unset($this->groups[$idGroup]);
         $this->saveAssociation('groups');
     }

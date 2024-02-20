@@ -22,7 +22,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 use Illuminate\Support\Facades\Request;
 use Orkester\Manager;
 
-#[Middleware(name: 'auth')]
+#[Middleware(name: 'admin')]
 class RelationTypeController extends Controller
 {
     #[Get(path: '/relationtype')]
@@ -73,8 +73,8 @@ class RelationTypeController extends Controller
         $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->relationType = new RelationType($id);
         $this->data->relationType->retrieveAssociation("relationGroup", $idLanguage);
-        $this->data->_layout = 'page';
-        return $this->render("edit");
+        $this->data->_layout = 'main';
+        return $this->render("main");
     }
 
     #[Get(path: '/relationtype/{id}/edit')]
@@ -84,7 +84,7 @@ class RelationTypeController extends Controller
         $this->data->relationType = new RelationType($id);
         $this->data->relationType->retrieveAssociation("relationGroup", $idLanguage);
         $this->data->_layout = 'edit';
-        return $this->render("edit");
+        return $this->render("main");
     }
 
     #[Get(path: '/relationtype/{id}/entries')]

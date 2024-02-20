@@ -11,7 +11,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Post;
 use App\Services\UserService;
 use Collective\Annotations\Routing\Attributes\Attributes\Put;
 
-#[Middleware(name: 'auth')]
+#[Middleware(name: 'admin')]
 class GroupController extends Controller
 {
 

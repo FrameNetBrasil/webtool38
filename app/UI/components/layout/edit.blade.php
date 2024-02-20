@@ -7,8 +7,10 @@
             <div class="nav">
                 {{$nav}}
             </div>
-            <section class="flex-grow-1">
-                {{$main}}
+            <section class="flex-grow-1 main">
+                <div style="height:100%">
+                    {{$main}}
+                </div>
             </section>
         </article>
     </div>

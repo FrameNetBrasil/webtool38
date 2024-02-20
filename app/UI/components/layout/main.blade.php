@@ -18,7 +18,9 @@
                 {{$nav}}
             </div>
             <section class="flex-grow-1">
-                {{$main}}
+                <div class="main">
+                    {{$main}}
+                </div>
             </section>
         </article>
     </div>
