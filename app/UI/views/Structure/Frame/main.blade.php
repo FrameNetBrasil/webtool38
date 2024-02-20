@@ -1,9 +1,17 @@
-<x-layout.page>
-    <x-slot:header>
+<x-layout.main>
+    <x-slot:title>
+        Frames
+    </x-slot:title>
+    <x-slot:actions>
+        <x-button label="List" color="primary" href="/frame"></x-button>
+        <x-button label="New" color="secondary" href="/frame/new"></x-button>
+    </x-slot:actions>
+    <x-slot:edit>
         @if($data->_action == 'edit')
+
             <div class="grid grid-nogutter">
                 <div class="col-8 title">
-                    <span>Frame: {{$data->frame?->name}}</span>
+                    <span>{{$data->frame?->name}}</span>
                 </div>
                 <div class="col-4 text-right description">
                     @foreach ($data->classification as $name => $values)
@@ -15,11 +23,11 @@
                     @endforeach
                 </div>
             </div>
+
             <div class="description">{{$data->frame?->description}}</div>
-        @else
-            <span>Frames</span>
+
         @endif
-    </x-slot:header>
+    </x-slot:edit>
     <x-slot:nav>
         @if($data->_action == 'browse')
             <x-form-search id="frameSlotSearch">
@@ -31,7 +39,7 @@
                 <x-combobox.frame-classification id="search_listBy" placeholder="List by"
                                                  value=""></x-combobox.frame-classification>
                 <x-submit label="Search" hx-post="/frame/grid" hx-target="#mainGrid"></x-submit>
-                <x-button label="New Frame" color="secondary" href="/frame/new"></x-button>
+
             </x-form-search>
         @endif
         @if($data->_action == 'edit')
@@ -102,4 +110,4 @@
             </div>
         @endif
     </x-slot:main>
-</x-layout.page>
+</x-layout.main>

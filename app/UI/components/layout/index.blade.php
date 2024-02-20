@@ -82,7 +82,7 @@
     @vite(['resources/js/app.js'])
 </head>
 <body
-    class="prose"
+    class="prose wt-layout-index"
     hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
 >
 
@@ -92,7 +92,7 @@
 <script src="/scripts/dagre/dist/dagre.js"></script>
 <script src="/scripts/utils/md5.min.js"></script>
 
-<header class="wt-header">
+<header class="header">
     <section id="headerPane">
         <section id="titlePane">
             {!! config("webtool.mainTitle") !!}

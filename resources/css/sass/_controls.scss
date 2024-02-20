@@ -95,11 +95,12 @@
 
 .wt-card {
     .header {
-        padding: 8px;
+        padding: 4px;
         border: 1px solid var(--wt-border-panel-header);
         font-weight: bold;
         color: var(--wt-color-panel-header);
         background-color: var(--wt-bg-card-header);
+        height:auto;
     }
 
     .body {
