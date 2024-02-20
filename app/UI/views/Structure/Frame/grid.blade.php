@@ -64,6 +64,6 @@
 
     .datagrid-body table tbody tr td div.datagrid-cell {
         height: 40px !important;
-        padding-top: 4px;
+        padding-top: var(--wt-mini-unit);
     }
 </style>

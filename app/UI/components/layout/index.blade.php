@@ -93,11 +93,11 @@
 <script src="/scripts/utils/md5.min.js"></script>
 
 <header class="header">
-    <section id="headerPane">
-        <section id="titlePane">
+    <section id="headerPane" class="grid grid-nogutter">
+        <section class="title col-6">
             {!! config("webtool.mainTitle") !!}
         </section>
-        <nav id="userPane">
+        <nav class="col-6 text-right">
             @include('components.userdata')
         </nav>
     </section>

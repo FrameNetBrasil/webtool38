@@ -1,8 +1,8 @@
-<div {{$attributes->class(["panel","panel-htop","wt-container-center-content" => $center])}} >
-    <div class="panel-header">
-        <div class="panel-title">{{$title}}</div>
+<div {{$attributes->class(["wt-form","wt-container-center-content" => $center])}} >
+    <div class="form-header">
+        <div class="form-title">{{$title}}</div>
     </div>
-    <form id="{{$id}}" name="{{$id}}" {{$attributes}} class="wt-form">
+    <form id="{{$id}}" name="{{$id}}" {{$attributes}}>
         <div class="form-toolbar">
             {{$toolbar}}
         </div>

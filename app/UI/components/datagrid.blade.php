@@ -1,6 +1,6 @@
-<div {{$attributes->class(["panel","panel-htop","wt-container-center-content" => $center])}} >
-    <div class="panel-header">
-        <div class="panel-title">{{$title}}{!! $extraTitle !!}</div>
+<div {{$attributes->class(["wt-form","wt-container-center-content" => $center])}} >
+    <div class="form-header">
+        <div class="form-title">{{$title}}{!! $extraTitle !!}</div>
     </div>
     <div class="wt-datagrid"  style="max-height:{{$height}}">
         <table>

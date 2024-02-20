@@ -1,9 +1,9 @@
 <x-dynamic-component component="layout.{{$data->_layout}}">
-    <x-slot:header>
+    <x-slot:edit>
         @if(isset($data->frameElement))
             <div class="grid grid-nogutter">
                 <div class="col-8 title">
-                    <span>FE: {{$data->frameElement?->name}}</span>
+                    <span class="color_frame">{{$data->frameElement?->name}}</span>
                 </div>
                 <div class="col-4 text-right description">
                     <span>[{{$data->frameElement->frame->name}}]</span>
@@ -11,7 +11,7 @@
                 </div>
             </div>
         @endif
-    </x-slot:header>
+    </x-slot:edit>
     <x-slot:nav>
         <div class="options">
             <x-link-button
@@ -44,5 +44,4 @@
         <div id="childEditPane">
         </div>
     </x-slot:main>
-    <x-slot:footer></x-slot:footer>
 </x-dynamic-component>

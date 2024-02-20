@@ -44,7 +44,7 @@ class FEController extends Controller
         $this->data->frameElement = new FrameElement($id);
         $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
         $this->data->_layout = 'page';
-        return $this->render("edit");
+        return $this->render("main");
     }
     #[Get(path: '/fe/{id}/edit')]
     public function edit(string $id)
@@ -53,7 +53,7 @@ class FEController extends Controller
         $this->data->frameElement = new FrameElement($id);
         $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
         $this->data->_layout = 'edit';
-        return $this->render("edit");
+        return $this->render("main");
     }
 
     #[Delete(path: '/fe/{id}')]

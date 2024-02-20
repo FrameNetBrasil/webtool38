@@ -1,12 +1,10 @@
-<x-layout.content>
-    <div class="grid">
-        <div class="col">
-            {{$left}}
-        </div>
-        <div class="col">
-            {{$right}}
-        </div>
+<div class="grid grid-nogutter">
+    <div class="col">
+        {{$left}}
     </div>
-    <div id="childPane">
+    <div class="col">
+        {{$right}}
     </div>
-</x-layout.content>
+</div>
+<div id="childPane">
+</div>

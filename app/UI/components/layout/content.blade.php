@@ -1,4 +1,4 @@
-<div>
+<div class="wt-layout-content">
     {{$slot}}
 </div>
 <script>

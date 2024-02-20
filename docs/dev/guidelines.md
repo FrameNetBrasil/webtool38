@@ -23,6 +23,7 @@
   * Includes scripts, css, fonts, menus, etc.
 * content
   * A <div> for generic content using javascript
+  * It is used when sending HTML fragments (not the whole page)
 * main
   * Base template for "master" content
 * child

@@ -14,7 +14,8 @@ class Datagrid extends Component
     public function __construct(
         public string $id,
         public string $title,
-        public string $height,
+        public string $type  = 'child',
+        public string $height = '',
         public string $header = '',
         public string $extraTitle = '',
         public bool $center = false,
@@ -28,6 +29,9 @@ class Datagrid extends Component
      */
     public function render(): View|Closure|string
     {
+        if ($this->type == 'child') {
+            $this->height = "256px";
+        }
         return view('components.datagrid');
     }
 }
