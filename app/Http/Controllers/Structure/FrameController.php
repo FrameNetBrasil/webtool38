@@ -30,15 +30,13 @@ class FrameController extends Controller
     {
         $this->data->search ??= (object)[];
         $this->data->search->_token = csrf_token();
-        $this->data->_action = 'browse';
-        return $this->render('main');
+        return $this->render('browse');
     }
 
     #[Get(path: '/frame/new')]
     public function new()
     {
-        $this->data->_action = 'new';
-        return $this->render("main");
+        return $this->render("new");
     }
 
     #[Post(path: '/frame')]
@@ -185,13 +183,12 @@ class FrameController extends Controller
         }
     }
 
-    #[Get(path: '/frame/{id}/edit')]
+    #[Get(path: '/frame/{id}')]
     public function edit(string $id)
     {
         $this->data->frame = new Frame($id);
         $this->data->classification = FrameService::getClassification($this->data->frame);
-        $this->data->_action = 'edit';
-        return $this->render("main");
+        return $this->render("edit");
     }
 
     #[Get(path: '/frame/{id}/entries')]
@@ -208,14 +205,14 @@ class FrameController extends Controller
     public function fes(string $id)
     {
         $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.FE.child");
+        return $this->render("Structure.FE.child");
     }
 
     #[Get(path: '/frame/{id}/fes/formNew')]
     public function formNewFE(string $id)
     {
         $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.FE.formNew");
+        return $this->render("Structure.FE.formNew");
     }
 
     #[Get(path: '/frame/{id}/fes/grid')]
@@ -223,21 +220,21 @@ class FrameController extends Controller
     {
         $this->data->idFrame = $id;
         $this->data->fes = FrameService::listFEForGrid($id);
-        return $this->render("Structure.Frame.FE.grid");
+        return $this->render("Structure.FE.grid");
     }
 
     #[Get(path: '/frame/{id}/lus')]
     public function lus(string $id)
     {
         $this->data->frame = new Frame($id);
-        return $this->render("Structure.Frame.LU.child");
+        return $this->render("Structure.LU.child");
     }
 
     #[Get(path: '/frame/{id}/lus/formNew')]
     public function formNewLU(string $id)
     {
         $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.LU.formNew");
+        return $this->render("Structure.LU.formNew");
     }
 
     #[Get(path: '/frame/{id}/lus/grid')]
@@ -246,7 +243,7 @@ class FrameController extends Controller
         $this->data->idFrame = $id;
         $frame = new Frame($id);
         $this->data->lus = $frame->listLU()->asQuery()->getResult();
-        return $this->render("Structure.Frame.LU.grid");
+        return $this->render("Structure.LU.grid");
     }
 
     #[Get(path: '/frame/{id}/classification')]

@@ -75,12 +75,11 @@ body {
 
 .wt-layout-main {
 
-    .card {
-        -moz-border-radius: var(--wt-controls-border-radius);
-        -webkit-border-radius: var(--wt-controls-border-radius);
-        border-radius: var(--wt-controls-border-radius);
-        border: 1px solid var(--wt-grey-8);
-    }
+    -moz-border-radius: var(--wt-controls-border-radius);
+    -webkit-border-radius: var(--wt-controls-border-radius);
+    border-radius: var(--wt-controls-border-radius);
+    border: 1px solid var(--wt-grey-8);
+    box-sizing: border-box;
 
     .header {
         position: relative;
@@ -108,8 +107,8 @@ body {
 
         .description {
             font-size: 0.875rem;
-            height: var(--wt-row-unit);
-            line-height: var(--wt-row-unit);
+            height: var(--wt-row-detail-unit);
+            line-height: var(--wt-row-detail-unit);
             padding-left: var(--wt-mini-unit);
         }
     }
@@ -125,16 +124,24 @@ body {
     }
 
     .main {
+        height: 100%;
 
         .mainGrid {
             height: 100%;
         }
 
         .mainPane {
-            height: 100%;
+            height: calc(100% - 0px);
+            overflow-y: auto;
             padding: var(--wt-unit);
             background-color: var(--wt-bg-panel-header);
+            box-sizing: border-box;
         }
+    }
+    .new {
+        height: calc(100% - 0px);
+        padding: var(--wt-unit);
+        background-color: var(--wt-bg-panel-header);
     }
 
 }

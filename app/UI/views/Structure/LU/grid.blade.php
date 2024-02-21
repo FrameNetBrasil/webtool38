@@ -17,7 +17,7 @@
                 ></div>
             </td>
             <td
-                hx-get="/lu/{{$lu['idLU']}}/edit"
+                hx-get="/lu/{{$lu['idLU']}}"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"
@@ -25,7 +25,7 @@
                 <span>{{$lu['name']}}</span>
             </td>
             <td
-                hx-get="/lu/{{$lu['idLU']}}/edit"
+                hx-get="/lu/{{$lu['idLU']}}"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"

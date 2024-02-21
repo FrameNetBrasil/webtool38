@@ -37,15 +37,15 @@
             onClickRow: (row) => {
                 if (row.type === 'frame') {
                     let idFrame = row.id.substring(1);
-                    window.location.href = `/frame/${idFrame}/edit`;
+                    window.location.href = `/frame/${idFrame}`;
                 }
                 if (row.type === 'feFrame') {
                     let idFE = row.id.substring(1);
-                    window.location.href = `/fe/${idFE}/main`;
+                    window.location.href = `/fe/${idFE}`;
                 }
                 if (row.type === 'luFrame') {
                     let idLU = row.id.substring(1);
-                    window.location.href = `/lu/${idLU}/main`;
+                    window.location.href = `/lu/${idLU}`;
                 }
             },
         });

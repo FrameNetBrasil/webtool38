@@ -55,23 +55,12 @@ class LUController extends Controller
         return LUService::listForEvent();
     }
 
-    #[Get(path: '/lu/{id}/main')]
-    public function main(string $id)
-    {
-        $idLanguage = AppService::getCurrentIdLanguage();
-        $this->data->lu = new LU($id);
-        $this->data->lu->retrieveAssociation("frame", $idLanguage);
-        $this->data->_layout = 'page';
-        return $this->render("edit");
-    }
-
-    #[Get(path: '/lu/{id}/edit')]
+    #[Get(path: '/lu/{id}')]
     public function edit(string $id)
     {
         $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->lu = new LU($id);
         $this->data->lu->retrieveAssociation("frame", $idLanguage);
-        $this->data->_layout = 'edit';
         return $this->render("edit");
     }
 
