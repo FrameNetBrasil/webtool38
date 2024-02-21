@@ -1,12 +1,12 @@
 <x-datagrid
-    id="feRelationGrid"
+    id="gridFERelation"
     title="FE Relations"
-    extraTitle="<span class='color_{{$data->relationEntry}}'>   {{$data->relationName}}</span>"
-    hx-trigger="reload-gridRelationFE from:body"
+    type="child"
+    extraTitle="<span class='color_{{$data->relation->entry}}'>   {{$data->relation->name}}</span>"
+    hx-trigger="reload-gridFERelation from:body"
     hx-target="this"
     hx-swap="outerHTML"
     hx-get="/fes/relations/{{$data->idEntityRelation}}/grid"
-    height="250px"
 >
     <x-slot:header>
         <thead>

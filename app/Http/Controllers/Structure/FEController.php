@@ -15,6 +15,7 @@ use App\Repositories\ViewFrameElement;
 use App\Services\AppService;
 use App\Services\EntryService;
 use App\Services\FrameService;
+use App\Services\RelationService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
@@ -28,6 +29,7 @@ class FEController extends Controller
     {
         $result = [];
         $icon = config('webtool.fe.icon.tree');
+        $coreness = config('webtool.fe.coreness');
         $frame = new Frame($idFrame);
         $fes = $frame->listFE()->asQuery()->getResult();
         $orderedFe = [];
@@ -41,11 +43,13 @@ class FEController extends Controller
         foreach ($orderedFe as $fe) {
             $node = [];
             $node['id'] = 'e' . $fe['idFrameElement'];
+            $node['idFrameElement'] = $fe['idFrameElement'];
             $node['type'] = 'fe';
             $node['name'] = [$fe['name'], $fe['description']];
             $node['idColor'] = $fe['idColor'];
             $node['state'] = 'open';
             $node['iconCls'] = $icon[$fe['coreType']];
+            $node['coreness'] = $coreness[$fe['coreType']];
             $node['children'] = null;
             $result[] = $node;
         }
@@ -146,16 +150,7 @@ class FEController extends Controller
     #[Get(path: '/fe/relations/{idEntityRelation}')]
     public function relations(string $idEntityRelation)
     {
-        $config = config('webtool.relations');
-        $relation = new EntityRelation($idEntityRelation);
         $this->data->idEntityRelation = $idEntityRelation;
-        $this->data->idRelationType = $relation->idRelationType;
-        $this->data->frame = new Frame();
-        $this->data->frame->getByIdEntity($relation->idEntity1);
-        $this->data->relatedFrame = new Frame();
-        $this->data->relatedFrame->getByIdEntity($relation->idEntity2);
-        $this->data->relationName = $config[$relation->entry]['direct'];
-        $this->data->title = $this->data->frame->name . " [" . $this->data->relationName . "] " . $this->data->relatedFrame->name;
         return $this->render("Structure.Relation.feChild");
     }
 
@@ -163,15 +158,18 @@ class FEController extends Controller
     public function relationsFEFormNew(int $idEntityRelation)
     {
         $relation = new EntityRelation($idEntityRelation);
-        $this->data->idEntityRelation = $idEntityRelation;
-        $this->data->idRelationType = $relation->idRelationType;
-        $this->data->frame = new Frame();
-        $this->data->frame->getByIdEntity($relation->idEntity1);
-        $this->data->relatedFrame = new Frame();
-        $this->data->relatedFrame->getByIdEntity($relation->idEntity2);
+        data('idEntityRelation', $idEntityRelation);
+        $frame = new Frame();
+        $frame->getByIdEntity($relation->idEntity1);
+        data('frame', $frame);
+        $relatedFrame = new Frame();
+        $relatedFrame->getByIdEntity($relation->idEntity2);
+        data('relatedFrame', $relatedFrame);
         $config = config('webtool.relations');
-        $this->data->relationName = $config[$relation->entry]['direct'];
-        $this->data->relationEntry = $relation->entry;
+        data('relation', (object)[
+            'name' => $config[$relation->entry]['direct'],
+            'entry' => $relation->entry
+        ]);
         return $this->render("Structure.Relation.feFormNew");
     }
 
@@ -179,16 +177,19 @@ class FEController extends Controller
     public function gridRelationsFE(int $idEntityRelation)
     {
         $relation = new EntityRelation($idEntityRelation);
-        $this->data->idEntityRelation = $idEntityRelation;
-        $this->data->idRelationType = $relation->idRelationType;
-        $this->data->frame = new Frame();
-        $this->data->frame->getByIdEntity($relation->idEntity1);
-        $this->data->relatedFrame = new Frame();
-        $this->data->relatedFrame->getByIdEntity($relation->idEntity2);
+        data('idEntityRelation', $idEntityRelation);
+        $frame = new Frame();
+        $frame->getByIdEntity($relation->idEntity1);
+        data('frame', $frame);
+        $relatedFrame = new Frame();
+        $relatedFrame->getByIdEntity($relation->idEntity2);
+        data('relatedFrame', $relatedFrame);
         $config = config('webtool.relations');
-        $this->data->relationName = $config[$relation->entry]['direct'];
-        $this->data->relationEntry = $relation->entry;
-        $this->data->relations = FrameService::listRelationsFE($idEntityRelation);
+        data('relation', (object)[
+            'name' => $config[$relation->entry]['direct'],
+            'entry' => $relation->entry
+        ]);
+        data('relations', RelationService::listRelationsFE($idEntityRelation));
         return $this->render("Structure.Relation.feGrid");
     }
 

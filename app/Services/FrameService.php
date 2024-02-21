@@ -17,30 +17,6 @@ use Orkester\Manager;
 
 class FrameService
 {
-    public static function listFEForGrid(int $idFrame)
-    {
-        $result = [];
-        $frame = new Frame($idFrame);
-        $icon = config('webtool.fe.icon.tree');
-        $coreness = config('webtool.fe.coreness');
-        $fes = $frame->listFE()->asQuery()->getResult();
-        $orderedFe = [];
-        foreach ($icon as $i => $j) {
-            foreach ($fes as $fe) {
-                if ($fe['coreType'] == $i) {
-                    $orderedFe[] = $fe;
-                }
-            }
-        }
-        foreach ($orderedFe as $fe) {
-            $node = $fe;
-            $node['coreness'] = $coreness[$fe['coreType']];
-            $node['state'] = 'open';
-            $node['iconCls'] = $icon[$fe['coreType']];
-            $result[] = $node;
-        }
-        return $result;
-    }
 
     public static function listRelations(int $idFrame)
     {
@@ -82,25 +58,7 @@ class FrameService
         return $frame->listLU()->asQuery()->getResult();
     }
 
-    public static function listRelationsFE(int $idEntityRelationBase)
-    {
-        $frame = new Frame();
-        $relations = $frame->listFEDirectRelations($idEntityRelationBase);
-        $orderedFe = [];
-        $icon = config('webtool.fe.icon.tree');
-        $config = config('webtool.relations');
-        foreach ($icon as $i => $j) {
-            foreach ($relations as $relation) {
-                if ($relation['feCoreType'] == $i) {
-                    $relation['relationName'] = $config[$relation['entry']]['direct'];
-                    $relation['feIconCls'] = $icon[$relation['feCoreType']];
-                    $relation['relatedFEIconCls'] = $icon[$relation['relatedFECoreType']];
-                    $orderedFe[] = $relation;
-                }
-            }
-        }
-        return $orderedFe;
-    }
+
 
 
     public static function newRelation(object $data)

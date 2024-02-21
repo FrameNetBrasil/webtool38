@@ -55,15 +55,6 @@ class Base
     {
         $idLanguage = AppService::getCurrentIdLanguage();
         $criteria->where("idLanguage", "=", $idLanguage);
-//        if ($association == '') {
-//            $associationCriteria = $criteria->getAssociation('entries');
-//            $alias = ($associationCriteria ? $associationCriteria->getAlias() : '');
-//            $associationName = ($alias == '' ? 'entries' : $alias);
-//            $criteria->where("{$associationName}.idLanguage = {$idLanguage}");
-//        } else {
-//            $associationName = (substr($association, -1) == '.') ? $association : "{$association}.entries.";
-//            $criteria->where("{$associationName}idLanguage = {$idLanguage}");
-//        }
     }
 
     static public function relation($criteria, $className1, $className2, $relationEntry)

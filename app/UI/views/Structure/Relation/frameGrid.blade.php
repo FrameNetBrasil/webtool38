@@ -1,8 +1,8 @@
 <x-datagrid
-    id="gridRelation"
+    id="gridFrameRelation"
     title="Frame Relations"
     type="child"
-    hx-trigger="reload-gridRelation from:body"
+    hx-trigger="reload-gridFrameRelation from:body"
     hx-target="this"
     hx-swap="outerHTML"
     hx-get="/frame/{{$data->idFrame}}/relations/grid"
@@ -13,7 +13,7 @@
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
-                    hx-delete="/relation/{{$relation['idEntityRelation']}}"
+                    hx-delete="/relation/frame/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
             <td

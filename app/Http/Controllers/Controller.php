@@ -34,6 +34,7 @@ class Controller extends BaseController
 
     public function render(string $view, ?string $fragment = null)
     {
+        $this->data = Manager::getData();
         if (str_contains($view, '.')) {
             $viewName = $view;
         } else {

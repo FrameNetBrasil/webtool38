@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\FrameModel;
 use App\Services\AppService;
+use App\Services\RelationService;
 use Maestro\Persistence\Repository;
 
 class Frame extends Repository
@@ -43,6 +44,7 @@ class Frame extends Repository
             ->where('idLanguage', '=', AppService::getCurrentIdLanguage());
         $this->retrieveFromCriteria($criteria);
     }
+
     public function create($data)
     {
         $this->beginTransaction();
@@ -139,7 +141,7 @@ class Frame extends Repository
 
     public function listForSelect($name = '')
     {
-        $criteria = $this->getCriteria()->select(['idFrame','entries.name'])->orderBy('entries.name');
+        $criteria = $this->getCriteria()->select(['idFrame', 'entries.name'])->orderBy('entries.name');
         Base::entryLanguage($criteria);
         $name = (strlen($name) > 1) ? $name : 'none';
         $criteria->where("upper(entries.name)", "startswith", strtoupper($name));
@@ -161,9 +163,9 @@ class Frame extends Repository
     {
         $lu = new LU();
         $criteria = $lu->getCriteria()
-            ->select(['idLU', 'name','senseDescription'])
-            ->where("idFrame","=",$this->idFrame)
-            ->where("lemma.idLanguage","=",AppService::getCurrentIdLanguage())
+            ->select(['idLU', 'name', 'senseDescription'])
+            ->where("idFrame", "=", $this->idFrame)
+            ->where("lemma.idLanguage", "=", AppService::getCurrentIdLanguage())
             ->orderBy('name');
         return $criteria;
     }
@@ -200,7 +202,7 @@ class Frame extends Repository
             AND (fe1.idFrame     = {$idFrame})
             AND (fe2.idFrame     = {$idFrame})
             AND (e1.idLanguage   = {$idLanguage})
-            AND (e2.idLanguage   = {$idLanguage})            
+            AND (e2.idLanguage   = {$idLanguage})
 HERE;
 //        $result = $this->getDb()->getQueryCommand($cmd)->getResult();
         $result = $this->query($cmd);
@@ -243,7 +245,7 @@ HERE;
                 ON (Frame.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -263,7 +265,7 @@ HERE;
                 'rel_using'))
            AND (entry_relatedFrame.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_relatedFrame.name
-            
+
 HERE;
         //$result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idFrame');
         $result = $this->query($cmd);
@@ -281,7 +283,7 @@ HERE;
                 ON (Frame.idEntity = entity2.idEntity)
             INNER JOIN EntityRelation
                 ON (entity2.idEntity = EntityRelation.idEntity2)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity1
                 ON (EntityRelation.idEntity1 = entity1.idEntity)
@@ -301,7 +303,7 @@ HERE;
                 'rel_using'))
            AND (entry_relatedFrame.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_relatedFrame.name
-            
+
 HERE;
         //$result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idFrame');
         $result = $this->query($cmd);
@@ -356,24 +358,23 @@ HERE;
 
     public function delete()
     {
-        $transaction = $this->beginTransaction();
+        $this->beginTransaction();
         try {
-            $idEntity = $this->getIdEntity();
+            $idEntity = $this->idEntity;
             // remove entry
             $entry = new Entry();
-            $entry->deleteEntry($this->getEntry());
+            $entry->deleteByIdEntity($idEntity);
             // remove frame-relations
-            Base::deleteAllEntityRelation($idEntity);
-            // Base::entityTimelineDelete($this->getIdEntity());
+            RelationService::deleteAll($idEntity);
             // remove this frame
             Timeline::addTimeline("frame", $this->getId(), "D");
             parent::delete();
             // remove entity
             $entity = new Entity($idEntity);
             $entity->delete();
-            $transaction->commit();
+            $this->commit();
         } catch (\Exception $e) {
-            $transaction->rollback();
+            $this->rollback();
             throw new \Exception($e->getMessage());
         }
     }
@@ -455,11 +456,11 @@ HERE;
                 ON (Frame.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
-            INNER JOIN SemanticType 
+            INNER JOIN SemanticType
                 ON (entity2.idEntity = semanticType.idEntity)
             INNER JOIN Entry entry_semanticType
                 ON (semanticType.idEntity = entry_semanticType.idEntity)
@@ -470,7 +471,7 @@ HERE;
                 'rel_framal_cluster'))
            AND (entry_semanticType.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_semanticType.name
-            
+
 HERE;
 //        $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name');
         $result = collect($this->query($cmd))->groupBy('entry')->all();
@@ -482,15 +483,15 @@ HERE;
         $idLanguage = AppService::getCurrentIdLanguage();
         $cmd = <<<HERE
 
-        SELECT EntityRelation.idEntityRelation, RelationType.entry, 
+        SELECT EntityRelation.idEntityRelation, RelationType.entry,
                entry_fe.name feName, fe.coreType feCoreType, fe.idFrameElement feIdFrameElement, fe.idColor feIdColor, fe.idEntity feIdEntity,
-               entry_relatedFE.name relatedFEName, relatedFE.coreType relatedFECoreType, relatedFE.idFrameElement relatedFEIdFrameElement, relatedFE.idColor relatedFEIdColor, relatedFE.idEntity relatedFEIdEntity 
+               entry_relatedFE.name relatedFEName, relatedFE.coreType relatedFECoreType, relatedFE.idFrameElement relatedFEIdFrameElement, relatedFE.idColor relatedFEIdColor, relatedFE.idEntity relatedFEIdEntity
         FROM FrameElement fe
             INNER JOIN Entity entity1
                 ON (fe.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -513,7 +514,7 @@ HERE;
             AND (entry_fe.idLanguage = {$idLanguage} )
             AND (entry_relatedFE.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_fe.name
-            
+
 HERE;
         $result = $this->query($cmd);
         return $result;
@@ -525,15 +526,15 @@ HERE;
         $idLanguage = AppService::getCurrentIdLanguage();
         $cmd = <<<HERE
 
-        SELECT EntityRelation.idEntityRelation, RelationType.entry, 
+        SELECT EntityRelation.idEntityRelation, RelationType.entry,
                entry_fe.name feName, fe.coreType feCoreType, fe.idFrameElement feIdFrameElement, fe.idColor feIdColor,
-               entry_relatedFE.name relatedFEName, relatedFE.coreType relatedFECoreType, relatedFE.idFrameElement relatedFEIdFrameElement, relatedFE.idColor relatedFEIdColor 
+               entry_relatedFE.name relatedFEName, relatedFE.coreType relatedFECoreType, relatedFE.idFrameElement relatedFEIdFrameElement, relatedFE.idColor relatedFEIdColor
         FROM FrameElement fe
             INNER JOIN Entity entity1
                 ON (fe.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -557,7 +558,7 @@ HERE;
             AND (entry_fe.idLanguage = {$idLanguage} )
             AND (entry_relatedFE.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_fe.name
-            
+
 HERE;
         $result = $this->query($cmd);
         return $result;

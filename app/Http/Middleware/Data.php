@@ -15,6 +15,12 @@ class Data
     {
 //        ddump('=================== in data middleware');
         $data = $request->all();
+        //debug($data);
+        if (isset($data['search_fe'])) {
+            if (is_null($data['search_fe'])) {
+                debug("fe is null");
+            }
+        }
         foreach ($data as $id => $value) {
             if (str_contains($id, '_') && ($id != '_token')) {
                 $var = explode('_', $id);
@@ -23,12 +29,18 @@ class Data
                 if (isset($var[2])) {
                     $extra = $var[2];
                     $data[$var[0]]->$attr ??= (object)[];
-                    $data[$var[0]]->$attr->$extra = $value;
+                    $data[$var[0]]->$attr->$extra = $value ?? '';
                 } else {
-                    $data[$var[0]]->$attr = $value;
+                    $data[$var[0]]->$attr = $value ?? '';
                 }
             }
         }
+        if (isset($data->search->fe)) {
+            if (is_null($data->search->fe)) {
+                debug("search->fe is null");
+            }
+        }
+//        debug($data);
         Manager::setData((object)$data);
         return $next($request);
     }

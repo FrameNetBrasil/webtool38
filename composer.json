@@ -42,6 +42,7 @@
     "laravel/tinker": "^2.8",
     "mauricius/laravel-htmx": "*",
     "rdx/laravelcollective-annotations": "^8.2",
+    "spatie/laravel-data": "*",
     "textalk/websocket": "^1.5",
     "vlucas/phpdotenv": "^5.4"
   },

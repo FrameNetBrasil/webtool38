@@ -11,6 +11,6 @@
         @if($placeholder != '')
             prompt: '{{$placeholder}}',
         @endif
-        url: "/report/frames/listForSelect"
+        url: "/report/frame/listForSelect"
     });
 @endpush

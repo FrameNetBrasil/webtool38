@@ -24,7 +24,7 @@
                     style="min-width:120px"
                 >
                     <span class="{{$fe['iconCls']}}"></span>
-                    <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
+                    <span class="color_{{$fe['idColor']}}">{{$fe['name'][0]}}</span>
                 </td>
                 <td
                     hx-get="/fe/{{$fe['idFrameElement']}}/edit"
@@ -32,7 +32,7 @@
                     hx-swap="innerHTML"
                     class="cursor-pointer"
                 >
-                    {{$fe['description']}}
+                    {{$fe['name'][1]}}
                 </td>
             </tr>
         @endforeach

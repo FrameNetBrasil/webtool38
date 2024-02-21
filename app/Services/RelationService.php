@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Data\RelationData;
 use App\Http\Controllers\Controller;
 use App\Repositories\EntityRelation;
 use App\Repositories\Frame;
@@ -13,7 +14,6 @@ class RelationService extends Controller
     public function delete(int $id)
     {
         try {
-            ddump("delete {$id}");
             $relation = new EntityRelation($id);
             $relation->delete();
             return $this->renderNotify("success", "Relation deleted.");
@@ -22,118 +22,36 @@ class RelationService extends Controller
         }
     }
 
-    /*
- * Graph
- */
-
-    public static function listFrameRelationsForGraph(array $idArray, array $idRelationType)
+    public static function newRelation(RelationData $data)
     {
-        $nodes = [];
-        $links = [];
-        $relation = new ViewRelation();
-        foreach ($idArray as $idEntity) {
-            $partial = $relation->listForFrameGraph($idEntity);
-            foreach ($partial as $r) {
-                if (in_array($r['idRelationType'], $idRelationType)) {
-                    $nodes[$r['idEntity1']] = [
-                        'type' => 'frame',
-                        'name' => $r['frame1Name']
-                    ];
-                    $nodes[$r['idEntity2']] = [
-                        'type' => 'frame',
-                        'name' => $r['frame2Name']
-                    ];
-                    $links[$r['idEntity1']][$r['idEntity2']] = [
-                        'type' => 'ff',
-                        'idEntityRelation' => $r['idEntityRelation'],
-                        'relationEntry' => $r['entry'],
-                    ];
-                }
-            }
-        }
-        return [
-            'nodes' => $nodes,
-            'links' => $links
-        ];
+        $relation = new EntityRelation();
+        $relation->saveData($data->toArray());
     }
 
-    public static function listFrameFERelationsForGraph(int $idEntityRelation)
+    static public function deleteAll(int $idEntity)
     {
-        $nodes = [];
-        $links = [];
-        $baseRelation = new ViewRelation($idEntityRelation);
-        $icon = config('webtool.fe.icon.grapher');
+        $er = new EntityRelation();
+        $er->removeAllFromEntity($idEntity);
+    }
+
+    public static function listRelationsFE(int $idEntityRelationBase)
+    {
         $frame = new Frame();
-        $relations = $frame->listFEDirectRelations($idEntityRelation);
-        foreach($relations as $relation) {
-            $nodes[$relation['feIdEntity']] = [
-                'type' => 'fe',
-                'name' => $relation['feName'],
-                'icon' => $icon[$relation['feCoreType']],
-                'idColor' => $relation['feIdColor']
-            ];
-            $nodes[$relation['relatedFEIdEntity']] = [
-                'type' => 'fe',
-                'name' => $relation['relatedFEName'],
-                'icon' => $icon[$relation['relatedFECoreType']],
-                'idColor' => $relation['relatedFEIdColor']
-            ];
-            $links[$baseRelation->idEntity1][$relation['feIdEntity']] = [
-                'type' => 'ffe',
-                'idEntityRelation' => $idEntityRelation,
-                'relationEntry' => 'rel_has_element',
-            ];
-            $links[$relation['relatedFEIdEntity']][$baseRelation->idEntity2] = [
-                'type' => 'ffe',
-                'idEntityRelation' => $idEntityRelation,
-                'relationEntry' => 'rel_has_element',
-            ];
-            $links[$relation['feIdEntity']][$relation['relatedFEIdEntity']] = [
-                'type' => 'fefe',
-                'idEntityRelation' => $relation['idEntityRelation'],
-                'relationEntry' => $relation['entry'],
-            ];
-        }
-        return [
-            'nodes' => $nodes,
-            'links' => $links
-        ];
-    }
-
-    public static function listDomainForGraph(int $idSemanticType, array $idRelationType)
-    {
-        $nodes = [];
-        $links = [];
-        if ($idSemanticType > 0) {
-            $semanticType = new SemanticType($idSemanticType);
-            $frames = Frame::listByFrameDomain($semanticType->idEntity)->getResult();
-            $relation = new ViewRelation();
-            foreach ($frames as $frame) {
-                $idEntity = $frame['idEntity'];
-                $partial = $relation->listForFrameGraph($idEntity);
-                foreach ($partial as $r) {
-                    if (in_array($r['idRelationType'], $idRelationType)) {
-                        $nodes[$r['idEntity1']] = [
-                            'type' => 'frame',
-                            'name' => $r['frame1Name']
-                        ];
-                        $nodes[$r['idEntity2']] = [
-                            'type' => 'frame',
-                            'name' => $r['frame2Name']
-                        ];
-                        $links[$r['idEntity1']][$r['idEntity2']] = [
-                            'type' => 'ff',
-                            'idEntityRelation' => $r['idEntityRelation'],
-                            'relationEntry' => $r['entry'],
-                        ];
-                    }
+        $relations = $frame->listFEDirectRelations($idEntityRelationBase);
+        $orderedFe = [];
+        $icon = config('webtool.fe.icon.tree');
+        $config = config('webtool.relations');
+        foreach ($icon as $i => $j) {
+            foreach ($relations as $relation) {
+                if ($relation['feCoreType'] == $i) {
+                    $relation['relationName'] = $config[$relation['entry']]['direct'];
+                    $relation['feIconCls'] = $icon[$relation['feCoreType']];
+                    $relation['relatedFEIconCls'] = $icon[$relation['relatedFECoreType']];
+                    $orderedFe[] = $relation;
                 }
             }
         }
-        return [
-            'nodes' => $nodes,
-            'links' => $links
-        ];
+        return $orderedFe;
     }
 
 }

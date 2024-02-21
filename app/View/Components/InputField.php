@@ -17,7 +17,9 @@ class InputField extends Component
         public string $placeholder = ''
     )
     {
-        //
+        if (is_null($this->value)) {
+            $this->value = '';
+        }
     }
 
     /**
