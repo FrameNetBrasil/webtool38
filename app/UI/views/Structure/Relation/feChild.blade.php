@@ -5,7 +5,7 @@
                 hx-trigger="load"
                 hx-target="this"
                 hx-swap="outerHTML"
-                hx-get="/frames/{{$data->frame->idFrame}}/relations/formNew"
+                hx-get="/fe/relations/{{$data->idEntityRelation}}/formNew"
             ></div>
         </x-slot:left>
         <x-slot:right>
@@ -13,7 +13,7 @@
                 hx-trigger="load"
                 hx-target="this"
                 hx-swap="outerHTML"
-                hx-get="/frames/{{$data->frame->idFrame}}/relations/grid"
+                hx-get="/fe/relations/{{$data->idEntityRelation}}/grid"
             ></div>
         </x-slot:right>
     </x-layout.child>

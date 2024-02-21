@@ -1,11 +1,11 @@
 <x-datagrid
-    id="framesGridRelations"
+    id="gridRelation"
     title="Frame Relations"
+    type="child"
     hx-trigger="reload-gridRelation from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/frames/{{$data->idFrame}}/relations/grid"
-    height="250px"
+    hx-get="/frame/{{$data->idFrame}}/relations/grid"
 >
     @foreach($data->relations as $relation)
         <tr class="">
@@ -13,11 +13,11 @@
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
-                    hx-delete="/frames/relations/{{$relation['idEntityRelation']}}"
+                    hx-delete="/relation/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
             <td
-                hx-get="/fes/relations/{{$relation['idEntityRelation']}}"
+                hx-get="/fe/relations/{{$relation['idEntityRelation']}}"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"

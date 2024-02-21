@@ -28,9 +28,29 @@ class FrameController extends Controller
     #[Get(path: '/frame')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
+        $this->data->search ??= session('searchFrame') ?? (object)[
+            'frame' => '',
+            'fe' => '',
+            'lu' => '',
+            'listBy' => '',
+        ];
         $this->data->search->_token = csrf_token();
+        debug($this->data);
         return $this->render('browse');
+    }
+
+    #[Post(path: '/frame/grid')]
+    public function grid()
+    {
+        $search = (object)[
+            'frame' => $this->data->search->frame ?? '',
+            'fe' => $this->data->search->fe ?? '',
+            'lu' => $this->data->search->lu ?? '',
+            'listBy' => $this->data->search->listBy ?? '',
+        ];
+        session(['searchFrame' => $search]);
+        $this->data->search->_token = csrf_token();
+        return $this->render("grid");
     }
 
     #[Get(path: '/frame/new')]
@@ -52,25 +72,13 @@ class FrameController extends Controller
         }
     }
 
-    #[Post(path: '/frame/grid')]
-    public function grid()
-    {
-        $this->data->search->_token = csrf_token();
-        $response = $this->render("grid");
-        $query = [
-            'search_frame' => $this->data->search->frame,
-            'search_fe' => $this->data->search->fe,
-            'search_lu' => $this->data->search->lu,
-            'search_listBy' => $this->data->search->listBy,
-        ];
-        $response->header('HX-Replace-Url', '/frame?' . http_build_query($query));
-        return $response;
-    }
-
     #[Get(path: '/frame/listForSelect')]
     public function listForSelect()
     {
-        return FrameService::listForSelect();
+        $data = Manager::getData();
+        $q = $data->q ?? '';
+        $frame = new Frame();
+        return $frame->listForSelect($q)->getResult();
     }
 
     #[Post(path: '/frame/listForTree')]
@@ -79,45 +87,12 @@ class FrameController extends Controller
         $data = Manager::getData();
         debug($data);
         $result = [];
-        $idLanguage = AppService::getCurrentIdLanguage();
         $id = $data->id ?? '';
         if ($id != '') {
             $idFrame = substr($id, 1);
-            $icon = config('webtool.fe.icon.tree');
-            $frame = new Frame($idFrame);
-            $fes = $frame->listFE()->asQuery()->getResult();
-            $orderedFe = [];
-            foreach ($icon as $i => $j) {
-                foreach ($fes as $fe) {
-                    if ($fe['coreType'] == $i) {
-                        $orderedFe[] = $fe;
-                    }
-                }
-            }
-            foreach ($orderedFe as $fe) {
-                $node = [];
-                $node['id'] = 'e' . $fe['idFrameElement'];
-                $node['type'] = 'fe';
-                $node['name'] = [$fe['name'], $fe['description']];
-                $node['idColor'] = $fe['idColor'];
-                $node['state'] = 'open';
-                $node['iconCls'] = $icon[$fe['coreType']];
-                $node['children'] = null;
-                $result[] = $node;
-            }
-            $lu = new ViewLU();
-            $lus = $lu->listByFrame($idFrame, $idLanguage)->asQuery()->getResult();
-            foreach ($lus as $lu) {
-                $node = [];
-                $node['id'] = 'l' . $lu['idLU'];
-                $node['type'] = 'lu';
-                $node['name'] = [$lu['name'], $lu['senseDescription']];;
-                $node['state'] = 'open';
-                $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
-                $node['children'] = null;
-                $result[] = $node;
-            }
-            return $result;
+            $resultFE = FEController::listForTreeByFrame($idFrame);
+            $resultLU = LUController::listForTreeByFrame($idFrame);
+            return array_merge($resultFE, $resultLU);
         } else {
             $filter = $data;
             if (!(($filter->fe ?? false) || ($filter->lu ?? false))) {
@@ -133,39 +108,14 @@ class FrameController extends Controller
                     $node['children'] = [];
                     $result[] = $node;
                 }
+                $icon = 'material-icons-outlined wt-tree-icon wt-icon-frame';
             } else {
                 if ($filter->fe ?? false) {
-                    $icon = config('webtool.fe.icon.tree');
-                    $fe = new ViewFrameElement();
-                    $fes = $fe->listByFilter($filter)->asQuery()->getResult();
-                    foreach ($fes as $row) {
-                        $node = [];
-                        $node['id'] = 'e' . $row['idFrameElement'];
-                        $node['type'] = 'feFrame';
-                        $node['name'] = [$row['name'], $row['description'], $row['frameName']];
-                        $node['idColor'] = $row['idColor'];
-                        $node['state'] = 'closed';
-                        $node['iconCls'] = $icon[$row['coreType']];
-                        $node['children'] = [];
-                        $result[] = $node;
-                    }
+                    $result = FEController::listForTreeByName($filter->fe);
+                    $icon = "material-icons wt-tree-icon wt-icon-fe-core";
                 } else if ($filter->lu ?? false) {
-                    $lu = new ViewLU();
-                    $lus = $lu->listByFilter($filter)->asQuery()->getResult();
-                    foreach ($lus as $i => $row) {
-                        if ($i == 0) {
-                            debug($row);
-                        }
-
-                        $node = [];
-                        $node['id'] = 'l' . $row['idLU'];
-                        $node['type'] = 'luFrame';
-                        $node['name'] = [$row['name'], $row['senseDescription'], $row['frameName']];
-                        $node['state'] = 'closed';
-                        $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
-                        $node['children'] = [];
-                        $result[] = $node;
-                    }
+                    $result = LUController::listForTreeByName($filter->lu);
+                    $icon = 'material-icons-outlined wt-tree-icon wt-icon-lu';
                 }
             }
             $total = count($result);
@@ -176,7 +126,7 @@ class FrameController extends Controller
                     [
                         'type' => 'frame',
                         'name' => ["{$total} record(s)", ''],
-                        'iconCls' => 'material-icons-outlined wt-tree-icon wt-icon-frame'
+                        'iconCls' => $icon
                     ]
                 ]
             ];
@@ -184,6 +134,7 @@ class FrameController extends Controller
     }
 
     #[Get(path: '/frame/{id}')]
+    #[Get(path: '/frame/{id}/main')]
     public function edit(string $id)
     {
         $this->data->frame = new Frame($id);
@@ -256,14 +207,14 @@ class FrameController extends Controller
     {
         $this->data->idFrame = $id;
         $this->data->frame = new Frame($id);
-        return $this->render("relations");
+        return $this->render("Structure.Relation.frameChild");
     }
 
     #[Get(path: '/frame/{id}/relations/formNew')]
     public function formNewRelation(string $id)
     {
         $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.Relation.formNew");
+        return $this->render("Structure.Relation.frameFormNew");
     }
 
 
@@ -272,7 +223,7 @@ class FrameController extends Controller
     {
         $this->data->idFrame = $id;
         $this->data->relations = FrameService::listRelations($id);
-        return $this->render("Structure.Frame.Relation.grid");
+        return $this->render("Structure.Relation.frameGrid");
     }
 
     #[Post(path: '/frame/{id}/relations')]

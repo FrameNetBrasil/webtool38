@@ -11,6 +11,7 @@ use App\Repositories\FrameElement;
 use App\Repositories\LU;
 use App\Repositories\Qualia;
 use App\Repositories\ViewConstraint;
+use App\Repositories\ViewFrameElement;
 use App\Services\AppService;
 use App\Services\EntryService;
 use App\Services\FrameService;
@@ -23,6 +24,56 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 #[Middleware(name: 'auth')]
 class FEController extends Controller
 {
+    public static function listForTreeByFrame(int $idFrame)
+    {
+        $result = [];
+        $icon = config('webtool.fe.icon.tree');
+        $frame = new Frame($idFrame);
+        $fes = $frame->listFE()->asQuery()->getResult();
+        $orderedFe = [];
+        foreach ($icon as $i => $j) {
+            foreach ($fes as $fe) {
+                if ($fe['coreType'] == $i) {
+                    $orderedFe[] = $fe;
+                }
+            }
+        }
+        foreach ($orderedFe as $fe) {
+            $node = [];
+            $node['id'] = 'e' . $fe['idFrameElement'];
+            $node['type'] = 'fe';
+            $node['name'] = [$fe['name'], $fe['description']];
+            $node['idColor'] = $fe['idColor'];
+            $node['state'] = 'open';
+            $node['iconCls'] = $icon[$fe['coreType']];
+            $node['children'] = null;
+            $result[] = $node;
+        }
+        return $result;
+    }
+
+    public static function listForTreeByName(string $name)
+    {
+        $result = [];
+        $filter = (object)[
+            'fe' => $name
+        ];
+        $icon = config('webtool.fe.icon.tree');
+        $fe = new ViewFrameElement();
+        $fes = $fe->listByFilter($filter)->asQuery()->getResult();
+        foreach ($fes as $row) {
+            $node = [];
+            $node['id'] = 'e' . $row['idFrameElement'];
+            $node['type'] = 'feFrame';
+            $node['name'] = [$row['name'], $row['description'], $row['frameName']];
+            $node['idColor'] = $row['idColor'];
+            $node['state'] = 'closed';
+            $node['iconCls'] = $icon[$row['coreType']];
+            $node['children'] = [];
+            $result[] = $node;
+        }
+        return $result;
+    }
 
     #[Post(path: '/fe')]
     public function newFE()
@@ -37,24 +88,22 @@ class FEController extends Controller
         }
     }
 
-    #[Get(path: '/fe/{id}/main')]
-    public function main(string $id)
-    {
-        $idLanguage = AppService::getCurrentIdLanguage();
-        $this->data->frameElement = new FrameElement($id);
-        $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
-        $this->data->_layout = 'page';
-        return $this->render("main");
-    }
     #[Get(path: '/fe/{id}/edit')]
     public function edit(string $id)
     {
         $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->frameElement = new FrameElement($id);
         $this->data->frameElement->retrieveAssociation("frame", $idLanguage);
-        $this->data->_layout = 'edit';
-        return $this->render("main");
+        return $this->render("edit");
     }
+
+    #[Get(path: '/fe/{id}/main')]
+    public function main(string $id)
+    {
+        $this->data->_layout = 'main';
+        return $this->edit($id);
+    }
+
 
     #[Delete(path: '/fe/{id}')]
     public function delete(string $id)
@@ -107,7 +156,7 @@ class FEController extends Controller
         $this->data->relatedFrame->getByIdEntity($relation->idEntity2);
         $this->data->relationName = $config[$relation->entry]['direct'];
         $this->data->title = $this->data->frame->name . " [" . $this->data->relationName . "] " . $this->data->relatedFrame->name;
-        return $this->render("relations");
+        return $this->render("Structure.Relation.feChild");
     }
 
     #[Get(path: '/fe/relations/{idEntityRelation}/formNew')]
@@ -123,7 +172,7 @@ class FEController extends Controller
         $config = config('webtool.relations');
         $this->data->relationName = $config[$relation->entry]['direct'];
         $this->data->relationEntry = $relation->entry;
-        return $this->render("Structure.FE.Relation.formNew");
+        return $this->render("Structure.Relation.feFormNew");
     }
 
     #[Get(path: '/fe/relations/{idEntityRelation}/grid')]
@@ -140,7 +189,7 @@ class FEController extends Controller
         $this->data->relationName = $config[$relation->entry]['direct'];
         $this->data->relationEntry = $relation->entry;
         $this->data->relations = FrameService::listRelationsFE($idEntityRelation);
-        return $this->render("Structure.FE.Relation.grid");
+        return $this->render("Structure.Relation.feGrid");
     }
 
     #[Post(path: '/fe/{idEntityRelation}/relations')]

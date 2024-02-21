@@ -11,6 +11,7 @@ use App\Repositories\FrameElement;
 use App\Repositories\LU;
 use App\Repositories\Qualia;
 use App\Repositories\ViewConstraint;
+use App\Repositories\ViewLU;
 use App\Services\AppService;
 use App\Services\EntryService;
 use App\Services\FrameService;
@@ -25,6 +26,46 @@ use Orkester\Manager;
 #[Middleware(name: 'auth')]
 class LUController extends Controller
 {
+
+    public static function listForTreeByFrame(int $idFrame)
+    {
+        $result = [];
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $lu = new ViewLU();
+        $lus = $lu->listByFrame($idFrame, $idLanguage)->asQuery()->getResult();
+        foreach ($lus as $lu) {
+            $node = [];
+            $node['id'] = 'l' . $lu['idLU'];
+            $node['type'] = 'lu';
+            $node['name'] = [$lu['name'], $lu['senseDescription']];;
+            $node['state'] = 'open';
+            $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
+            $node['children'] = null;
+            $result[] = $node;
+        }
+        return $result;
+    }
+
+    public static function listForTreeByName(string $name)
+    {
+        $result = [];
+        $filter = (object)[
+            'lu' => $name
+        ];
+        $lu = new ViewLU();
+        $lus = $lu->listByFilter($filter)->asQuery()->getResult();
+        foreach ($lus as $i => $row) {
+            $node = [];
+            $node['id'] = 'l' . $row['idLU'];
+            $node['type'] = 'luFrame';
+            $node['name'] = [$row['name'], $row['senseDescription'], $row['frameName']];
+            $node['state'] = 'closed';
+            $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
+            $node['children'] = [];
+            $result[] = $node;
+        }
+        return $result;
+    }
 
     #[Post(path: '/lu')]
     public function newLU()
@@ -55,7 +96,7 @@ class LUController extends Controller
         return LUService::listForEvent();
     }
 
-    #[Get(path: '/lu/{id}')]
+    #[Get(path: '/lu/{id}/edit')]
     public function edit(string $id)
     {
         $idLanguage = AppService::getCurrentIdLanguage();
@@ -64,6 +105,12 @@ class LUController extends Controller
         return $this->render("edit");
     }
 
+    #[Get(path: '/lu/{id}/main')]
+    public function main(string $id)
+    {
+        $this->data->_layout = 'main';
+        return $this->edit($id);
+    }
     #[Delete(path: '/lu/{id}')]
     public function delete(string $id)
     {
@@ -81,6 +128,7 @@ class LUController extends Controller
     public function formEdit(string $id)
     {
         $this->data->lu = new LU($id);
+        debug($this->data);
         return $this->render("formEdit");
     }
 

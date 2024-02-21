@@ -2,13 +2,13 @@
 @section('content')
     <x-layout.edit>
         <x-slot:edit>
-            <div class="grid grid-nogutter">
+            <div class="grid grid-nogutter editHeader">
                 <div class="col-8 title">
-                    <span>LU: {{$data->lu?->name}}</span>
+                    <span class="color_lexicon">{{$data->lu?->name}}</span>
                 </div>
                 <div class="col-4 text-right description">
-                    <span>[{{$data->lu->frame->name}}]</span>
-                    <span>[#{{$data->lu->idLU}}]</span>
+                    <x-tag label="{{$data->lu->frame->name}}"></x-tag>
+                    <x-tag label="#{{$data->lu->idLU}}"></x-tag>
                 </div>
             </div>
         </x-slot:edit>

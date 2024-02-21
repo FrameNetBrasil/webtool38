@@ -9,7 +9,7 @@
             <x-combobox.frame id="new_idFrameRelated" label="Related Frame"></x-combobox.frame>
         </x-slot:fields>
         <x-slot:buttons>
-            <x-submit label="Add Relation" hx-post="/frames/{{$data->idFrame}}/relations"></x-submit>
+            <x-submit label="Add Relation" hx-post="/relation/frame"></x-submit>
         </x-slot:buttons>
     </x-form>
 </x-layout.content>

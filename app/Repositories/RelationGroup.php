@@ -63,6 +63,16 @@ class RelationGroup extends Repository
         return $criteria;
     }
 
+    public function listForSelect($name = '')
+    {
+        $criteria = $this->getCriteria()
+            ->select(['idRelationGroup','name'])
+            ->orderBy('name');
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
+        $criteria->where("upper(name)", "startswith", strtoupper($name));
+        return $criteria;
+    }
     public function create($data)
     {
         $this->beginTransaction();
@@ -84,49 +94,5 @@ class RelationGroup extends Repository
         }
     }
 
-    /*
-    public function listAll()
-    {
-        $criteria = $this->getCriteria()->select('idRelationGroup, entry, entries.name as name')->orderBy('entries.name');
-        Base::entryLanguage($criteria);
-        return $criteria;
-    }
-
-    public function save($data)
-    {
-        $transaction = $this->beginTransaction();
-        try {
-            if (!$this->isPersistent()) {
-                $entity = new Entity();
-                $entity->setAlias($this->getEntry());
-                $entity->setType('GT');
-                $entity->save();
-                $this->setIdEntity($entity->getId());
-                $entry = new Entry();
-                $entry->newEntry($this->getEntry(), $entity->getId());
-            }
-            parent::save();
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollback();
-            throw new \Exception($e->getMessage());
-        }
-    }
-
-    public function updateEntry($newEntry)
-    {
-        $transaction = $this->beginTransaction();
-        try {
-            $entry = new Entry();
-            $entry->updateEntry($this->getEntry(), $newEntry);
-            $this->setEntry($newEntry);
-            parent::save();
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollback();
-            throw new \Exception($e->getMessage());
-        }
-    }
-    */
 }
 

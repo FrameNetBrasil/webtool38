@@ -32,7 +32,7 @@
             onClickRow: (row) => {
                 if (row.type === 'relationGroup') {
                     let idRelationGroup = row.id.substring(1);
-                    window.location.href = `/relationgroup/${idRelationGroup}/edit`;
+                    window.location.href = `/relationgroup/${idRelationGroup}/main`;
                 }
                 if (row.type === 'relationType') {
                     let idRelationType = row.id.substring(1);

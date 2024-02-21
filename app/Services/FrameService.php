@@ -17,106 +17,6 @@ use Orkester\Manager;
 
 class FrameService
 {
-
-    public static function listForSelect()
-    {
-        $data = Manager::getData();
-        $q = $data->q ?? '';
-        $frame = new Frame();
-        return $frame->listForSelect($q)->getResult();
-    }
-
-    public static function listForTree()
-    {
-        $data = Manager::getData();
-        $result = [];
-        $idLanguage = AppService::getCurrentIdLanguage();
-        $id = $data->id ?? '';
-        if ($id != '') {
-            $idFrame = substr($id, 1);
-            $icon = config('webtool.fe.icon.tree');
-            $frame = new Frame($idFrame);
-            $fes = $frame->listFE()->asQuery()->getResult();
-            $orderedFe = [];
-            foreach ($icon as $i => $j) {
-                foreach ($fes as $fe) {
-                    if ($fe['coreType'] == $i) {
-                        $orderedFe[] = $fe;
-                    }
-                }
-            }
-            foreach ($orderedFe as $fe) {
-                $node = [];
-                $node['id'] = 'e' . $fe['idFrameElement'];
-                $node['type'] = 'fe';
-                $node['name'] = [$fe['name'], $fe['description']];
-                $node['idColor'] = $fe['idColor'];
-                $node['state'] = 'open';
-                $node['iconCls'] = $icon[$fe['coreType']];
-                $node['children'] = null;
-                $result[] = $node;
-            }
-            $lu = new ViewLU();
-            $lus = $lu->listByFrame($idFrame, $idLanguage)->asQuery()->getResult();
-            foreach ($lus as $lu) {
-                $node = [];
-                $node['id'] = 'l' . $lu['idLU'];
-                $node['type'] = 'lu';
-                $node['name'] = [$lu['name'], $lu['senseDescription']];;
-                $node['state'] = 'open';
-                $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
-                $node['children'] = null;
-                $result[] = $node;
-            }
-        } else {
-            $filter = $data;
-            if (!(($filter->fe ?? false) || ($filter->lu ?? false))) {
-                $frame = new ViewFrame();
-                $frames = $frame->listByFilter($filter)->asQuery()->getResult();
-                foreach ($frames as $row) {
-                    $node = [];
-                    $node['id'] = 'f' . $row['idFrame'];
-                    $node['type'] = 'frame';
-                    $node['name'] = [$row['name'], $row['description']];
-                    $node['state'] = 'closed';
-                    $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-frame';
-                    $node['children'] = [];
-                    $result[] = $node;
-                }
-            } else {
-                if ($filter->fe ?? false) {
-                    $icon = config('webtool.fe.icon.tree');
-                    $fe = new ViewFrameElement();
-                    $fes = $fe->listByFilter($filter)->asQuery()->getResult();
-                    foreach ($fes as $row) {
-                        $node = [];
-                        $node['id'] = 'e' . $row['idFrame'];
-                        $node['type'] = 'feFrame';
-                        $node['name'] = [$row['name'], $row['description'], $row['frameName']];
-                        $node['state'] = 'closed';
-                        $node['iconCls'] = $icon[$row['coreType']];
-                        $node['children'] = [];
-                        $result[] = $node;
-                    }
-                } else if ($filter->lu ?? false) {
-                    $lu = new ViewLU();
-                    $lus = $lu->listByFilter($filter)->asQuery()->getResult();
-                    foreach ($lus as $row) {
-                        $node = [];
-                        $node['id'] = 'l' . $row['idLU'];
-                        $node['type'] = 'luFrame';
-                        $node['name'] = [$row['name'], $row['senseDescription'], $row['frameName']];
-                        $node['state'] = 'closed';
-                        $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lu';
-                        $node['children'] = [];
-                        $result[] = $node;
-                    }
-                }
-            }
-        }
-        return $result;
-    }
-
     public static function listFEForGrid(int $idFrame)
     {
         $result = [];
@@ -318,8 +218,8 @@ class FrameService
     {
         $classification = [];
         $result = $frame->getClassification();
-        foreach($result as $framal => $values) {
-            foreach($values as $row) {
+        foreach ($result as $framal => $values) {
+            foreach ($values as $row) {
                 $classification[$framal][] = $row['name'];
             }
         }

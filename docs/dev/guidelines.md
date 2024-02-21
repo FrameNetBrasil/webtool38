@@ -31,9 +31,31 @@
 * edit
   * Template for "details" options
 
+### Common views
+
+* main
+  * Base view for CRUD operations
+* browse
+  * Base view for listing (search form and div for grid)
+* grid
+  * View for listing records
+* edit
+  * Base view for editing element using options (menu)
+* new
+  * View for creating a new element (using a form)
+* child
+  * View for child elements, including a for new element and a grid for existing elements
+* grid (for child elements)
+  * view for listing detail elements associated to a master element (included by child view)
+* formNew
+  * View for create a detail element associated a master element  (included by child view)
+* formEdit
+  * View for edit a detail element associated a master element
+
 ### Repository main methods
 
 * list (listing using a filter)
+* listForSelect (listing for a combobox)
 * create (for new records)
 * update (for existing records)
 * delete

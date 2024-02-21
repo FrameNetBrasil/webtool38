@@ -25,6 +25,45 @@ use Orkester\Manager;
 #[Middleware(name: 'admin')]
 class RelationTypeController extends Controller
 {
+    public static function listForTreeByRelationGroup(int $idRelationGroup)
+    {
+        $result = [];
+        $rg = new RelationGroup($idRelationGroup);
+        $rts = $rg->listRelationType()->getResult();
+        foreach ($rts as $row) {
+            $node = [];
+            $node['id'] = 't' . $row['idRelationType'];
+            $node['type'] = 'relationType';
+            $node['name'] = [$row['name'], $row['description']];
+            $node['state'] = 'closed';
+            $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-detail';
+            $node['children'] = [];
+            $result[] = $node;
+        }
+        return $result;
+    }
+
+    public static function listForTreeByName(string $name)
+    {
+        $result = [];
+        $filter = (object)[
+            'name' => $name
+        ];
+        $rt = new RelationType();
+        $rts = $rt->listByFilter($filter)->getResult();
+        foreach ($rts as $row) {
+            $node = [];
+            $node['id'] = 't' . $row['idRelationType'];
+            $node['type'] = 'relationType';
+            $node['name'] = [$row['name'], $row['description']];
+            $node['state'] = 'closed';
+            $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-detail';
+            $node['children'] = [];
+            $result[] = $node;
+        }
+        return $result;
+    }
+
     #[Get(path: '/relationtype')]
     public function browse()
     {
@@ -37,8 +76,7 @@ class RelationTypeController extends Controller
     #[Get(path: '/relationtype/new')]
     public function new()
     {
-        $this->data->_action = 'new';
-        return $this->render("main");
+        return $this->render("new");
     }
 
     #[Post(path: '/relationtype')]
@@ -67,24 +105,20 @@ class RelationTypeController extends Controller
         return $response;
     }
 
-    #[Get(path: '/relationtype/{id}/main')]
-    public function main(string $id)
-    {
-        $idLanguage = AppService::getCurrentIdLanguage();
-        $this->data->relationType = new RelationType($id);
-        $this->data->relationType->retrieveAssociation("relationGroup", $idLanguage);
-        $this->data->_layout = 'main';
-        return $this->render("main");
-    }
-
     #[Get(path: '/relationtype/{id}/edit')]
     public function edit(string $id)
     {
         $idLanguage = AppService::getCurrentIdLanguage();
         $this->data->relationType = new RelationType($id);
         $this->data->relationType->retrieveAssociation("relationGroup", $idLanguage);
-        $this->data->_layout = 'edit';
-        return $this->render("main");
+        return $this->render("edit");
+    }
+
+    #[Get(path: '/relationtype/{id}/main')]
+    public function main(string $id)
+    {
+        $this->data->_layout = 'main';
+        return $this->edit($id);
     }
 
     #[Get(path: '/relationtype/{id}/entries')]
@@ -125,4 +159,17 @@ class RelationTypeController extends Controller
             return $this->renderNotify("error", $e->getMessage());
         }
     }
+
+    #[Delete(path: '/relationtype/{id}/main')]
+    public function deleteFromMain(string $id)
+    {
+        try {
+            $relationType = new RelationType($id);
+            $relationType->delete();
+            return $this->clientRedirect("/relationgroup");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
+    }
+
 }

@@ -1,11 +1,11 @@
 <x-datagrid
     id="gridLU"
     title="LUs"
+    type="child"
     hx-trigger="reload-gridLU from:body"
     hx-target="this"
     hx-swap="outerHTML"
     hx-get="/frame/{{$data->idFrame}}/lus/grid"
-    height="250px"
 >
     @foreach($data->lus as $lu)
         <tr hx-target="#childPane" >
@@ -17,7 +17,7 @@
                 ></div>
             </td>
             <td
-                hx-get="/lu/{{$lu['idLU']}}"
+                hx-get="/lu/{{$lu['idLU']}}/edit"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"
@@ -25,7 +25,7 @@
                 <span>{{$lu['name']}}</span>
             </td>
             <td
-                hx-get="/lu/{{$lu['idLU']}}"
+                hx-get="/lu/{{$lu['idLU']}}/edit"
                 hx-target="#childPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"

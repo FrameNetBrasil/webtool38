@@ -3,23 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Corpus;
-use App\Repositories\Domain;
-use App\Repositories\EntityRelation;
 use App\Repositories\Entry;
-use App\Repositories\Frame;
-use App\Repositories\FrameElement;
 use App\Repositories\RelationGroup;
 use App\Repositories\RelationType;
 use App\Services\AppService;
-use App\Services\CorpusService;
-use App\Services\FrameService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
-use Collective\Annotations\Routing\Attributes\Attributes\Put;
-use Illuminate\Support\Facades\Request;
 use Orkester\Manager;
 
 #[Middleware(name: 'admin')]
@@ -28,17 +19,18 @@ class RelationGroupController extends Controller
     #[Get(path: '/relationgroup')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
+        $this->data->search ??= session('searchRG') ?? (object)[
+            'relationGroup' => '',
+            'relationType' => ''
+        ];
         $this->data->search->_token = csrf_token();
-        $this->data->_action = 'browse';
-        return $this->render('main');
+        return $this->render('browse');
     }
 
     #[Get(path: '/relationgroup/new')]
     public function new()
     {
-        $this->data->_action = 'new';
-        return $this->render("main");
+        return $this->render("new");
     }
 
     #[Post(path: '/relationgroup')]
@@ -57,38 +49,32 @@ class RelationGroupController extends Controller
     #[Post(path: '/relationgroup/grid')]
     public function grid()
     {
-        $this->data->search->_token = csrf_token();
-        $response = $this->render("grid");
-        $query = [
-            'search_relationGroup' => $this->data->search->relationGroup,
-            'search_relationType' => $this->data->search->relationType,
+        $search = (object)[
+            'relationGroup' => $this->data->search->relationGroup ?? '',
+            'relationType' => $this->data->search->relationType ?? '',
         ];
-        $response->header('HX-Replace-Url', '/relationgroup?' . http_build_query($query));
-        return $response;
+        session(['searchRG' => $search]);
+        $this->data->search->_token = csrf_token();
+        return $this->render("grid");
     }
 
+    #[Get(path: '/relationgroup/listForSelect')]
+    public function listForSelect()
+    {
+        $data = Manager::getData();
+        $q = $data->q ?? '';
+        $rg = new RelationGroup();
+        return $rg->listForSelect($q)->getResult();
+    }
     #[Post(path: '/relationgroup/listForTree')]
     public function listForTree()
     {
         $data = Manager::getData();
-        debug($data);
         $result = [];
         $id = $data->id ?? '';
         if ($id != '') {
             $idRelationGroup = substr($id, 1);
-            $rg = new RelationGroup($idRelationGroup);
-            $rts = $rg->listRelationType()->getResult();
-            foreach ($rts as $row) {
-                $node = [];
-                $node['id'] = 't' . $row['idRelationType'];
-                $node['type'] = 'relationType';
-                $node['name'] = [$row['name'], $row['description']];
-                $node['state'] = 'closed';
-                $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-detail';
-                $node['children'] = [];
-                $result[] = $node;
-            }
-            return $result;
+            return RelationTypeController::listForTreeByRelationGroup($idRelationGroup);
         } else {
             $filter = $data;
             if (!isset($filter->relationType)) {
@@ -105,20 +91,10 @@ class RelationGroupController extends Controller
                     $node['children'] = [];
                     $result[] = $node;
                 }
+                $icon = 'material-icons-outlined wt-tree-icon wt-icon-master';
             } else {
-                $rt = new RelationType();
-                $filter->name = $filter->relationType;
-                $rts = $rt->listByFilter($filter)->getResult();
-                foreach ($rts as $row) {
-                    $node = [];
-                    $node['id'] = 't' . $row['idRelationType'];
-                    $node['type'] = 'relationType';
-                    $node['name'] = [$row['name'], $row['description']];
-                    $node['state'] = 'closed';
-                    $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-detail';
-                    $node['children'] = [];
-                    $result[] = $node;
-                }
+                $result = RelationTypeController::listForTreeByName($filter->relationType);
+                $icon = 'material-icons-outlined wt-tree-icon wt-icon-detail';
             }
             $total = count($result);
             return [
@@ -128,19 +104,19 @@ class RelationGroupController extends Controller
                     [
                         'type' => 'relationGroup',
                         'name' => ["{$total} record(s)", ''],
-                        'iconCls' => 'material-icons-outlined wt-tree-icon wt-icon-master'
+                        'iconCls' => $icon
                     ]
                 ]
             ];
         }
     }
 
-    #[Get(path: '/relationgroup/{id}/edit')]
+    #[Get(path: '/relationgroup/{id}')]
+    #[Get(path: '/relationgroup/{id}/main')]
     public function edit(string $id)
     {
         $this->data->relationGroup = new RelationGroup($id);
-        $this->data->_action = 'edit';
-        return $this->render("main");
+        return $this->render("edit");
     }
 
     #[Get(path: '/relationgroup/{id}/entries')]
@@ -157,14 +133,14 @@ class RelationGroupController extends Controller
     public function rts(string $id)
     {
         $this->data->idRelationGroup = $id;
-        return $this->render("Admin.RelationGroup.RelationType.child");
+        return $this->render("Admin.RelationType.child");
     }
 
     #[Get(path: '/relationgroup/{id}/rts/formNew')]
     public function formNewRT(string $id)
     {
         $this->data->idRelationGroup = $id;
-        return $this->render("Admin.RelationGroup.RelationType.formNew");
+        return $this->render("Admin.RelationType.formNew");
     }
 
     #[Get(path: '/relationgroup/{id}/rts/grid')]
@@ -173,7 +149,7 @@ class RelationGroupController extends Controller
         $this->data->idRelationGroup = $id;
         $relationGroup = new RelationGroup($id);
         $this->data->rts = $relationGroup->listRelationType()->getResult();
-        return $this->render("Admin.RelationGroup.RelationType.grid");
+        return $this->render("Admin.RelationType.grid");
     }
 
     #[Delete(path: '/relationgroup/{id}')]
