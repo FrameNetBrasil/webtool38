@@ -1,18 +1,25 @@
-<x-layout.child>
-    <x-slot:left>
+<div class="grid ">
+    <div class="col-4">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/frame/{{$data->frame->idFrame}}/lus/formNew"
+            hx-get="/frame/{{$data->idFrame}}/lus/formNew"
         ></div>
-    </x-slot:left>
-    <x-slot:right>
+    </div>
+    <div class="col-8">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/frame/{{$data->frame->idFrame}}/lus/grid"
+            hx-get="/frame/{{$data->idFrame}}/lus/grid"
         ></div>
-    </x-slot:right>
-</x-layout.child>
+    </div>
+</div>
+<div
+    id="luChildPane"
+    hx-trigger="reload-gridLU from:body"
+    hx-target="this"
+    hx-swap="innerHTML"
+    hx-get="/empty"
+></div>

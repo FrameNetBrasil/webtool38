@@ -1,10 +1,10 @@
 <x-datagrid
     id="frameFERelationGrid"
     title="Frame Element Relations"
+    type="child"
     hx-trigger="reload-gridFEInternalRelation from:body"
     hx-target="this" hx-swap="outerHTML"
-    hx-get="/frames/{{$data->idFrame}}/fes/relations/grid"
-    height="250px"
+    hx-get="/frame/{{$data->idFrame}}/feRelations/grid"
 >
     @foreach($data->relations as $relation)
         <tr class="">
@@ -12,7 +12,7 @@
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
                     title="delete relation"
-                    hx-delete="/frames/fes/relations/{{$relation['idEntityRelation']}}"
+                    hx-delete="/relation/feRelation/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
             <td>

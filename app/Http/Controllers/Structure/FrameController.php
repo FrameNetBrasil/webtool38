@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Structure;
 
 use App\Data\CreateFrameData;
+use App\Data\CreateRelationFEInternalData;
 use App\Data\SearchFrameData;
 use App\Http\Controllers\Controller;
-use App\Repositories\EntityRelation;
 use App\Repositories\Entry;
 use App\Repositories\Frame;
 use App\Repositories\ViewFrame;
 use App\Services\AppService;
 use App\Services\FrameService;
+use App\Services\RelationService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
-use Orkester\Manager;
 
 #[Middleware("master")]
 class FrameController extends Controller
@@ -213,52 +213,40 @@ class FrameController extends Controller
     public function gridRelation(string $id)
     {
         data('idFrame', $id);
-        data('relations', FrameService::listRelations($id));
+        data('relations', RelationService::listRelationsFrame($id));
         return $this->render("Structure.Relation.frameGrid");
     }
 
-    #[Get(path: '/frame/{id}/fes/relations')]
-    public function fesRelations(string $id)
+    #[Get(path: '/frame/{id}/feRelations')]
+    public function feRelations(string $id)
     {
-        $this->data->idFrame = $id;
-        return $this->render("fesRelations");
+        data('idFrame', $id);
+        return $this->render("Structure.Relation.feInternalChild");
     }
 
-    #[Get(path: '/frame/{id}/fes/relations/formNew')]
-    public function fesRelationsFormNew(string $id)
+    #[Get(path: '/frame/{id}/feRelations/formNew')]
+    public function feRelationsFormNew(string $id)
     {
-        $this->data->idFrame = $id;
-        return $this->render("Structure.Frame.FERelation.formNew");
+        data('idFrame', $id);
+        return $this->render("Structure.Relation.feInternalFormNew");
     }
 
-    #[Get(path: '/frame/{id}/fes/relations/grid')]
-    public function fesRelationsGrid(string $id)
+    #[Get(path: '/frame/{id}/feRelations/grid')]
+    public function feRelationsGrid(string $id)
     {
-        $this->data->idFrame = $id;
-        $this->data->relations = FrameService::listInternalRelationsFE($id);
-        return $this->render("Structure.Frame.FERelation.grid");
+        data('idFrame', $id);
+        data('relations', RelationService::listRelationsFEInternal($id));
+        return $this->render("Structure.Relation.feInternalGrid");
     }
 
-    #[Post(path: '/frame/{id}/fes/relations')]
+    #[Post(path: '/frame/{id}/feRelations')]
     public function feRelationsNew(string $id)
     {
         try {
-            FrameService::newInternalRelationFE($this->data);
+            $data = CreateRelationFEInternalData::from(data());
+            RelationService::createRelationFEInternal($data);
             $this->trigger('reload-gridFEInternalRelation');
             return $this->renderNotify("success", "Relation created.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/frame/fes/relations/{idEntityRelation}')]
-    public function fesRelationDelete(int $idEntityRelation)
-    {
-        try {
-            $relation = new EntityRelation($idEntityRelation);
-            $relation->delete();
-            $this->trigger('reload-gridFEInternalRelation');
-            return $this->renderNotify("success", "Relation deleted.");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }

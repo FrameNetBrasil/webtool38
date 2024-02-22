@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Data\CreateRelationGroupData;
+use App\Data\SearchRelationGroupData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Entry;
 use App\Repositories\RelationGroup;
@@ -19,11 +21,7 @@ class RelationGroupController extends Controller
     #[Get(path: '/relationgroup')]
     public function browse()
     {
-        $this->data->search ??= session('searchRG') ?? (object)[
-            'relationGroup' => '',
-            'relationType' => ''
-        ];
-        $this->data->search->_token = csrf_token();
+        data('search', session('searchRG') ?? SearchRelationGroupData::from());
         return $this->render('browse');
     }
 
@@ -38,8 +36,8 @@ class RelationGroupController extends Controller
     {
         try {
             $relationGroup = new RelationGroup();
-            $relationGroup->create($this->data->new);
-            $this->data->relationGroup = $relationGroup;
+            $relationGroup->create(CreateRelationGroupData::from(data('new')));
+            data('relationGroup', $relationGroup);
             return $this->clientRedirect("/relationgroup/{$relationGroup->idRelationGroup}/edit");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
@@ -49,38 +47,32 @@ class RelationGroupController extends Controller
     #[Post(path: '/relationgroup/grid')]
     public function grid()
     {
-        $search = (object)[
-            'relationGroup' => $this->data->search->relationGroup ?? '',
-            'relationType' => $this->data->search->relationType ?? '',
-        ];
-        session(['searchRG' => $search]);
-        $this->data->search->_token = csrf_token();
+        data('search', SearchRelationGroupData::from(data('search')));
+        session(['searchRG' => data('search')]);
         return $this->render("grid");
     }
 
     #[Get(path: '/relationgroup/listForSelect')]
     public function listForSelect()
     {
-        $data = Manager::getData();
-        $q = $data->q ?? '';
         $rg = new RelationGroup();
-        return $rg->listForSelect($q)->getResult();
+        return $rg->listForSelect(data('q'))->getResult();
     }
+
     #[Post(path: '/relationgroup/listForTree')]
     public function listForTree()
     {
-        $data = Manager::getData();
+        $search = SearchRelationGroupData::from($this->data);
         $result = [];
-        $id = $data->id ?? '';
+        $id = data('id', default:'');
         if ($id != '') {
             $idRelationGroup = substr($id, 1);
             return RelationTypeController::listForTreeByRelationGroup($idRelationGroup);
         } else {
-            $filter = $data;
-            if (!isset($filter->relationType)) {
+            $icon = 'material-icons-outlined wt-tree-icon wt-icon-master';
+            if (!isset($search->relationType)) {
                 $rg = new RelationGroup();
-                $filter->name = $filter->relationGroup ?? null;
-                $rgs = $rg->listByFilter($filter)->getResult();
+                $rgs = $rg->listByFilter($search)->getResult();
                 foreach ($rgs as $row) {
                     $node = [];
                     $node['id'] = 'g' . $row['idRelationGroup'];
@@ -91,9 +83,8 @@ class RelationGroupController extends Controller
                     $node['children'] = [];
                     $result[] = $node;
                 }
-                $icon = 'material-icons-outlined wt-tree-icon wt-icon-master';
             } else {
-                $result = RelationTypeController::listForTreeByName($filter->relationType);
+                $result = RelationTypeController::listForTreeByName($search->relationType);
                 $icon = 'material-icons-outlined wt-tree-icon wt-icon-detail';
             }
             $total = count($result);
@@ -115,40 +106,41 @@ class RelationGroupController extends Controller
     #[Get(path: '/relationgroup/{id}/main')]
     public function edit(string $id)
     {
-        $this->data->relationGroup = new RelationGroup($id);
+        data('relationGroup', new RelationGroup($id));
         return $this->render("edit");
     }
 
     #[Get(path: '/relationgroup/{id}/entries')]
     public function formEntries(string $id)
     {
-        $this->data->relationGroup = new RelationGroup($id);
+        $relationGroup = new RelationGroup($id);
+        data('relationGroup', $relationGroup);
         $entry = new Entry();
-        $this->data->entries = $entry->listByIdEntity($this->data->relationGroup->idEntity);
-        $this->data->languages = AppService::availableLanguages();
+        data('entries', $entry->listByIdEntity($relationGroup->idEntity));
+        data('languages', AppService::availableLanguages());
         return $this->render("Structure.Entry.main");
     }
 
     #[Get(path: '/relationgroup/{id}/rts')]
     public function rts(string $id)
     {
-        $this->data->idRelationGroup = $id;
+        data('idRelationGroup', $id);
         return $this->render("Admin.RelationType.child");
     }
 
     #[Get(path: '/relationgroup/{id}/rts/formNew')]
     public function formNewRT(string $id)
     {
-        $this->data->idRelationGroup = $id;
+        data('idRelationGroup', $id);
         return $this->render("Admin.RelationType.formNew");
     }
 
     #[Get(path: '/relationgroup/{id}/rts/grid')]
     public function gridRT(string $id)
     {
-        $this->data->idRelationGroup = $id;
+        data('idRelationGroup', $id);
         $relationGroup = new RelationGroup($id);
-        $this->data->rts = $relationGroup->listRelationType()->getResult();
+        data('rts', $relationGroup->listRelationType()->getResult());
         return $this->render("Admin.RelationType.grid");
     }
 

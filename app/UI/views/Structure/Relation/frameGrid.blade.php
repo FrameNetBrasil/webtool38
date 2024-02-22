@@ -18,7 +18,7 @@
             </td>
             <td
                 hx-get="/fe/relations/{{$relation['idEntityRelation']}}"
-                hx-target="#childPane"
+                hx-target="#relationChildPane"
                 hx-swap="innerHTML"
                 class="cursor-pointer"
             >

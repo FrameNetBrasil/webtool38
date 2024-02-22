@@ -1,18 +1,19 @@
-<x-layout.child>
-    <x-slot:left>
+<div class="grid ">
+    <div class="col">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
             hx-get="/fe/relations/{{$data->idEntityRelation}}/formNew"
         ></div>
-    </x-slot:left>
-    <x-slot:right>
+    </div>
+    <div class="col">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
             hx-get="/fe/relations/{{$data->idEntityRelation}}/grid"
         ></div>
-    </x-slot:right>
-</x-layout.child>
+    </div>
+</div>
+<div id="feRelationChildPane"></div>

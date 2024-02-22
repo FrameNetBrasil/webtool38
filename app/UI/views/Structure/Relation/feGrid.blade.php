@@ -6,7 +6,7 @@
     hx-trigger="reload-gridFERelation from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/fes/relations/{{$data->idEntityRelation}}/grid"
+    hx-get="/fe/relations/{{$data->idEntityRelation}}/grid"
 >
     <x-slot:header>
         <thead>
@@ -26,7 +26,7 @@
                 <div
                     class="action material-icons-outlined wt-tree-icon wt-icon-delete"
                     title="delete relation"
-                    hx-delete="/fes/relations/{{$relation['idEntityRelation']}}"
+                    hx-delete="/relation/fe/{{$relation['idEntityRelation']}}"
                 ></div>
             </td>
             <td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AuthUserService;
+use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -30,6 +31,13 @@ class Controller extends BaseController
         $this->data->currentUrl = $request->getCurrentUrl() ?? '/' . $request->path();
         $this->notify = '';
         $this->hx_trigger = '';
+    }
+
+    #[Get(path: '/empty')]
+    public function empty()
+    {
+        $response = response('', 200);
+        return $response;
     }
 
     public function render(string $view, ?string $fragment = null)

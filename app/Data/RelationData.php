@@ -12,6 +12,7 @@ class RelationData extends Data
         public int  $idEntity2,
         public ?int $idEntity3 = null,
         public ?int $idEntityRelation = null,
+        public ?int $idRelation = null,
     )
     {
     }

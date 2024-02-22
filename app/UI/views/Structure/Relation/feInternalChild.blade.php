@@ -4,7 +4,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/frame/{{$data->frame->idFrame}}/relations/formNew"
+            hx-get="/frame/{{$data->idFrame}}/feRelations/formNew"
         ></div>
     </div>
     <div class="col">
@@ -12,14 +12,9 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/frame/{{$data->frame->idFrame}}/relations/grid"
+            hx-get="/frame/{{$data->idFrame}}/feRelations/grid"
         ></div>
     </div>
 </div>
-<div
-    id="relationChildPane"
-    hx-trigger="reload-gridFrameRelation from:body"
-    hx-target="this"
-    hx-swap="innerHTML"
-    hx-get="/empty"
-></div>
+
+

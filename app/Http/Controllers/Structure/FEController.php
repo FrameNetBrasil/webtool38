@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Structure;
 
+use App\Data\CreateFEData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Base;
 use App\Repositories\EntityRelation;
@@ -84,7 +85,7 @@ class FEController extends Controller
     {
         try {
             $fe = new FrameElement();
-            $fe->create($this->data->new);
+            $fe->create(CreateFEData::from(data('new')));
             $this->trigger('reload-gridFE');
             return $this->renderNotify("success", "FrameElement created.");
         } catch (\Exception $e) {
@@ -191,31 +192,6 @@ class FEController extends Controller
         ]);
         data('relations', RelationService::listRelationsFE($idEntityRelation));
         return $this->render("Structure.Relation.feGrid");
-    }
-
-    #[Post(path: '/fe/{idEntityRelation}/relations')]
-    public function newRelationFE($idEntityRelation)
-    {
-        try {
-            $this->data->relation->idRelation = $idEntityRelation;
-            FrameService::newRelationFE($this->data->relation);
-            $this->trigger('reload-gridRelationFE');
-            return $this->renderNotify("success", "Relation created.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/fe/relations/{idEntityRelation}')]
-    public function deleteRelation(int $idEntityRelation)
-    {
-        try {
-            FrameService::deleteRelation($idEntityRelation);
-            $this->trigger('reload-gridRelationFE');
-            return $this->renderNotify("success", "Relation deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
     }
 
     #[Get(path: '/fe/{id}/constraints')]

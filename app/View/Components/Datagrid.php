@@ -15,7 +15,7 @@ class Datagrid extends Component
         public string $id,
         public string $title,
         public string $type  = 'child',
-        public string $height = '',
+        public string $height = '100%',
         public string $header = '',
         public string $extraTitle = '',
         public bool $center = false,

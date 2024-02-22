@@ -1,19 +1,26 @@
-<x-layout.child>
-    <x-slot:left>
+<div class="grid ">
+    <div class="col-4">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
             hx-get="/frame/{{$data->idFrame}}/fes/formNew"
         ></div>
-    </x-slot:left>
-    <x-slot:right>
+    </div>
+    <div class="col-8">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
             hx-get="/frame/{{$data->idFrame}}/fes/grid"
         ></div>
-    </x-slot:right>
-</x-layout.child>
+    </div>
+</div>
+<div
+    id="feChildPane"
+    hx-trigger="reload-gridFE from:body"
+    hx-target="this"
+    hx-swap="innerHTML"
+    hx-get="/empty"
+></div>
 

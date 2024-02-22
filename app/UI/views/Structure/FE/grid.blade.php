@@ -8,7 +8,10 @@
         hx-get="/frame/{{$data->idFrame}}/fes/grid"
     >
         @foreach($data->fes as $fe)
-            <tr hx-target="#childPane">
+            <tr
+                hx-target="#feChildPane"
+                hx-swap="innerHTML"
+            >
                 <td class="wt-datagrid-action">
                     <div
                         class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"
@@ -18,8 +21,6 @@
                 </td>
                 <td
                     hx-get="/fe/{{$fe['idFrameElement']}}/edit"
-                    hx-target="#childPane"
-                    hx-swap="innerHTML"
                     class="cursor-pointer"
                     style="min-width:120px"
                 >
@@ -28,8 +29,6 @@
                 </td>
                 <td
                     hx-get="/fe/{{$fe['idFrameElement']}}/edit"
-                    hx-target="#childPane"
-                    hx-swap="innerHTML"
                     class="cursor-pointer"
                 >
                     {{$fe['name'][1]}}

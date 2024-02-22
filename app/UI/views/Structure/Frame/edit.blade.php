@@ -58,7 +58,7 @@
                 <x-link-button
                     id="menuFERelations"
                     label="FE-Relations"
-                    hx-get="/frame/{{$data->frame->idFrame}}/fes/relations"
+                    hx-get="/frame/{{$data->frame->idFrame}}/feRelations"
                     hx-target="#framePane"
                 ></x-link-button>
                 <x-link-button

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Data\CreateRelationTypeData;
 use App\Models\RelationTypeModel;
 use App\Services\AppService;
 use Maestro\Persistence\Repository;
@@ -70,7 +71,7 @@ class RelationType extends Repository
         return $criteria;
     }
 
-    public function create($data)
+    public function create(CreateRelationTypeData $data)
     {
         $this->beginTransaction();
         try {
@@ -95,11 +96,11 @@ class RelationType extends Repository
             throw new \Exception($e->getMessage());
         }
     }
-    public function update($data)
+    public function update(CreateRelationTypeData $data)
     {
         $this->beginTransaction();
         try {
-            $this->saveData($data);
+            $this->saveData($data->toArray());
             Timeline::addTimeline("relationtype", $this->getId(), "U");
             $this->commit();
         } catch (\Exception $e) {

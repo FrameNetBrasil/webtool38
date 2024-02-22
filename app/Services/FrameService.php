@@ -18,33 +18,7 @@ use Orkester\Manager;
 class FrameService
 {
 
-    public static function listRelations(int $idFrame)
-    {
-        $frame = new Frame($idFrame);
-        $config = config('webtool.relations');
-        $result = [];
-        $relations = $frame->listDirectRelations();
-        foreach ($relations as $relation) {
-            $result[] = [
-                'idEntityRelation' => $relation['idEntityRelation'],
-                'entry' => $relation['entry'],
-                'name' => $config[$relation['entry']]['direct'],
-                'color' => $config[$relation['entry']]['color'],
-                'related' => $relation['name']
-            ];
-        }
-        $relations = $frame->listInverseRelations();
-        foreach ($relations as $relation) {
-            $result[] = [
-                'idEntityRelation' => $relation['idEntityRelation'],
-                'entry' => $relation['entry'],
-                'name' => $config[$relation['entry']]['inverse'],
-                'color' => $config[$relation['entry']]['color'],
-                'related' => $relation['name']
-            ];
-        }
-        return $result;
-    }
+
 
     public static function listFEforSelect(int $idFrame)
     {
@@ -61,78 +35,7 @@ class FrameService
 
 
 
-    public static function newRelation(object $data)
-    {
-        $direction = $data->idRelationType[0];
-        $idRelationType = substr($data->idRelationType, 1);
-        $frame = new Frame($data->idFrame);
-        $frameRelated = new Frame($data->idFrameRelated);
-        $relation = new EntityRelation();
-        $idEntity1 = ($direction == 'd') ? $frame->idEntity : $frameRelated->idEntity;
-        $idEntity2 = ($direction == 'd') ? $frameRelated->idEntity : $frame->idEntity;
-        $relation->saveData([
-            'idRelationType' => $idRelationType,
-            'idEntity1' => $idEntity1,
-            'idEntity2' => $idEntity2,
-        ]);
-    }
 
-    public static function newRelationFE(object $data)
-    {
-        $relationBase = new EntityRelation($data->idRelation);
-        $fe = new FrameElement($data->idFrameElement);
-        $feRelated = new FrameElement($data->idFrameElementRelated);
-        $relation = new EntityRelation();
-        $relation->saveData([
-            'idRelationType' => $relationBase->idRelationType,
-            'idEntity1' => $fe->idEntity,
-            'idEntity2' => $feRelated->idEntity,
-            'idRelation' => $data->idRelation,
-        ]);
-    }
-
-    public static function listInternalRelationsFE(int $idFrame)
-    {
-        $fe = new FrameElement();
-        $config = config('webtool.relations');
-        $result = [];
-        $icon = config('webtool.fe.icon.tree');
-        $relations = $fe->listInternalRelations($idFrame);
-        foreach ($relations as $relation) {
-            $result[] = [
-                'idEntityRelation' => $relation['idEntityRelation'],
-                'entry' => $relation['entry'],
-                'feName' => $relation['feName'],
-                'feIcon' => $icon[$relation['feCoreType']],
-                'feIdColor' => $relation['feIdColor'],
-                'relatedFEName' => $relation['relatedFEName'],
-                'relatedFEIcon' => $icon[$relation['relatedFECoreType']],
-                'relatedFEIdColor' => $relation['relatedFEIdColor'],
-                'name' => $config[$relation['entry']]['direct'],
-                'color' => $config[$relation['entry']]['color'],
-            ];
-        }
-        return $result;
-    }
-
-    public static function newInternalRelationFE(object $data)
-    {
-        $idRelationType = substr($data->idRelationType, 1);
-        $idFrameElementRelated = (array)$data->idFrameElementRelated;
-        if (count($idFrameElementRelated)) {
-            $idFirst = array_shift($idFrameElementRelated);
-            $first = new FrameElement($idFirst);
-            foreach ($idFrameElementRelated as $idNext) {
-                $next = new FrameElement($idNext);
-                $relation = new EntityRelation();
-                $relation->saveData([
-                    'idRelationType' => $idRelationType,
-                    'idEntity1' => $first->idEntity,
-                    'idEntity2' => $next->idEntity,
-                ]);
-            }
-        }
-    }
 
     public static function newConstraintFE(string $constraintEntry, int $idFEConstrained, int $idFrameConstraint)
     {

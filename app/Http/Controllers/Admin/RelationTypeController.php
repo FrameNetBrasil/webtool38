@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Data\CreateRelationTypeData;
+use App\Data\SearchRelationGroupData;
 use App\Http\Controllers\Controller;
-use App\Repositories\Corpus;
-use App\Repositories\Domain;
-use App\Repositories\EntityRelation;
 use App\Repositories\Entry;
-use App\Repositories\Frame;
-use App\Repositories\FrameElement;
 use App\Repositories\RelationGroup;
 use App\Repositories\RelationType;
 use App\Services\AppService;
-use App\Services\CorpusService;
-use App\Services\FrameService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
 use Collective\Annotations\Routing\Attributes\Attributes\Put;
-use Illuminate\Support\Facades\Request;
-use Orkester\Manager;
 
 #[Middleware(name: 'admin')]
 class RelationTypeController extends Controller
@@ -67,15 +60,14 @@ class RelationTypeController extends Controller
     #[Get(path: '/relationtype')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
-        $this->data->search->_token = csrf_token();
-        $this->data->_action = 'browse';
-        return $this->render('main');
+        data('search', session('searchRG') ?? SearchRelationGroupData::from());
+        return $this->render('Admin.RelationGroup.browse');
     }
 
     #[Get(path: '/relationtype/new')]
     public function new()
     {
+        $this->data->_layout = 'main';
         return $this->render("new");
     }
 
@@ -84,9 +76,23 @@ class RelationTypeController extends Controller
     {
         try {
             $relationType = new RelationType();
-            $relationType->create($this->data->new);
+            $data = CreateRelationTypeData::validateAndCreate((array)data('new'));
+            $relationType->create($data);
             $this->trigger('reload-gridRT');
             return $this->renderNotify("success", "RelationType created.");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
+    }
+
+    #[Post(path: '/relationtype/new')]
+    public function newRelationTypeMain()
+    {
+        try {
+            $relationType = new RelationType();
+            $data = CreateRelationTypeData::validateAndCreate((array)data('new'));
+            $relationType->create($data);
+            $this->clientRedirect("/relationtype/{$relationType->idRelationType}");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
@@ -95,14 +101,9 @@ class RelationTypeController extends Controller
     #[Post(path: '/relationtype/grid')]
     public function grid()
     {
-        $this->data->search->_token = csrf_token();
-        $response = $this->render("grid");
-        $query = [
-            'search_relationGroup' => $this->data->search->relationGroup,
-            'search_relationType' => $this->data->search->relationType,
-        ];
-        $response->header('HX-Replace-Url', '/relationtype?' . http_build_query($query));
-        return $response;
+        data('search', SearchRelationGroupData::from(data('search')));
+        session(['searchRG' => data('search')]);
+        return $this->render('Admin.RelationGroup.grid');
     }
 
     #[Get(path: '/relationtype/{id}/edit')]
@@ -141,10 +142,15 @@ class RelationTypeController extends Controller
     #[Put(path: '/relationtype/{id}')]
     public function update(string $id)
     {
-        $relationType = new RelationType($id);
-        $relationType->update($this->data->update);
-        $this->trigger('reload-gridRT');
-        return $this->renderNotify("success", "RelationType updated.");
+        try {
+            $relationType = new RelationType($id);
+            $data = CreateRelationTypeData::validateAndCreate((array)data('update'));
+            $relationType->update($data);
+            $this->trigger('reload-gridRT');
+            return $this->renderNotify("success", "RelationType updated.");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
     }
 
     #[Delete(path: '/relationtype/{id}')]

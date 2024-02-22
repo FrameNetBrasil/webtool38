@@ -15,6 +15,8 @@
   * Blade templates for user interface
 * Components
   * UI components to build views
+* Data
+    * DTO (Data Transfer Objects)
 
 ### Layout
 
@@ -26,8 +28,6 @@
   * It is used when sending HTML fragments (not the whole page)
 * main
   * Base template for "master" content
-* child
-  * Template for "master" options
 * edit
   * Template for "details" options
 
@@ -38,7 +38,7 @@
 * browse
   * Base view for listing (search form and div for grid)
 * grid
-  * View for listing records
+  * View for listing records (associated to browse view)
 * edit
   * Base view for editing element using options (menu)
 * new

@@ -1,11 +1,11 @@
 <div class="grid">
-    <div class="col-10">
+    <div class="col-8">
         <div class="form-field">
             <label for="{{$id}}">{{$label}}</label>
             <input {{$attributes}} id="{{$id}}" name="{{$id}}">
         </div>
     </div>
-    <div class="col-2">
+    <div class="col-4">
         <div class="form-field">
             <label>Sample</label>
             <div id="{{$id}}Sample"></div>

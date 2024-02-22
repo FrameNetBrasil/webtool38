@@ -35,9 +35,12 @@ if (!function_exists('debugQuery')) {
 }
 
 if (!function_exists('data')) {
-    function data($name, $value = null, $default = null)
+    function data($name = null, $value = null, $default = null)
     {
         $data = Manager::getData();
+        if (is_null($name)) {
+            return $data;
+        }
         if (is_null($value)) {
             return $data->$name ?? $default;
         }

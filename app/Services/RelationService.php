@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Data\CreateRelationFEInternalData;
 use App\Data\RelationData;
 use App\Http\Controllers\Controller;
 use App\Repositories\EntityRelation;
 use App\Repositories\Frame;
+use App\Repositories\FrameElement;
 use App\Repositories\SemanticType;
 use App\Repositories\ViewRelation;
 
@@ -34,6 +36,33 @@ class RelationService extends Controller
         $er->removeAllFromEntity($idEntity);
     }
 
+    public static function listRelationsFrame(int $idFrame)
+    {
+        $frame = new Frame($idFrame);
+        $config = config('webtool.relations');
+        $result = [];
+        $relations = $frame->listDirectRelations();
+        foreach ($relations as $relation) {
+            $result[] = [
+                'idEntityRelation' => $relation['idEntityRelation'],
+                'entry' => $relation['entry'],
+                'name' => $config[$relation['entry']]['direct'],
+                'color' => $config[$relation['entry']]['color'],
+                'related' => $relation['name']
+            ];
+        }
+        $relations = $frame->listInverseRelations();
+        foreach ($relations as $relation) {
+            $result[] = [
+                'idEntityRelation' => $relation['idEntityRelation'],
+                'entry' => $relation['entry'],
+                'name' => $config[$relation['entry']]['inverse'],
+                'color' => $config[$relation['entry']]['color'],
+                'related' => $relation['name']
+            ];
+        }
+        return $result;
+    }
     public static function listRelationsFE(int $idEntityRelationBase)
     {
         $frame = new Frame();
@@ -52,6 +81,48 @@ class RelationService extends Controller
             }
         }
         return $orderedFe;
+    }
+
+    public static function listRelationsFEInternal(int $idFrame)
+    {
+        $fe = new FrameElement();
+        $config = config('webtool.relations');
+        $result = [];
+        $icon = config('webtool.fe.icon.tree');
+        $relations = $fe->listInternalRelations($idFrame);
+        foreach ($relations as $relation) {
+            $result[] = [
+                'idEntityRelation' => $relation['idEntityRelation'],
+                'entry' => $relation['entry'],
+                'feName' => $relation['feName'],
+                'feIcon' => $icon[$relation['feCoreType']],
+                'feIdColor' => $relation['feIdColor'],
+                'relatedFEName' => $relation['relatedFEName'],
+                'relatedFEIcon' => $icon[$relation['relatedFECoreType']],
+                'relatedFEIdColor' => $relation['relatedFEIdColor'],
+                'name' => $config[$relation['entry']]['direct'],
+                'color' => $config[$relation['entry']]['color'],
+            ];
+        }
+        return $result;
+    }
+
+    public static function createRelationFEInternal(CreateRelationFEInternalData $data)
+    {
+        $idFrameElementRelated = (array)$data->idFrameElementRelated;
+        if (count($idFrameElementRelated)) {
+            $idFirst = array_shift($idFrameElementRelated);
+            $first = new FrameElement($idFirst);
+            foreach ($idFrameElementRelated as $idNext) {
+                $next = new FrameElement($idNext);
+                $relation = new EntityRelation();
+                $relation->saveData([
+                    'idRelationType' => $data->idRelationType,
+                    'idEntity1' => $first->idEntity,
+                    'idEntity2' => $next->idEntity,
+                ]);
+            }
+        }
     }
 
 }

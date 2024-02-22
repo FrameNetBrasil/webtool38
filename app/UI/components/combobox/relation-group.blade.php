@@ -8,6 +8,9 @@
         textField: 'name',
         mode: 'remote',
         method: 'GET',
+        limitToList: true,
+        editable: false,
+        required: true,
         url: "/relationgroup/listForSelect"
     });
 @endpush
