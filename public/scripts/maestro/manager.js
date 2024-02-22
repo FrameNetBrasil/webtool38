@@ -1,10 +1,12 @@
 var manager = {
     messager(type, message) {
-        $.messager.show({
+        console.log('hhhhhhh');
+
+        $.notify.show({
             cls: 'wt-messager wt-messager-' + type,
-            title: type.charAt(0).toUpperCase() + type.slice(1),
+            title: null,//type.charAt(0).toUpperCase() + type.slice(1),
             msg: message,
-            timeout: 2000,
+            timeout: 0,
             showType: 'show',
             style: {
                 right: '',

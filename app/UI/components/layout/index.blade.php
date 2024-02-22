@@ -41,6 +41,7 @@
             src="/scripts/fontawesome-free-5.0.9/svg-with-js/js/fa-v4-shims.min.js"></script>
 -->
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
     <!--
@@ -116,6 +117,7 @@
 </main>
 <script>
     document.body.addEventListener("notify", function (evt) {
+        console.log('gggg');
         manager.messager(evt.detail.type, evt.detail.message);
     })
     $(function () {

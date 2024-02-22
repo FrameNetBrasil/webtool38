@@ -1,0 +1,102 @@
+.wt-messager {
+    border: 1px solid var(--wt-border-panel-header) !important;
+    border-radius: var(--wt-controls-border-radius);
+    padding: 0;
+
+    .panel-tool {
+        display: none;
+    }
+
+    .messager-body {
+        padding: 8px;
+        overflow: auto;
+        max-height: 40px !important;
+        background-color: var(--wt-bg-card-header);
+    }
+}
+
+.wt-messager-success {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $positive;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+    .messager-body {
+        background-color: $green-1;
+    }
+}
+
+.wt-messager-error {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $negative;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+}
+
+.wt-messager-info {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $info;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-1;
+        }
+    }
+}
+
+.wt-messager-warning {
+    .panel-header, .panel-header-noborder, .window-header {
+        background-color: $warning;
+        border: 1px solid var(--wt-border-panel-header);
+        border-radius: var(--wt-controls-border-radius);
+        text-align: center;
+
+        .panel-title {
+            color: $grey-10;
+        }
+    }
+}
+
+.wt-messager-confirm {
+    border: 1px solid var(--wt-border-panel-header) !important;
+    border-radius: var(--wt-controls-border-radius);
+    padding: 0;
+
+    .panel-tool {
+        display: none;
+    }
+
+    .messager-body {
+        padding: 8px;
+        overflow: auto;
+        max-height: 40px !important;
+        background-color: var(--wt-bg-card-header);
+    }
+
+    .dialog-button {
+        border-color: var(--wt-border-panel-header) !important;
+    }
+
+    .l-btn {
+        background-color: var(--wt-bg-form-button);
+    }
+
+    .messager-question {
+        background: url('../assets/images/icons/warning.svg');
+        width: 24px;
+        height: 24px;
+    }
+}

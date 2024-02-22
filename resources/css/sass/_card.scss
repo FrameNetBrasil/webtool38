@@ -1,0 +1,81 @@
+.wt-card {
+    .header {
+        padding: 4px;
+        border: 1px solid var(--wt-border-panel-header);
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        background-color: var(--wt-bg-card-header);
+        height: auto;
+    }
+
+    .body {
+        padding: 8px;
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+    }
+}
+
+.wt-card-plain {
+    .header {
+        padding: 8px;
+        border: 0;
+        border-bottom: 1px solid var(--wt-border-panel-header);
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        background-color: white;
+    }
+
+    .body {
+        padding: 8px;
+        border: 0;
+        //border-left: 1px solid var(--wt-border-panel-header);
+        //border-right: 1px solid var(--wt-border-panel-header);
+        //border-bottom: 1px solid var(--wt-border-panel-header);
+    }
+}
+
+.wt-card-error {
+
+    .wt-card-error--error {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-1;
+            background-color: $negative;
+        }
+    }
+
+    .wt-card-error--warning {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-10;
+            background-color: $warning;
+        }
+    }
+
+    .wt-card-error--info {
+        .header {
+            padding: 8px;
+            border: 1px solid var(--wt-border-panel-header);
+            font-weight: bold;
+            color: $grey-10;
+            background-color: $info;
+        }
+    }
+
+    .body {
+        padding: 8px;
+        border-left: 1px solid var(--wt-border-panel-header);
+        border-right: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
