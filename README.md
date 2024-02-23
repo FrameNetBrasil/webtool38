@@ -69,3 +69,7 @@ See [this YouTube channel](https://www.youtube.com/playlist?list=PLbRWTx8_CBTniS
 ## License
 
 GNU GPLv3 - See the [COPYING](COPYING) file for license rights and limitations.
+
+## How to cite
+
+Torrent, T.T., Matos, E.E.d.S., Costa, A.D.d. et al. A flexible tool for a qualia-enriched FrameNet: the FrameNet Brasil WebTool. Lang Resources & Evaluation (2024). https://doi.org/10.1007/s10579-023-09714-8
