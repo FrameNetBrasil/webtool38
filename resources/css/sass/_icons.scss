@@ -39,6 +39,15 @@
     padding: 2px;
 }
 
+.wt-messager-icon {
+    background: url(/images/blank.gif) no-repeat center center;
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: top;
+    padding-top: 0.75rem;
+    padding-right: 0.75rem;
+}
+
 .wt-grapher-icon {
     background: url(/images/blank.gif) no-repeat center center;
     height: 12px;
@@ -91,6 +100,14 @@
 
 .wt-icon-help:before {
     content: "help";
+}
+
+.wt-icon-close {
+    color: black;
+}
+
+.wt-icon-add:before {
+    content: "close";
 }
 
 .wt-icon-layers {

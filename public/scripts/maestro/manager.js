@@ -1,19 +1,22 @@
 var manager = {
     messager(type, message) {
-        console.log('hhhhhhh');
-
-        $.notify.show({
-            cls: 'wt-messager wt-messager-' + type,
-            title: null,//type.charAt(0).toUpperCase() + type.slice(1),
-            msg: message,
-            timeout: 0,
-            showType: 'show',
-            style: {
-                right: '',
-                top: document.body.scrollTop + document.documentElement.scrollTop,
-                bottom: ''
-            }
-        });
+        if ((type === 'error') || (type === 'warning')) {
+            $.notify.alert( '', message, type);
+        } else {
+            $.notify.show({
+                cls: 'wt-messager wt-messager-' + type,
+                title: null,//type.charAt(0).toUpperCase() + type.slice(1),
+                label: type.charAt(0).toUpperCase() + type.slice(1),
+                msg: message,
+                timeout: 2000,
+                showType: 'show',
+                style: {
+                    right: '',
+                    top: document.body.scrollTop + document.documentElement.scrollTop,
+                    bottom: ''
+                }
+            });
+        }
     },
     confirmPost(type, message, action) {
         $.messager.confirm({

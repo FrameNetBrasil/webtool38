@@ -64,7 +64,7 @@
             minHeight: 0,
             showType: "slide",
             showSpeed: 600,
-            content: _9.msg,
+            content: "<span class='material-icons wt-messager-icon icon'></span><span class='label'>" + _9.label + "</span>" + _9.msg,
             timeout: 4000
         }, _9);
         var _b = $("<div class=\"messager-body\"></div>").appendTo("body");
@@ -118,7 +118,7 @@
 
     function _d(_e) {
         _1();
-        var _f = $("<div class=\"messager-body\"></div>").appendTo("body");
+        var _f = $("<div class=\"messager-body wt-messager\"></div>").appendTo("body");
         _f.dialog($.extend({}, _e, {
             noheader: (_e.title ? false : true), onClose: function () {
                 _7();
@@ -127,10 +127,12 @@
                 }
                 _f.dialog("destroy");
                 _10();
-            }
+            },
+            border: false
         }));
-        var win = _f.dialog("dialog").addClass("messager-window");
-        win.find(".dialog-button").addClass("messager-button").find("a:first").focus();
+        // var win = _f.dialog("dialog").addClass("messager-window");
+        // win.find(".dialog-button").addClass("messager-button").find("a:first").focus();
+        //var win = _f.dialog("dialog");
         return _f;
     }
 
@@ -190,17 +192,30 @@
             }, 0);
             return dlg;
         },
+        alertClose: function(dlg) {
+            _6(dlg);
+        },
         alert: function (_16, msg, _17, fn) {
             var _18 = typeof _16 == "object" ? _16 : {title: _16, msg: msg, icon: _17, fn: fn};
-            var cls = _18.icon ? "messager-icon messager-" + _18.icon : "";
-            _18 = $.extend({}, $.notify.defaults, {content: "<div class=\"" + cls + "\"></div>" + "<div>" + _18.msg + "</div>" + "<div style=\"clear:both;\"></div>"}, _18);
-            if (!_18.buttons) {
-                _18.buttons = [{
-                    text: _18.ok, onClick: function () {
-                        _6(dlg);
-                    }
-                }];
-            }
+            //var cls = _18.icon ? "messager-icon messager-" + _18.icon : "";
+            var label = _17.charAt(0).toUpperCase() + _17.slice(1);
+
+            _18 = $.extend({}, $.notify.defaults, {
+                closeClick: () => { _6(dlg);},
+                //content: "<div class=\"" + cls + "\"></div>" + "<div>" + _18.msg + "</div>" + "<div style=\"clear:both;\"></div>"
+                content: "<div class='wt-messager-" + _18.icon + " flex flex-row'>" +
+                    "<div class='material-icons wt-messager-icon icon'></div>" +
+                    "<div class='body'><div class='label'>" + label + "</div><div>" + msg + "</div></div>" +
+                    `<div class='button'><span class='material-icons wt-messager-icon close' onclick="$('.messager-body').dialog('close')"></span></div>` +
+                    "</div>",
+            }, _18);
+            // if (!_18.buttons) {
+            //     _18.buttons = [{
+            //         text: _18.ok, onClick: function () {
+            //             _6(dlg);
+            //         }
+            //     }];
+            // }
             var dlg = _d(_18);
             return dlg;
         },
@@ -298,10 +313,11 @@
     $.notify.defaults = $.extend({}, $.fn.dialog.defaults, {
         ok: "Ok",
         cancel: "Cancel",
-        width: '100%',
+        width: 288,
         height: "auto",
-        minHeight: 150,
+        minHeight: 100,
         modal: true,
+        shadow: false,
         collapsible: false,
         minimizable: false,
         maximizable: false,

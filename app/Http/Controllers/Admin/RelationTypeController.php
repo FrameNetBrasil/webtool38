@@ -147,7 +147,7 @@ class RelationTypeController extends Controller
             $data = CreateRelationTypeData::validateAndCreate((array)data('update'));
             $relationType->update($data);
             $this->trigger('reload-gridRT');
-            return $this->renderNotify("success", "RelationType updated message big with many many words that break the space.");
+            return $this->renderNotify("success", "RelationType updated.");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
