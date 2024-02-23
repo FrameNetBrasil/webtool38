@@ -31,18 +31,13 @@ var manager = {
         });
     },
     confirmDelete(message, action, event) {
-        $.messager.confirm({
-            cls: 'wt-messager-confirm wt-messager-warning',
-            title: 'Warning',
-            msg: message,
-            fn: function(r){
-                if (r){
-                    htmx.ajax('DELETE', action);
-                    if (event) {
-                        $("#" + event[0]).trigger(event[1]);
-                    }
+        $.notify.confirm('',message, function(r) {
+            if (r) {
+                htmx.ajax('DELETE', action);
+                if (event) {
+                    $("#" + event[0]).trigger(event[1]);
                 }
             }
         });
     }
-}
+};

@@ -49,11 +49,15 @@ class Controller extends BaseController
             $class = get_called_class();
             $viewName = str_replace("\\", ".", str_replace("Controller", "", str_replace("App\\Http\\Controllers\\", "", $class))) . ".{$view}";
         }
+        $vars = get_object_vars($this->data);
+        $vars['data'] = $this->data;
         if (is_null($fragment)) {
             $response = response()
-                ->view($viewName, ['data' => $this->data]);
+//                ->view($viewName, ['data' => $this->data]);
+            ->view($viewName, $vars);
         } else {
-            $response = view()->renderFragment($viewName, $fragment, ['data' => $this->data]);
+            //$response = view()->renderFragment($viewName, $fragment, ['data' => $this->data]);
+            $response = view()->renderFragment($viewName, $fragment, $vars);
         }
         if ($this->notify != '') {
             $response->header('HX-Trigger', $this->notify);

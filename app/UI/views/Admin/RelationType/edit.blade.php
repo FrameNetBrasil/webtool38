@@ -13,7 +13,7 @@
                         <x-button
                             label="Delete"
                             color="danger"
-                            onclick="manager.confirmDelete(`Removing RelationType '{{$data->relationType?->name}}'. Confirm?`, '/relationtype/{{$data->relationType->idRelationType}}/main')"
+                            onclick="manager.confirmDelete(`Removing RelationType '{{$data->relationType?->name}}'.`, '/relationtype/{{$data->relationType->idRelationType}}/main')"
                         ></x-button>
                     @endif
                 </div>

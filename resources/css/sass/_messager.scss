@@ -21,17 +21,6 @@
 }
 
 .wt-messager-success {
-    .panel-header, .panel-header-noborder, .window-header {
-        background-color: $positive;
-        border: 1px solid var(--wt-border-panel-header);
-        border-radius: var(--wt-controls-border-radius);
-        text-align: center;
-
-        .panel-title {
-            color: $grey-1;
-        }
-    }
-
     .messager-body {
         background-color: $green-1;
         border-left: 3px solid $green-9;
@@ -47,17 +36,6 @@
 }
 
 .wt-messager-info {
-    .panel-header, .panel-header-noborder, .window-header {
-        background-color: $info;
-        border: 1px solid var(--wt-border-panel-header);
-        border-radius: var(--wt-controls-border-radius);
-        text-align: center;
-
-        .panel-title {
-            color: $grey-1;
-        }
-    }
-
     .messager-body {
         background-color: $blue-1;
         border-left: 3px solid $blue-9;
@@ -70,7 +48,6 @@
             content: "info";
         }
     }
-
 }
 
 .wt-messager-error {
@@ -151,6 +128,83 @@
 }
 
 .wt-messager-confirm {
+    background-color: $yellow-1;
+    border-left: 3px solid $yellow-9;
+    min-height: 128px;
+    padding: var(--wt-unit);
+
+    .icon {
+        color: $yellow-9;
+    }
+
+    .icon:before {
+        content: "error";
+    }
+
+    .body {
+        padding-top: 0.75rem;
+
+        .label {
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: var(--wt-unit);
+        }
+    }
+
+    .buttons {
+        padding-top: 1rem;
+    }
+
+}
+
+.wt-messager-exception {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0rem !important;
+    flex-direction: column !important;
+    display: flex !important;
+    flex: 0 0 auto;
+    width: 66.6667%;
+
+    .button {
+        padding-top: 1rem;
+    }
+
+}
+
+.wt-messager-exception-info {
+    background-color: $blue-1;
+    border-left: 3px solid $blue-9;
+    min-height: 100px;
+    padding: var(--wt-unit);
+
+    .icon {
+        color: $blue-9;
+    }
+
+    .icon:before {
+        content: "info";
+    }
+
+    .body {
+        padding-top: 0.75rem;
+
+        .label {
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: var(--wt-unit);
+        }
+    }
+
+    .buttons {
+        padding-top: 1rem;
+    }
+
+}
+
+
+/*
+.wt-messager-confirm {
     border: 1px solid var(--wt-border-panel-header) !important;
     border-radius: var(--wt-controls-border-radius);
     padding: 0;
@@ -180,3 +234,4 @@
         height: 24px;
     }
 }
+ */

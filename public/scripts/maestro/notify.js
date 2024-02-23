@@ -93,6 +93,7 @@
                         }, _a.timeout);
                     }
                 }
+
                 if (_9.onOpen) {
                     _9.onOpen.call(this);
                 } else {
@@ -155,6 +156,7 @@
             return _8(_13);
         },
         tip: function (msg) {
+            console.log("tip", message);
             var _14 = typeof msg == "object" ? msg : {msg: msg};
             if (_14.timeout == null) {
                 _14.timeout = 2000;
@@ -192,16 +194,12 @@
             }, 0);
             return dlg;
         },
-        alertClose: function(dlg) {
-            _6(dlg);
-        },
         alert: function (_16, msg, _17, fn) {
             var _18 = typeof _16 == "object" ? _16 : {title: _16, msg: msg, icon: _17, fn: fn};
             //var cls = _18.icon ? "messager-icon messager-" + _18.icon : "";
             var label = _17.charAt(0).toUpperCase() + _17.slice(1);
 
             _18 = $.extend({}, $.notify.defaults, {
-                closeClick: () => { _6(dlg);},
                 //content: "<div class=\"" + cls + "\"></div>" + "<div>" + _18.msg + "</div>" + "<div style=\"clear:both;\"></div>"
                 content: "<div class='wt-messager-" + _18.icon + " flex flex-row'>" +
                     "<div class='material-icons wt-messager-icon icon'></div>" +
@@ -221,18 +219,32 @@
         },
         confirm: function (_19, msg, fn) {
             var _1a = typeof _19 == "object" ? _19 : {title: _19, msg: msg, fn: fn};
-            _1a = $.extend({}, $.notify.defaults, {content: "<div class=\"messager-icon messager-question\"></div>" + "<div>" + _1a.msg + "</div>" + "<div style=\"clear:both;\"></div>"}, _1a);
-            if (!_1a.buttons) {
-                _1a.buttons = [{
-                    text: _1a.ok, onClick: function () {
-                        _6(dlg, true);
-                    }
-                }, {
-                    text: _1a.cancel, onClick: function () {
-                        _6(dlg, false);
-                    }
-                }];
-            }
+            var label = "Warning";
+            //_1a = $.extend({}, $.notify.defaults, {content: "<div class=\"messager-icon messager-question\"></div>" + "<div>" + _1a.msg + "</div>" + "<div style=\"clear:both;\"></div>"}, _1a);
+            _1a = $.extend({}, $.notify.defaults, {
+                //content: "<div class=\"" + cls + "\"></div>" + "<div>" + _18.msg + "</div>" + "<div style=\"clear:both;\"></div>"
+                content: "<div class='wt-messager-confirm flex flex-row'>" +
+                    "<div class='material-icons wt-messager-icon icon'></div>" +
+                    "<div class='body'>" +
+                    "<div class='label'>" + label + "</div>" +
+                    "<div>" + msg + " Confirm?</div>" +
+                    "<div class='buttons'>" +
+                    "<button type='button' class='btn btn-confirm-ok' onclick=\"let dlg = $('.messager-body'); let o = dlg.dialog('options'); dlg.dialog('close'); o.fn(true);\">Ok</button>" +
+                    "<button type='button' class='btn btn-confirm-cancel' onclick=\"$('.messager-body').dialog('close')\">Cancel</button>" +
+                    "</div></div>" +
+                    "</div>",
+            }, _1a);
+            // if (!_1a.buttons) {
+            //     _1a.buttons = [{
+            //         text: _1a.ok, onClick: function () {
+            //             _6(dlg, true);
+            //         }
+            //     }, {
+            //         text: _1a.cancel, onClick: function () {
+            //             _6(dlg, false);
+            //         }
+            //     }];
+            // }
             var dlg = _d(_1a);
             return dlg;
         },

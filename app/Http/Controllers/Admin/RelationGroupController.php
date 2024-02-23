@@ -38,7 +38,7 @@ class RelationGroupController extends Controller
             $relationGroup = new RelationGroup();
             $relationGroup->create(CreateRelationGroupData::from(data('new')));
             data('relationGroup', $relationGroup);
-            return $this->clientRedirect("/relationgroup/{$relationGroup->idRelationGroup}/edit");
+            return $this->clientRedirect("/relationgroup/{$relationGroup->idRelationGroup}/main");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
