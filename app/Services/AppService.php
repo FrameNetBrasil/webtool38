@@ -28,7 +28,7 @@ class AppService
     public static function availableLanguages()
     {
         $data = [];
-        $languages = config('webtool.user')[4]['language'][5];
+        $languages = config('webtool.user')[3]['language'][3];
         foreach ($languages as $l => $language) {
             $data[] = [
                 'idLanguage' => $l,

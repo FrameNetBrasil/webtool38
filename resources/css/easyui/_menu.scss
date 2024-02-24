@@ -23,15 +23,17 @@
   height: 20px;
   line-height: 20px;
   float: left;
-  padding-left: 28px;
+  //padding-left: 28px;
+    padding-left: var(--wt-unit);
 }
 .menu-icon {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 2px;
-  top: 50%;
-  margin-top: -8px;
+    display:none;
+  //position: absolute;
+  //width: 16px;
+  //height: 16px;
+  //left: 2px;
+  //top: 50%;
+  //margin-top: -8px;
 }
 .menu-rightarrow {
   position: absolute;
@@ -74,22 +76,22 @@
   font-size: var(--wt-font-size);
 }
 .menu-shadow {
-  position: absolute;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  background: #ccc;
-  -moz-box-shadow: 2px 2px 3px #cccccc;
-  -webkit-box-shadow: 2px 2px 3px #cccccc;
-  box-shadow: 2px 2px 3px #cccccc;
-  filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=2,MakeShadow=false,ShadowOpacity=0.2);
+  //position: absolute;
+  //-moz-border-radius: 5px 5px 5px 5px;
+  //-webkit-border-radius: 5px 5px 5px 5px;
+  //border-radius: 5px 5px 5px 5px;
+  //background: #ccc;
+  //-moz-box-shadow: 2px 2px 3px #cccccc;
+  //-webkit-box-shadow: 2px 2px 3px #cccccc;
+  //box-shadow: 2px 2px 3px #cccccc;
+  //filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=2,MakeShadow=false,ShadowOpacity=0.2);
 }
 .menu-rightarrow {
   background: url('easyui/images/menu_arrows.png') no-repeat -32px center;
 }
 .menu-line {
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #fff;
+  //border-left: 1px solid #ccc;
+  //border-right: 1px solid #fff;
 }
 .menu-sep {
   border-top: 1px solid #ccc;

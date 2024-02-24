@@ -1,0 +1,15 @@
+.wt-tag {
+    position: relative;
+    display: inline-block;
+    margin: var(--wt-mini-unit);
+    padding:var(--wt-mini-unit);
+    vertical-align: top;
+    text-decoration: none;
+    -moz-border-radius: var(--wt-controls-border-radius);
+    -webkit-border-radius: var(--wt-controls-border-radius);
+    border-radius: var(--wt-controls-border-radius);
+    background: var(--wt-theme-5);
+    color: var(--wt-text-color);
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+}

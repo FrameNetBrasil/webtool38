@@ -1,0 +1,69 @@
+.wt-form {
+
+    overflow: hidden;
+    text-align: left;
+    margin: 0;
+    -moz-border-radius: var(--wt-controls-border-radius);
+    -webkit-border-radius: var(--wt-controls-border-radius);
+    border-radius: var(--wt-controls-border-radius);
+    border: 1px solid var(--wt-grey-8);
+
+    .form-header {
+        position: relative;
+        background-color: var(--wt-bg-form);
+    }
+
+    .form-title {
+        font-size: var(--wt-font-size);
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        height: var(--wt-row-unit);
+        line-height: var(--wt-row-unit);
+        padding-left: var(--wt-unit);
+    }
+
+    .form-fields {
+        padding: 8px;
+        background-color: var(--wt-bg-form-fields);
+
+        .textbox {
+            padding: 4px;
+            width: calc(100% - 8px) !important;
+        }
+
+        input[type='checkbox'] {
+            width: 32px !important;
+            margin: 8px 0 0 0;
+        }
+    }
+
+    .form-toolbar {
+        background-color: var(--wt-bg-panel-header);
+        background: linear-gradient(to bottom, var(--wt-bg-panel-header) 0, var(--wt-bg-panel-header) 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--wt-bg-panel-header), endColorstr=var(--wt-bg-panel-header), GradientType=0);
+
+        .l-btn-text {
+            font-size: 0.875em !important;
+        }
+
+    }
+
+    .form-buttons {
+        padding: 4px;
+        background-color: var(--wt-bg-panel-header);
+        background: linear-gradient(to bottom, var(--wt-bg-panel-header) 0, var(--wt-bg-panel-header) 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--wt-bg-panel-header), endColorstr=var(--wt-bg-panel-header), GradientType=0);
+    }
+
+    .form-field {
+        margin-bottom: 8px;
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 0.125rem;
+        }
+    }
+}

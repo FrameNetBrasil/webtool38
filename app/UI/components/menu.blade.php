@@ -1,5 +1,6 @@
 @php
     use Maestro\Security\MAuth;
+    use App\Data\MenuData;
 
     $actions = config('webtool.actions');
     $isLogged = MAuth::isLogged();
@@ -7,21 +8,40 @@
         $user = MAuth::getLogin();
     }
 @endphp
-@foreach($actions as $menu => $action)
-    @if (($action[4] == '') || MAuth::checkAccess($action[3]))
+@foreach($actions as $id => $action)
+    @php
+    debug($action);
+        $menuData = MenuData::from([
+            'id' => $id,
+            'label' => $action[0],
+            'href' => $action[1],
+            'group' => $action[2],
+            'items' => $action[3]
+        ]);
+    @endphp
+    @if (MAuth::checkAccess($menuData->group))
         <x-menu-button
-                id="menu{{$menu}}"
-                label="{!! $action[0] !!}"
-                icon="{{$action[2]}}"
-                menu="#menu{{$menu}}Items"
+            id="menu{{$menuData->id}}"
+            label="{!! $menuData->label !!}"
+            icon="menu-{{$menuData->id}}"
+            menu="#menu{{$menuData->id}}Items"
         ></x-menu-button>
-        <div id="menu{{$menu}}Items">
-            @foreach($action[5] as $item)
+        <div id="menu{{$menuData->id}}Items">
+            @foreach($menuData->items as $idItem => $item)
+                @php
+                    $itemData = MenuData::from([
+                        'id' => $idItem,
+                        'label' => $item[0],
+                        'href' => $item[1],
+                        'group' => $item[2],
+                        'items' => $item[3]
+                    ]);
+                @endphp
                 <div
-                        data-options="iconCls:'material-icons-outlined wt-button-icon wt-icon-{{$item[2]}}',href:'{{$item[1]}}'"
-                        id="menu{{$menu}}Item"
+                    id="menu{{$menuData->id}}Item{{$itemData->id}}"
+                    data-options="href:'{{$itemData->href}}'"
                 >
-                    {{$item[0]}}
+                    {{$itemData->label}}
                 </div>
             @endforeach
         </div>

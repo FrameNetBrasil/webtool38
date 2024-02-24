@@ -1,0 +1,55 @@
+.wt-icon-delete {
+    color: $negative;
+}
+
+.wt-icon-delete:before {
+    content: "clear";
+}
+
+.wt-icon-add {
+    color: black;
+}
+
+.wt-icon-add:before {
+    content: "add";
+}
+
+.wt-icon-refresh {
+    color: black;
+}
+
+.wt-icon-refresh:before {
+    content: "refresh";
+}
+
+.wt-icon-help {
+    color: black;
+}
+
+.wt-icon-help:before {
+    content: "help";
+}
+
+.wt-icon-close {
+    color: black;
+}
+
+.wt-icon-add:before {
+    content: "close";
+}
+
+.wt-icon-layers {
+    color: black;
+}
+
+.wt-icon-layers:before {
+    content: "format_indent_increase";
+}
+
+.wt-icon-null {
+    color: black;
+}
+
+.wt-icon-null:before {
+    content: "highlight_off";
+}

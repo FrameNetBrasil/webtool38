@@ -1,0 +1,43 @@
+.wt-icon-fe-core {
+    padding: 2px 2px 0 0;
+    color: $fe-core-color;
+}
+
+.wt-icon-fe-core:after {
+    content: $fe-core-icon;
+}
+
+.wt-icon-fe-core-unexpressed {
+    padding: 2px 2px 0 0;
+    color: $fe-core-unexpressed-color;
+}
+
+.wt-icon-fe-core-unexpressed:after {
+    content: $fe-core-unexpressed-icon;
+}
+.wt-icon-fe-peripheral {
+    padding: 2px 2px 0 0;
+    color: $fe-peripheral-color;
+}
+
+.wt-icon-fe-peripheral:after {
+    content: $fe-peripheral-icon;
+}
+
+.wt-icon-fe-extra-thematic {
+    padding: 2px 2px 0 0;
+    color: $fe-extra-thematic-color;
+}
+
+.wt-icon-fe-extra-thematic:after {
+    content: $fe-extra-thematic-icon;
+}
+
+.wt-icon-fe-ni {
+    padding: 2px 2px 0 0;
+    color: $fe-ni-color;
+}
+
+.wt-icon-fe-ni:after {
+    content: $fe-ni-icon;
+}

@@ -27,12 +27,16 @@ class MAuth
 
     public static function checkAccess(string $group): bool
     {
-        $result = false;
-        if (!is_null(self::$login)) {
-            $user = self::$login;
-            $result = $user->isMemberOf($group);
+        if ($group == '') {
+            return true;
+        } else {
+            $result = false;
+            if (!is_null(self::$login)) {
+                $user = self::$login;
+                $result = $user->isMemberOf($group);
+            }
+            return $result;
         }
-        return $result;
     }
     public static function logout(): void
     {

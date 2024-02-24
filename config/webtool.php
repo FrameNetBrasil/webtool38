@@ -18,41 +18,41 @@ return [
         'AUTH0_BASE_URL' => env('AUTH0_BASE_URL'),
     ],
     'actions' => [
-        'admin' => ['Admin', '/admin', 'construction', 'ADMIN', 1, [
-            'user' => ['Users', '/user', 'edit', 'ADMIN', 1, []],
-            'group' => ['Groups', '/group', 'edit', 'ADMIN', 1, []],
-            'type' => ['Types', '/type', 'edit', 'ADMIN', 1, []],
-            'relation' => ['Relations', '/relationgroup', 'edit', 'ADMIN', 1, []],
-            'genre' => ['Genres', '/genre', 'edit', 'ADMIN', 1, []],
-            'layer' => ['Layers', '/layer', 'edit', 'ADMIN', 1, []],
-            'constraint' => ['Constraints', '/constraint', 'edit', 'ADMIN', 1, []],
+        'admin' => ['Admin', '/admin', 'ADMIN', [
+            'user' => ['Users', '/user', 'ADMIN', []],
+            'group' => ['Groups', '/group', 'ADMIN', []],
+            'type' => ['Types', '/type', 'ADMIN', []],
+            'relation' => ['Relations', '/relationgroup', 'ADMIN', []],
+            'genre' => ['Genres', '/genre', 'ADMIN', []],
+            'layer' => ['Layers', '/layer', 'ADMIN', []],
+            'constraint' => ['Constraints', '/constraint', 'ADMIN', []],
         ]],
-        'structure' => ['Structure', '/structure', 'account_tree', 'MASTER', 1, [
-            'framestructure' => ['Frame', '/frame', 'menu-frame', 'MASTER', 1, []],
-            'corpusstructure' => ['Corpus', '/corpus', 'menu-corpus', 'MASTER', 1, []],
-//            'cxnstructure' => ['Construction', '/cxn', 'menu-cxn', 'MASTER', 1, []],
-            'lexiconstructure' => ['Lexicon', '/lexicon', 'menu-lemma', 'MASTER', 1, []],
+        'structure' => ['Structure', '/structure', 'MASTER', [
+            'framestructure' => ['Frame', '/frame', 'MASTER', []],
+            'corpusstructure' => ['Corpus', '/corpus', 'MASTER', []],
+            'cxnstructure' => ['Construction', '/cxn', 'MASTER', []],
+            'lexiconstructure' => ['Lexicon', '/lexicon', 'MASTER', []],
 //            'qualia' => ['Qualia', '/qualia', 'menu-qualia', 'MASTER', 1, []],
 //            'constrainttype' => ['Constraint Type', '/constrainttype', 'menu-constraint', 'MASTER', 1, []],
 //            'conceptstructure' => ['Concept', '/concept', 'menu-concept', '', 1, []],
-            'semantictypetructure' => ['Semantic Type', '/semantictype', 'menu-semantictype', 'MASTER', 1, []],
+            'semantictypetructure' => ['Semantic Type', '/semantictype', 'MASTER', []],
         ]],
-        'annotation' => ['Annotation', '/annotation', 'edit_note', 'MASTER', 1, [
+        'annotation' => ['Annotation', '/annotation', 'MASTER', [
 //            'lexicalAnnotation' => ['Frame Mode', '/lexicalAnnotation', 'lexicalAnnotation', '', 1, []],
 //            'cnxAnnotation' => ['Construction Mode', '/constructionalAnnotation', 'cxnAnnotation', '', 1, []],
-            'corpusAnnotation' => ['Corpus Mode', '/annotation/corpus', 'corpusAnnotation', 'MASTER', 1, []],
+            'corpusAnnotation' => ['Corpus Mode', '/annotation/corpus', 'MASTER', []],
 //            'staticFrameMode1' => ['Static Frame Mode 1', '/annotation/staticFrameMode1', 'staticFrameMode1', 'MASTER', 1, []],
 //            'staticFrameMode2' => ['Static Frame Mode 2', '/annotation/staticFrameMode2', 'staticFrameMode2', 'MASTER', 1, []],
 //            'layers' => ['Manage Layers', '/layer/formManager', 'fa fa-list fa16px', 'JUNIOR', 1, []],
         ]],
-        'report' => ['Report', '/report', 'summarize', '', '', [
-            'reportframe' => ['Frames', '/report/frames', 'summarize', '', '', []],
+        'report' => ['Report', '/report', '', [
+            'reportframe' => ['Frames', '/report/frames', '', []],
 //            'lureport' => ['LU', '/lu/report', 'lureport', '', '', []],
 //            'cxnreport' => ['Constructions', '/cxn/report', 'cxnreport', '', '', []],
 //            'corpusAnnotationReport' => ['Corpus Annotation', '/corpus/report', 'corpusreport', '', 1, []],
         ]],
-        'grapher' => ['Grapher', '/grapher', 'hub', '', '', [
-            'framegrapher' => ['Frames', '/grapher/frame', 'grapher', '', '', []],
+        'grapher' => ['Grapher', '/grapher', '', [
+            'framegrapher' => ['Frames', '/grapher/frame', '', []],
 //            'domaingrapher' => ['Domain', '/grapher/domain', 'grapher', '', '', []],
 //            'fullgrapher' => ['Frames & CxN', '/grapher', 'fullgrapher', '', '', []],
 //            'domaingrapher' => ['Frames by Domain', '/domain/grapher', 'domaingrapher', '', '', []],
@@ -74,15 +74,15 @@ return [
 //            'exportCxnJson' => ['Export Cxn', '/utils/exportCxn', 'exportcxnjson', 'ADMIN', 1, []],
 //        ]],
     ],
-    'user' => ['userPanel', '/admin/user/main', 'fnbrIconForm', '', [
-        'language' => ['Language', '/language', 'fa fa-flag-checkered fa16px', '', 1, [
-            '2' => ['English', '/changeLanguage/en', 'fnbrFlagEn', '', 1, []],
-            '1' => ['Portuguese', '/changeLanguage/pt', 'fnbrFlagPt', '', 1, []],
-            '3' => ['Spanish', '/changeLanguage/es', 'fnbrFlagEs', '', 1, []],
+    'user' => ['userPanel', '/admin/user/main', '', [
+        'language' => ['Language', '/language', '', [
+            '2' => ['English', '/changeLanguage/en', '', []],
+            '1' => ['Portuguese', '/changeLanguage/pt', '', []],
+            '3' => ['Spanish', '/changeLanguage/es', '', []],
         ]],
-        'profile' => ['Profile', '/profile', 'account_circle', '', 1, [
-            'myprofile' => ['My Profile', '/profile', 'fa fa-credit-card fa16px', '', 1, []],
-            'logout' => ['Logout', '/logout', 'fa fa-sign-out fa16px', '', 1, []],
+        'profile' => ['Profile', '/profile', '', [
+            'myprofile' => ['My Profile', '/profile', '', []],
+            'logout' => ['Logout', '/logout', '', []],
         ]],
     ]],
     'relations' => [

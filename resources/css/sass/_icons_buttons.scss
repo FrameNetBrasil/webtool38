@@ -1,0 +1,9 @@
+.wt-icon-frame__before:before {
+    color: $frame-color;
+    content: $frame-icon;
+}
+
+.wt-icon-lu__before:before {
+    color: $lu-color;
+    content: $lu-icon;
+}

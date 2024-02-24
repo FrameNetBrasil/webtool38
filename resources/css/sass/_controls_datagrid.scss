@@ -1,0 +1,46 @@
+.wt-datagrid {
+    overflow-y: auto;
+    font-size: 0.875rem;
+    //border-bottom: 1px solid var(--wt-border-panel-header);
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    thead {
+        background-color: var(--wt-bg-panel-header);
+    }
+
+    td, th {
+        border-top: 1px solid var(--wt-border-panel-header);
+        border-bottom: 1px solid var(--wt-border-panel-header);
+        padding: var(--wt-mini-unit);
+    }
+
+    tr:nth-child(even) {
+        background-color: var(--wt-bg-datagrid-row-1);
+    }
+
+    tr:hover {
+        background-color: var(--wt-action-hover);
+    }
+
+    th {
+        padding-top:  var(--wt-mini-unit);
+        padding-bottom:  var(--wt-mini-unit);
+        text-align: left;
+        background-color: var(--wt-bg-datagrid-header);
+        color: var(--wt-text-color);
+    }
+
+    .wt-datagrid-action {
+        cursor: pointer;
+        width:  var(--wt-2-unit);
+    }
+}
+
+.wt-datagrid-child {
+    max-height: calc(32 * var(--wt-unit));
+}
+

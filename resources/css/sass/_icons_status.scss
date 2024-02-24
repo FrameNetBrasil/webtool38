@@ -1,0 +1,23 @@
+.wt-icon-annotation-success {
+    color: $positive;
+}
+
+.wt-icon-annotation-success:after {
+    content: $status-success-icon;
+}
+
+.wt-icon-annotation-warning {
+    color: $warning;
+}
+
+.wt-icon-annotation-warning:after {
+    content: $status-warning-icon;
+}
+
+.wt-icon-annotation-error {
+    color: $negative;
+}
+
+.wt-icon-annotation-error:after {
+    content: $status-error-icon;
+}

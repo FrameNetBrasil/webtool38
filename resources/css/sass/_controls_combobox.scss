@@ -1,0 +1,37 @@
+.wt-combobox-panel {
+    //position:relative;
+
+    .panel-title {
+        font-weight: normal;
+    }
+
+    .panel-tool-collapse {
+        background: url('../assets/images/icons/expand_less.svg');
+    }
+
+    .panel-tool-expand {
+        background: url('../assets/images/icons/expand_more.svg');
+    }
+
+    .panel-tool {
+        margin-top: -12px;
+        height: 24px;
+    }
+
+    .panel-tool a:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        background-color: transparent;
+        border-radius: 0;
+    }
+
+    .panel-tool a {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        margin: 0 0 0 2px;
+        vertical-align: top;
+    }
+}
