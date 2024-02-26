@@ -21,8 +21,12 @@ class LexemeController extends Controller
             $node = [];
             $node['id'] = 'x' . $lexeme['idLexeme'];
             $node['idLexeme'] = $lexeme['idLexeme'];
+            $node['idLexemeEntry'] = $lexeme['idLexemeEntry'];
             $node['type'] = 'lexeme';
-            $node['name'] = $lexeme['name'] . $lexeme['POS'];
+            $node['head'] = $lexeme['headWord'] == 1 ? " [head]" : '';
+            $node['break'] = $lexeme['breakBefore'] == 1 ? " [break]" : '';
+            $node['order'] = $lexeme['lexemeOrder'];
+            $node['name'] = $lexeme['name'] . " [{$lexeme['POS']}][{$node['order']}]{$node['head']}{$node['break']}";
             $node['state'] = 'closed';
             $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-lexeme';
             $node['children'] = [];

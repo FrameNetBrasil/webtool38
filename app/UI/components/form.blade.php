@@ -6,7 +6,7 @@
         <div class="form-toolbar">
             {{$toolbar}}
         </div>
-        <div id="{{$id}}" class="form-fields">
+        <div id="{{$id}}_fields" class="form-fields">
             {{$fields}}
         </div>
         <div class="form-buttons">

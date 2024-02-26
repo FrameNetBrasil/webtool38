@@ -15,7 +15,8 @@ class LemmaModel extends Model
         self::attribute('idLemma', key: Key::PRIMARY);
         self::attribute('name');
         self::attribute('version');
-        self::attribute('idLanguage',type: Type::INTEGER);
+        self::attribute('idLanguage', key: Key::FOREIGN);
+        self::attribute('idEntity', key: Key::FOREIGN);
         self::associationOne('entity', model: EntityModel::class);
         self::associationOne('pos', model: POSModel::class);
         self::associationOne('udpos', model: UDPOSModel::class);

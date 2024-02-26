@@ -5,10 +5,9 @@ namespace App\Data;
 use App\Services\AppService;
 use Spatie\LaravelData\Data;
 
-class SearchLexiconData extends Data
+class SearchLexemeData extends Data
 {
     public function __construct(
-        public ?string $lemma = '',
         public ?string $lexeme = '',
         public int|string $idLanguage = 2,
         public string $_token = '',

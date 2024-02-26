@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Data\CreateLemmaData;
+use App\Data\UpdateLemmaData;
 use App\Models\LemmaModel;
 use Maestro\Persistence\Repository;
 
@@ -13,6 +15,7 @@ class Lemma extends Repository
     public ?string $name;
     public ?string $version;
     public ?int $idLanguage;
+    public ?int $idEntity;
     public ?object $entity;
     public ?object $pos;
     public ?object $udpos;
@@ -73,11 +76,11 @@ class Lemma extends Repository
             ->select('*')
             ->orderBy('idLemma');
         if (isset($filter->idLemma)) {
-            $criteria->where("idLemma","=",$filter->idLemma);
+            $criteria->where("idLemma", "=", $filter->idLemma);
         } else {
             if (isset($filter->lemma)) {
-                if(str_contains($filter->lemma,'"')) {
-                    $lemma = str_replace('"','', $filter->lemma);
+                if (str_contains($filter->lemma, '"')) {
+                    $lemma = str_replace('"', '', $filter->lemma);
                     $criteria->where("name", "=", $lemma);
                 } else {
                     if (strlen($filter->lemma) > 2) {
@@ -198,6 +201,7 @@ class Lemma extends Repository
         }
     }
 
+    /*
     public function saveData($data): ?int
     {
         try {
@@ -218,6 +222,7 @@ class Lemma extends Repository
             throw new \Exception($e->getMessage());
         }
     }
+    */
 
 //    public function save($data)
 //    {
@@ -245,22 +250,59 @@ class Lemma extends Repository
 //        }
 //    }
 
-    public function delete()
+    public function create(CreateLemmaData $data)
     {
+        $this->beginTransaction();
         try {
-            $transaction = $this->beginTransaction();
-            $idEntity = $this->getIdEntity();
-            Timeline::addTimeline("lemma", $this->getId(), "D");
-            parent::delete();
-            $entity = new Entity($idEntity);
-            $entity->delete();
-            $transaction->commit();
+            $entity = new Entity();
+            $idEntity = $entity->create('LM', 'lemma_' . $data->name . '_' . $data->idLanguage);
+            $id = $this->saveData([
+                'name' => $data->name,
+                'idLanguage' => $data->idLanguage,
+                'idPOS' => $data->idPOS,
+                'idEntity' => $idEntity
+            ]);
+            Timeline::addTimeline("lemma", $id, "C");
+            $this->commit();
         } catch (\Exception $e) {
-            $transaction->rollback();
+            $this->rollback();
             throw new \Exception($e->getMessage());
         }
     }
 
+    public function delete()
+    {
+        $this->beginTransaction();;
+        try {
+            Timeline::addTimeline("lemma", $this->getId(), "D");
+            $le = new LexemeEntry();
+            $le->deleteByLemma($this->idLemma);
+            parent::delete();
+            $entity = new Entity($this->idEntity);
+            $entity->delete();
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function update(UpdateLemmaData $data)
+    {
+        $this->beginTransaction();
+        try {
+            $id = $this->saveData([
+                'name' => $data->name,
+                'idLanguage' => $data->idLanguage,
+                'idPOS' => $data->idPOS,
+            ]);
+            Timeline::addTimeline("lemma", $id, "U");
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
     public function updateEntity()
     {
         try {

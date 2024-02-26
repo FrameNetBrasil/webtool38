@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\POSModel;
+use App\Services\AppService;
 use Maestro\Persistence\Repository;
 
 class POS extends Repository
@@ -43,10 +44,11 @@ class POS extends Repository
         return $criteria;
     }
 
-    public function listForCombo()
+    public function listForSelection()
     {
-        $criteria = $this->getCriteria()->select('idPOS, entry.name as name')->orderBy('entry.name');
-        Base::entryLanguage($criteria);
+        $criteria = $this->getCriteria()
+            ->select(['idPOS','POS'])
+            ->orderBy('POS');
         return $criteria;
     }
 

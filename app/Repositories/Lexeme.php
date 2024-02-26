@@ -54,14 +54,20 @@ class Lexeme extends Repository {
     }
 
     public function listByFilter($filter){
-        $criteria = $this->getCriteria()
-            ->select(['idLexeme','name','idEntity','idPOS','idUDPOS','idLanguage','pos.POS'])
-            ->orderBy('name');
+        $select = ['idLexeme','name','idEntity','idPOS','idUDPOS','idLanguage','pos.POS'];
+        $order = "name";
+        $criteria = $this->getCriteria();
         if (isset($filter->idLexeme)) {
             $criteria->where("idLexeme", "=", $filter->idLexeme);
         } else {
             if (isset($filter->idLemma)) {
                 $criteria->where("lemmas.idLemma", "=", $filter->idLemma);
+                $criteria->where("lexemeEntries.idLemma", "=", $filter->idLemma);
+                $select[] = 'lexemeEntries.idLexemeEntry';
+                $select[] = 'lexemeEntries.breakBefore';
+                $select[] = 'lexemeEntries.headWord';
+                $select[] = 'lexemeEntries.lexemeOrder';
+                $order = 'lexemeEntries.lexemeOrder';
             } else {
                 if (isset($filter->lexeme)) {
                     if (str_contains($filter->lexeme, '"')) {
@@ -83,6 +89,9 @@ class Lexeme extends Repository {
         if (isset($filter->idLanguage)) {
             $criteria->where("idLanguage", "=", $filter->idLanguage);
         }
+        $criteria
+            ->select($select)
+            ->orderBy($order);
         return $criteria;
     }
 

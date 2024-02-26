@@ -17,6 +17,8 @@ class LexemeEntryModel extends Model
         self::attribute('lexemeOrder', type: Type::INTEGER);
         self::attribute('breakBefore', type: Type::INTEGER);
         self::attribute('headWord', type: Type::INTEGER);
+        self::attribute('idLemma', key: Key::FOREIGN);
+        self::attribute('idLexeme', key: Key::FOREIGN);
         self::associationOne('lemma', model: LemmaModel::class, key: "idLemma");
         self::associationOne('lexeme', model: LexemeModel::class, key: "idLexeme");
         self::associationOne('wordForm', model: WordFormModel::class, key: "idWordForm");

@@ -4,7 +4,7 @@
     $(function () {
         $('#mainGridTable').treegrid({
             fit: true,
-            url: "/lexicon/listForTree",
+            url: "/lemma/listForTree",
             queryParams: {{ Js::from($search) }},
             showHeader: false,
             rownumbers: false,
@@ -22,9 +22,6 @@
                         }
                         if (rowData.type === 'lexeme') {
                             return value;
-                        }
-                        if (rowData.type === 'wordform') {
-                            return `<div><div class='color-lu'>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
                         }
                     }
                 },

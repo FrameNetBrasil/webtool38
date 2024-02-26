@@ -1,45 +1,35 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 namespace App\Repositories;
 
-class LexemeEntry extends Repository {
+use App\Models\LexemeEntryModel;
+use Maestro\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'lexemeOrder' => array('notnull'),
-                'breakBefore' => array('notnull'),
-                'headWord' => array('notnull'),
-                'idLexeme' => array('notnull'),
-                'idLemma' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getIdLexemeEntry();
+class LexemeEntry extends Repository
+{
+
+    public ?int $idLexemeEntry;
+    public ?int $lexemeOrder;
+    public ?int $breakBefore;
+    public ?int $headWord;
+    public ?int $idLexeme;
+    public ?int $idLemma;
+    public ?object $lemma;
+    public ?object $lexeme;
+    public ?object $wordForm;
+
+    public function __construct(int $id = null)
+    {
+        parent::__construct(LexemeEntryModel::class, $id);
     }
 
-    public function listByFilter($filter){
-        $criteria = $this->getCriteria()->select('*')->orderBy('idLexemeEntry');
-        if ($filter->idLexemeEntry){
-            $criteria->where("idLexemeEntry LIKE '{$filter->idLexemeEntry}%'");
-        }
-        return $criteria;
+    public function deleteByLemma(int $idLemma)
+    {
+        $this->getCriteria()
+            ->where('idLemma', '=', $idLemma)
+            ->delete();
+
     }
+
+
 }
-
-?>

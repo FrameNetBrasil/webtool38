@@ -1,4 +1,4 @@
-@extends('Structure.Lexicon.main')
+@extends('Structure.Lemma.main')
 @section('content')
     <x-layout.browser>
         <x-slot:nav>
@@ -13,11 +13,6 @@
                     :value="$search->lemma ?? ''"
                     placeholder="Lemma (min 3 chars)"
                 ></x-input-field>
-                <x-input-field
-                    id="search_lexeme"
-                    :value="$search->lexeme ?? ''"
-                    placeholder="Lexeme (min 3 chars)"
-                ></x-input-field>
                 <x-combobox.language
                     id="search_idLanguage"
                     :value="$data->search->idLanguage ?? ''"
@@ -25,14 +20,14 @@
                 ></x-combobox.language>
                 <x-submit
                     label="Search"
-                    hx-post="/lexicon/grid"
-                    hx-target="#lexiconGrid"
+                    hx-post="/lemma/grid"
+                    hx-target="#lemmaGrid"
                 ></x-submit>
             </x-form-search>
         </x-slot:nav>
         <x-slot:main>
-            <div id="lexiconGrid" class="mainGrid">
-                @include('Structure.Lexicon.grid')
+            <div id="lemmaGrid" class="mainGrid">
+                @include('Structure.Lemma.grid')
             </div>
         </x-slot:main>
     </x-layout.browser>
