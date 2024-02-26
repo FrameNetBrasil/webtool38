@@ -1,39 +1,38 @@
-<table id="corpusSlotGridTable" >
+<table id="mainGridTable">
 </table>
 <script>
     $(function () {
-        $('#corpusSlotGridTable').treegrid({
+        $('#mainGridTable').treegrid({
             fit: true,
-            url: "/corpus/listForTree",
-            method: "POST",
-            queryParams: {{ Js::from($data->search) }},
+            url: "/lexicon/listForTree",
+            queryParams: {{ Js::from($search) }},
             showHeader: false,
             rownumbers: false,
             idField: 'id',
             treeField: 'name',
+            showFooter:true,
             border: false,
-            striped: true,
             columns: [[
                 {
                     field: 'name',
                     width: '100%',
                     formatter: (value, rowData) => {
-                        if (rowData.type === 'corpus') {
-                            return `<div><div class='color-corpus'>${value[0]}</div></div>`;
+                        if (rowData.type === 'lemma') {
+                            return value;
                         }
-                        if (rowData.type === 'document') {
-                            return `<div><div class='color-document'>${value}</div></div>`;
+                        if (rowData.type === 'lexeme') {
+                            return value;
                         }
-                        if (rowData.type === 'sentence') {
-                            return `<div><div class='color-document'>${value}</div></div>`;
+                        if (rowData.type === 'wordform') {
+                            return `<div><div class='color-lu'>${value[0]}</div><div class='definition'>${value[1]}</div></div>`;
                         }
                     }
                 },
             ]],
             onClickRow: (row) => {
-                if (row.type === 'corpus') {
-                    let idCorpus = row.id.substring(1);
-                    window.location.href = `/corpus/${idCorpus}/edit`;
+                if (row.type === 'lemma') {
+                    let idLemma = row.id.substring(1);
+                    window.location.href = `/lemma/${idLemma}/main`;
                 }
             },
         });

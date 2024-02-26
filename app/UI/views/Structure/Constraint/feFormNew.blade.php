@@ -90,7 +90,7 @@
         <x-slot:buttons>
             <x-submit
                 label="Add Constraint"
-                hx-post="/fe/{{$idFrameElement}}/constraints"
+                hx-post="/constraint/fe/{{$idFrameElement}}"
             ></x-submit>
         </x-slot:buttons>
     </x-form>

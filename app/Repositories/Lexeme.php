@@ -1,33 +1,26 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 namespace App\Repositories;
 
+use App\Models\LexemeModel;
+use Maestro\Persistence\Repository;
+
 class Lexeme extends Repository {
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'name' => array('notnull'),
-                'idPOS' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getName();
+    public ?int $idLexeme;
+    public ?string $name;
+    public ?int $idLanguage;
+    public ?object $entity;
+    public ?object $pos;
+    public ?object $udpos;
+    public ?object $language;
+    public ?array $lemmas;
+    public ?array $lexemeEntries;
+    public ?array $wordforms;
+
+    public function __construct(int $id = null)
+    {
+        parent::__construct(LexemeModel::class, $id);
     }
 
     public function getIdEntity()
@@ -61,13 +54,38 @@ class Lexeme extends Repository {
     }
 
     public function listByFilter($filter){
-        $criteria = $this->getCriteria()->select('*')->orderBy('idLexeme');
-        if ($filter->idLexeme){
-            $criteria->where("idLexeme LIKE '{$filter->idLexeme}%'");
+        $criteria = $this->getCriteria()
+            ->select(['idLexeme','name','idEntity','idPOS','idUDPOS','idLanguage','pos.POS'])
+            ->orderBy('name');
+        if (isset($filter->idLexeme)) {
+            $criteria->where("idLexeme", "=", $filter->idLexeme);
+        } else {
+            if (isset($filter->idLemma)) {
+                $criteria->where("lemmas.idLemma", "=", $filter->idLemma);
+            } else {
+                if (isset($filter->lexeme)) {
+                    if (str_contains($filter->lexeme, '"')) {
+                        $lexeme = str_replace('"', '', $filter->lexeme);
+                        $criteria->where("name", "=", $lexeme);
+                    } else {
+                        if (strlen($filter->lexeme) > 2) {
+                            $criteria->where("name", "startswith", $filter->lexeme);
+                        } else {
+                            $criteria->where("name", "startswith", '-none');
+                        }
+                    }
+                } else {
+                    $criteria->where("name", "startswith", '-none');
+                }
+            }
+        }
+
+        if (isset($filter->idLanguage)) {
+            $criteria->where("idLanguage", "=", $filter->idLanguage);
         }
         return $criteria;
     }
-    
+
     public function listForGridLemma($filter){
         $criteria = $this->getCriteria()->select("idLexeme, concat(name,'.',pos.POS, '  [',language.language, ']') as fullname")->orderBy('name');
         if ($filter->lexeme){
@@ -91,6 +109,7 @@ class Lexeme extends Repository {
         return $criteria;
     }
 
+    /*
     public function save($data = NULL) {
         try {
             $transaction = $this->beginTransaction();
@@ -117,6 +136,7 @@ class Lexeme extends Repository {
             throw new \Exception($e->getMessage());
         }
     }
+    */
 
     public function createLexemeWordform($row, $wf, $POS, $idLanguage) {
         $collate = \Manager::getDatabase(\Manager::getConf('fnbr.db'))->getConfig('collate');
@@ -154,13 +174,14 @@ class Lexeme extends Repository {
         }
         return $idLexeme;
     }
-    
+
     /**
      * Upload de lexeme+wordform em texto simples (wordform POS lexeme)
      * Parâmetro data informa: idLanguage
      * @param type $data
-     * @param type $file 
+     * @param type $file
      */
+    /*
     public function uploadLexemeWordform($data, $file) {
         $idLanguage = $data->idLanguage;
         $pos = new POS();
@@ -186,6 +207,7 @@ class Lexeme extends Repository {
         }
         return $result;
     }
+    */
 
     /**
      * Register lexeme+wordform from an array of lines as (wordform POS lexeme)
@@ -193,6 +215,7 @@ class Lexeme extends Repository {
      * @param type $data
      * @param type $array
      */
+    /*
     public function registerLexemeWordform($data, $rows) {
         $idLanguage = $data->idLanguage;
         $pos = new POS();
@@ -217,6 +240,7 @@ class Lexeme extends Repository {
         }
         return $result;
     }
+    */
     /**
      * Upload de lexeme+wordform em texto simples (wordform POS lexeme)
      * Parâmetro data informa: idLanguage

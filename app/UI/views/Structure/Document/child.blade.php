@@ -4,7 +4,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/semanticType/{{$idEntity}}/childAdd/{{$root}}"
+            hx-get="/corpus/{{$idCorpus}}/documents/formNew"
         ></div>
     </div>
     <div class="col-8">
@@ -12,14 +12,15 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/semanticType/{{$idEntity}}/childGrid"
+            hx-get="/corpus/{{$idCorpus}}/documents/grid"
         ></div>
     </div>
 </div>
 <div
-    id="stChildPane"
-    hx-trigger="reload-gridRT from:body"
+    id="docChildPane"
+    hx-trigger="reload-gridDocument from:body"
     hx-target="this"
     hx-swap="innerHTML"
     hx-get="/empty"
 ></div>
+

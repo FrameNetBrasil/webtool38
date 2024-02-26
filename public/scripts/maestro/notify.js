@@ -326,7 +326,7 @@
     $.notify.defaults = $.extend({}, $.fn.dialog.defaults, {
         ok: "Ok",
         cancel: "Cancel",
-        width: 288,
+        width: "auto",
         height: "auto",
         minHeight: 100,
         modal: true,

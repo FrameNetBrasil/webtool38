@@ -93,7 +93,7 @@ FROM View_Constraint c
 JOIN UDPOS e2udp ON (c.idConstrainedBy = e2udp.idEntity)
 WHERE (c.idConstrained = {$idConstrained})
 UNION
-SELECT er.idEntity3, er.idEntity1, er.idEntity2, e2qla.entry, e2fe.name, e2fe.name as cxEntry, e2fe.entry as nick, '', '', ''
+SELECT er.idEntity3, er.idEntity1, er.idEntity2, e2qla.entry, e2fe.name, e2fe.name as cxEntry, e2fe.entry as nick, '', '', er.idEntityRelation
 FROM EntityRelation er
 JOIN Qualia e2qla ON (er.idEntity3 = e2qla.idEntity)
 JOIN View_FrameElement fe ON (er.idEntity2 = fe.idEntity)
@@ -104,7 +104,7 @@ AND (e2fe.idLanguage = {$idLanguage})
 JOIN entry er on (constraints.entry = er.entry)
 WHERE (er.idLanguage = {$idLanguage})
 UNION
-SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, rt.entry, e2fe.name, e2fe.name as cxEntry, e2fe.entry as nick, '', '', '',rt.entry
+SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, rt.entry, e2fe.name, e2fe.name as cxEntry, e2fe.entry as nick, '', '', er.idEntityRelation,rt.entry
 FROM EntityRelation er
 JOIN RelationType rt on (er.idRelationType = rt.idRelationType)
 JOIN View_FrameElement fe ON (er.idEntity2 = fe.idEntity)
@@ -113,21 +113,21 @@ WHERE (er.idEntity1 = {$idConstrained})
 AND (rt.entry = 'rel_festandsforfe')
 AND (e2fe.idLanguage = {$idLanguage})
 UNION
-SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', '',rt.entry
+SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', er.idEntityRelation,rt.entry
 FROM EntityRelation er
 JOIN RelationType rt on (er.idRelationType = rt.idRelationType)
 JOIN LU ON (er.idEntity2 = lu.idEntity)
 WHERE (er.idEntity1 = {$idConstrained})
 AND (rt.entry = 'rel_festandsforlu')
 UNION
-SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', '',rt.entry
+SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', er.idEntityRelation,rt.entry
 FROM EntityRelation er
 JOIN RelationType rt on (er.idRelationType = rt.idRelationType)
 JOIN LU ON (er.idEntity2 = lu.idEntity)
 WHERE (er.idEntity1 = {$idConstrained})
 AND (rt.entry = 'rel_lustandsforlu')
 UNION
-SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', '',rt.entry
+SELECT er.idEntityRelation, er.idEntity1, er.idEntity2, lu.name, lu.name, lu.name as cxEntry, lu.name as nick, '', '', er.idEntityRelation,rt.entry
 FROM EntityRelation er
 JOIN RelationType rt on (er.idRelationType = rt.idRelationType)
 JOIN LU ON (er.idEntity2 = lu.idEntity)
@@ -326,7 +326,7 @@ HERE;
 
         $cmd = <<<HERE
         SELECT r.idEntityRelation as idConstraint,
-            relatedLU.name  AS name, r.prefix, 
+            relatedLU.name  AS name, r.prefix,
             r.relationtype  AS qualia,
             IFNULL(q.info,'-') AS qualiarelation
         FROM View_Relation r

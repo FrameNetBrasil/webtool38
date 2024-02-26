@@ -24,6 +24,7 @@ class ConstraintInstance extends Repository
         parent::__construct(ConstraintInstanceModel::class, $id);
     }
 
+    /*
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('idConstraintInstance, idConstraintType, idConstraint, idConstrained, idConstrainedBy');
@@ -131,6 +132,6 @@ class ConstraintInstance extends Repository
     {
         Base::deleteEntityRelation($idEntityFE, 'rel_festandsforlu', $idEntityLU);
     }
-
+    */
 
 }

@@ -10,7 +10,6 @@ class QualiaService
 {
     public static function listRelationsForSelect()
     {
-        $data = Manager::getData();
         $qualia = new Qualia();
         return $qualia->listForSelect();
     }

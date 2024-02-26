@@ -5,9 +5,9 @@
     hx-trigger="reload-gridChildST from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/semanticType/{{$data->idEntity}}/childGrid"
+    hx-get="/semanticType/{{$idEntity}}/childGrid"
 >
-    @foreach($data->relations as $relation)
+    @foreach($relations as $relation)
         <tr>
             <td class="wt-datagrid-action">
                 <div

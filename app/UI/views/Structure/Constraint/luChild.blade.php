@@ -1,18 +1,19 @@
-<x-layout.child>
-    <x-slot:left>
+<div class="grid ">
+    <div class="col">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/lu/{{$data->idLU}}/constraints/formNew"
+            hx-get="/lu/{{$idLU}}/constraints/formNew"
         ></div>
-    </x-slot:left>
-    <x-slot:right>
+    </div>
+    <div class="col">
         <div
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/lu/{{$data->idLU}}/constraints/grid"
+            hx-get="/lu/{{$idLU}}/constraints/grid"
         ></div>
-    </x-slot:right>
-</x-layout.child>
+    </div>
+</div>
+<div id="luConstraintChildPane"></div>

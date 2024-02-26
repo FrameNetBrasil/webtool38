@@ -15,15 +15,10 @@ use App\Repositories\ViewRelation;
 
 class RelationService extends Controller
 {
-    public function delete(int $id)
+    public static function delete(int $id)
     {
-        try {
-            $relation = new EntityRelation($id);
-            $relation->delete();
-            return $this->renderNotify("success", "Relation deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
+        $relation = new EntityRelation($id);
+        $relation->delete();
     }
 
     public static function newRelation(RelationData $data)
@@ -37,15 +32,13 @@ class RelationService extends Controller
         $rt = new RelationType();
         $rt->getByEntry($relationTypeEntry);
         $data = RelationData::from([
-            'idRelationType' =>
+            'idRelationType' => $rt->idRelationType,
+            'idEntity1' => $idEntity1,
+            'idEntity2' => $idEntity2,
+            'idEntity3' => $idEntity3,
+            'idRelation' => $idRelation
         ]);
-        self::newRelation()
-        $ci->saveData([
-            'idConstraintType' => $ct->idConstraintType,
-            'idConstraint' => $idConstraint,
-            'idConstrained' => $idConstrained,
-            'idConstrainedBy' => $idConstrainedBy
-        ]);
+        self::newRelation($data);
     }
 
     static public function deleteAll(int $idEntity)
@@ -81,6 +74,7 @@ class RelationService extends Controller
         }
         return $result;
     }
+
     public static function listRelationsFE(int $idEntityRelationBase)
     {
         $frame = new Frame();
@@ -143,7 +137,8 @@ class RelationService extends Controller
         }
     }
 
-    public static function updateFramalDomain(Frame $frame, UpdateFrameClassificationData $data) {
+    public static function updateFramalDomain(Frame $frame, UpdateFrameClassificationData $data)
+    {
         $relationType = new RelationType();
         $relationType->getByEntry('rel_framal_domain');
         $relation = new EntityRelation();
@@ -151,7 +146,7 @@ class RelationService extends Controller
         try {
             $relation->removeFromEntityByRelationType($frame->idEntity, $relationType->idRelationType);
             $st = new SemanticType();
-            foreach($data->framalData as $idSemanticType) {
+            foreach ($data->framalData as $idSemanticType) {
                 $st->getbyId($idSemanticType);
                 $relation->setPersistent(false);
                 $relation->saveData([
@@ -167,7 +162,8 @@ class RelationService extends Controller
         }
     }
 
-    public static function updateFramalType(Frame $frame, UpdateFrameClassificationData $data) {
+    public static function updateFramalType(Frame $frame, UpdateFrameClassificationData $data)
+    {
         $relationType = new RelationType();
         $relationType->getByEntry('rel_framal_type');
         $relation = new EntityRelation();
@@ -175,7 +171,7 @@ class RelationService extends Controller
         try {
             $relation->removeFromEntityByRelationType($frame->idEntity, $relationType->idRelationType);
             $st = new SemanticType();
-            foreach($data->framalData as $idSemanticType) {
+            foreach ($data->framalData as $idSemanticType) {
                 $st->getbyId($idSemanticType);
                 $relation->setPersistent(false);
                 $relation->saveData([

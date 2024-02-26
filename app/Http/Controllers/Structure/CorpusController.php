@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers\Structure;
 
+use App\Data\CreateCorpusData;
+use App\Data\SearchCorpusData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Corpus;
-use App\Repositories\Domain;
-use App\Repositories\EntityRelation;
 use App\Repositories\Entry;
-use App\Repositories\Frame;
-use App\Repositories\FrameElement;
 use App\Services\AppService;
 use App\Services\CorpusService;
-use App\Services\EntryService;
-use App\Services\FrameService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
 use Collective\Annotations\Routing\Attributes\Attributes\Put;
-use Illuminate\Support\Facades\Request;
 
 #[Middleware(name: 'auth')]
 class CorpusController extends Controller
@@ -26,25 +21,24 @@ class CorpusController extends Controller
     #[Get(path: '/corpus')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
-        $this->data->search->_token = csrf_token();
-        return $this->render('pageBrowse');
+        data('search', session('searchCorpus') ?? SearchCorpusData::from());
+        return $this->render('browse');
     }
 
     #[Get(path: '/corpus/new')]
     public function new()
     {
-        return $this->render("pageNew");
+        return $this->render("new");
     }
 
     #[Post(path: '/corpus')]
-    public function newCorpus()
+    public function postCorpus()
     {
         try {
             $corpus = new Corpus();
-            $corpus->create($this->data->new);
-            $this->data->corpus = $corpus;
-            return $this->clientRedirect("/corpus/{$corpus->idCorpus}/edit");
+            $corpus->create(CreateCorpusData::from(data('new')));
+            data('corpus', $corpus);
+            return $this->clientRedirect("/corpus/{$corpus->idCorpus}");
         } catch (\Exception $e) {
             return $this->renderNotify("error", $e->getMessage());
         }
@@ -53,30 +47,71 @@ class CorpusController extends Controller
     #[Post(path: '/corpus/grid')]
     public function grid()
     {
-        $this->data->search->_token = csrf_token();
-        $response = $this->render("slotGrid");
-        $query = [
-            'search_corpus' => $this->data->search->corpus,
-            'search_document' => $this->data->search->document,
-        ];
-        $response->header('HX-Replace-Url', '/corpus?' . http_build_query($query));
-        return $response;
+        data('search', SearchCorpusData::from(data('search')));
+        session(['searchCorpus' => $this->data->search]);
+        return $this->render("grid");
     }
 
     #[Post(path: '/corpus/listForTree')]
     public function listForTree()
     {
-        return CorpusService::listForTree();
+        $search = SearchCorpusData::from($this->data);
+        $result = [];
+        $id = data('id', default: '');
+        if ($id != '') {
+            if ($id[0] == 'c') {
+                $idCorpus = substr($id, 1);
+                $result = DocumentController::listForTreeByCorpus($idCorpus);
+            }
+            if ($id[0] == 'd') {
+                $idDocument = substr($id, 1);
+                $result = DocumentController::listForTreeByDocument($idDocument);
+            }
+            return $result;
+        } else {
+            $icon = 'material-icons-outlined wt-tree-icon wt-icon-corpus';
+            if ($search->document == '') {
+                $corpus = new Corpus();
+                $corpora = $corpus->listByFilter($search)->asQuery()->getResult();
+                foreach ($corpora as $row) {
+                    $node = [];
+                    $node['id'] = 'c' . $row['idCorpus'];
+                    $node['type'] = 'corpus';
+                    $node['name'] = [$row['name']];
+                    $node['state'] = 'closed';
+                    $node['iconCls'] = 'material-icons-outlined wt-tree-icon wt-icon-corpus';
+                    $node['children'] = [];
+                    $result[] = $node;
+                }
+            } else {
+                $result = DocumentController::listForTreeByName($search->document);
+                $icon = "material-icons wt-tree-icon wt-icon-document";
+            }
+            $total = count($result);
+            return [
+                'total' => $total,
+                'rows' => $result,
+                'footer' => [
+                    [
+                        'type' => 'corpus',
+                        'name' => ["{$total} record(s)", ''],
+                        'iconCls' => $icon
+                    ]
+                ]
+            ];
+        }
+
     }
 
-    #[Get(path: '/corpus/{id}/edit')]
+    #[Get(path: '/corpus/{id}')]
+    #[Get(path: '/corpus/{id}/main')]
     public function edit(string $id)
     {
-        $this->data->corpus = new Corpus($id);
-        return $this->render("pageEdit");
+        $corpus = new Corpus($id);
+        data('corpus', $corpus);
+        return $this->render("edit");
     }
-
-    #[Delete(path: '/corpus/{id}/delete')]
+    #[Delete(path: '/corpus/{id}')]
     public function delete(string $id)
     {
         try {
@@ -87,47 +122,38 @@ class CorpusController extends Controller
             return $this->renderNotify("error", $e->getMessage());
         }
     }
+
     #[Get(path: '/corpus/{id}/entries')]
-    public function formEntries(string $id)
+    public function entries(string $id)
     {
-        $this->data->corpus = new Corpus($id);
+        $corpus = new Corpus($id);
+        data('corpus', $corpus);
         $entry = new Entry();
-        $this->data->entries = $entry->listByIdEntity($this->data->corpus->idEntity);
-        $this->data->languages = AppService::availableLanguages();
-        return $this->render("entries");
+        data('entries', $entry->listByIdEntity($corpus->idEntity));
+        data('languages', AppService::availableLanguages());
+        return $this->render("Structure.Entry.main");
     }
-
-    #[Put(path: '/corpus/{id}/entries')]
-    public function entries(int $id)
-    {
-        try {
-            EntryService::updateEntries($this->data);
-            return $this->renderNotify("success", "Translations recorded.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
     #[Get(path: '/corpus/{id}/documents')]
     public function documents(string $id)
     {
-        $this->data->idCorpus = $id;
-        return $this->render("documents");
+        data('idCorpus', $id);
+        return $this->render("Structure.Document.child");
     }
 
     #[Get(path: '/corpus/{id}/documents/formNew')]
     public function formNewDocument(string $id)
     {
-        $this->data->idCorpus = $id;
-        return $this->render("Structure.Corpus.Document.formNew");
+        data('idCorpus', $id);
+        return $this->render("Structure.Document.formNew");
     }
 
     #[Get(path: '/corpus/{idCorpus}/documents/grid')]
     public function gridDocument(string $id)
     {
-        $this->data->idCorpus = $id;
-        $this->data->documents = CorpusService::listDocumentForGrid($id);
-        return $this->render("Structure.Corpus.Document.grid");
+        data('idCorpus', $id);
+        debug(DocumentController::listForTreeByCorpus($id));
+        data('documents', DocumentController::listForTreeByCorpus($id));
+        return $this->render("Structure.Document.grid");
     }
 
 }

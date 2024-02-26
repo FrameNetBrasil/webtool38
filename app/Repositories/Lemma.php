@@ -18,17 +18,12 @@ class Lemma extends Repository
     public ?object $udpos;
     public ?object $language;
     public ?array $lexemes;
-    public ?array $lexemeentries;
+    public ?array $lexemeEntries;
     public ?array $lus;
 
     public function __construct(int $id = null)
     {
         parent::__construct(LemmaModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdLemma();
     }
 
     public function getIdEntity()
@@ -77,12 +72,22 @@ class Lemma extends Repository
         $criteria = $this->getCriteria()
             ->select('*')
             ->orderBy('idLemma');
-        if ($filter->idLemma ?? false) {
-            $criteria->where("idLemma LIKE '{$filter->idLemma}%'");
-        }
-        if ($filter->lemma ?? false) {
-            if (strlen($filter->lemma) > 2) {
-                $criteria->where("name","startswith",$filter->lemma);
+        if (isset($filter->idLemma)) {
+            $criteria->where("idLemma","=",$filter->idLemma);
+        } else {
+            if (isset($filter->lemma)) {
+                if(str_contains($filter->lemma,'"')) {
+                    $lemma = str_replace('"','', $filter->lemma);
+                    $criteria->where("name", "=", $lemma);
+                } else {
+                    if (strlen($filter->lemma) > 2) {
+                        $criteria->where("name", "startswith", $filter->lemma);
+                    } else {
+                        $criteria->where("name", "startswith", '-none');
+                    }
+                }
+            } else {
+                $criteria->where("name", "startswith", '-none');
             }
         }
         if ($filter->idLanguage ?? false) {

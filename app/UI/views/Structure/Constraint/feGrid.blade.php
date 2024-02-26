@@ -5,15 +5,15 @@
     hx-trigger="reload-gridConstraintFE from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/fes/{{$data->idFrameElement}}/constraints/grid"
+    hx-get="/fe/{{$idFrameElement}}/constraints/grid"
 >
-    @foreach($data->constraints as $constraint)
+    @foreach($constraints as $constraint)
         <tr>
             <td class="wt-datagrid-action">
                 <div
                     class="action material-icons-outlined wt-tree-icon wt-icon-delete"
                     title="delete FE Constraint"
-                    hx-delete="/fes/constraints/{{$constraint['idConstraint']}}"
+                    hx-delete="/constraint/fe/{{$constraint['idConstraintInstance']}}"
                 ></div>
             </td>
             <td>

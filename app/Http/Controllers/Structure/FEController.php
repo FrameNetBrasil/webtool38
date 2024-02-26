@@ -217,57 +217,11 @@ class FEController extends Controller
         data('idFrameElement', $id);
         $fe = new FrameElement($id);
         $constraint = new ViewConstraint();
+        debug($constraint->listByIdConstrained($fe->idEntity));
         data('constraints', $constraint->listByIdConstrained($fe->idEntity));
         return $this->render("Structure.Constraint.feGrid");
     }
 
-    #[Post(path: '/fe/{id}/constraints')]
-    public function constraintsNew($id)
-    {
-        try {
-            data('idFrameElement', $id);
-            $fe = new FrameElement($id);
-            $constraintEntry = data('constraint');
-            if ($constraintEntry == 'rel_constraint_frame') {
-                $cn = Base::createEntity('CN', 'con');
-                $frame = new Frame(data('idFrameConstraint'));
-                ConstraintService::create($cn->idEntity, $constraintEntry, $fe->idEntity, $frame->idEntity);
-            } else if ($constraintEntry == 'rel_qualia') {
-                $feQualia = new FrameElement(data('idFEQualiaConstraint'));
-                $qualia = new Qualia(data('idQualiaConstraint'));
-                $relation = RelationData::from([
-                    'i'
-                ]);
-
-                RelationService::newRelation($relation);
-                Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feQualia->idEntity, $qualia->idEntity);
-            } else if ($constraint == 'rel_festandsforfe') {
-                $fe = new FrameElement($id);
-                $feMetonym = new FrameElement($this->data->idFEMetonymConstraint);
-                Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feMetonym->idEntity);
-            } else if ($constraint == 'rel_festandsforlu') {
-                $fe = new FrameElement($id);
-                $luMetonym = new LU($this->data->idLUMetonymConstraint);
-                Base::createEntityRelation($fe->idEntity, $this->data->constraint, $luMetonym->idEntity);
-            }
-            $this->trigger('reload-gridConstraintFE');
-            return $this->renderNotify("success", "Constraint created.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/fe/constraints/{idEntityRelation}')]
-    public function deleteConstraint(int $idEntityRelation)
-    {
-        try {
-            FrameService::deleteRelation($idEntityRelation);
-            $this->trigger('reload-gridConstraintFE');
-            return $this->renderNotify("success", "Constraint deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
 
     #[Get(path: '/fe/{id}/semanticTypes')]
     public function semanticTypes(string $id)

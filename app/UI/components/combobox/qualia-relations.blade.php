@@ -7,6 +7,7 @@
         valueField: 'idQualia',
         textField: 'name',
         mode: 'remote',
+        method: 'get',
         url: "/qualia/listRelationsForSelect"
     });
 @endpush

@@ -4,13 +4,13 @@
             <x-combobox.semantic-type
                 id="new_idSemanticType"
                 label="Semantic Type"
-                :root="$data->root"
+                :root="$root"
             ></x-combobox.semantic-type>
         </x-slot:fields>
         <x-slot:buttons>
             <x-submit
                 label="Add Semantic Type"
-                hx-post="/semanticType/{{$data->idEntity}}/add"
+                hx-post="/semanticType/{{$idEntity}}/add"
             ></x-submit>
         </x-slot:buttons>
     </x-form>

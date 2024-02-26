@@ -38,6 +38,29 @@
     content: $lexicon-icon;
 }
 
+.wt-icon-lemma {
+    color: $lemma-color;
+}
+
+.wt-icon-lemma:after {
+    content: $lemma-icon;
+}
+
+.wt-icon-lexeme {
+    color: $lexeme-color;
+}
+
+.wt-icon-lexeme:after {
+    content: $lexeme-icon;
+}
+.wt-icon-wordform {
+    color: $wordform-color;
+}
+
+.wt-icon-wordform:after {
+    content: $wordform-icon;
+}
+
 .wt-icon-lu {
     color: $lu-color;
 }

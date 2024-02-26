@@ -11,7 +11,6 @@ use App\Repositories\Entry;
 use App\Repositories\Frame;
 use App\Repositories\ViewFrame;
 use App\Services\AppService;
-use App\Services\FrameService;
 use App\Services\RelationService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
@@ -78,7 +77,6 @@ class FrameController extends Controller
     public function listForTree()
     {
         $search = SearchFrameData::from($this->data);
-        debug($search);
         $result = [];
         $id = data('id', default:'');
         if ($id != '') {
@@ -91,7 +89,6 @@ class FrameController extends Controller
             if (($search->fe == '') && ($search->lu == '')) {
                 $frame = new ViewFrame();
                 $frames = $frame->listByFilter($search)->getResult();
-                debug($frames);
                 foreach ($frames as $row) {
                     $node = [];
                     $node['id'] = 'f' . $row['idFrame'];

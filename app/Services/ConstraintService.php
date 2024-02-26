@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Controllers\Controller;
 use App\Repositories\ConstraintInstance;
 use App\Repositories\ConstraintType;
+use App\Repositories\EntityRelation;
 
 class ConstraintService extends Controller
 {
@@ -19,6 +20,12 @@ class ConstraintService extends Controller
             'idConstrained' => $idConstrained,
             'idConstrainedBy' => $idConstrainedBy
         ]);
+    }
+
+    public static function delete(int $idConstraintInstance)
+    {
+        $ci = new ConstraintInstance($idConstraintInstance);
+        $ci->delete();
     }
 
 }

@@ -4,7 +4,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/fe/{{$data->idFrameElement}}/constraints/formNew"
+            hx-get="/fe/{{$idFrameElement}}/constraints/formNew"
         ></div>
     </div>
     <div class="col">
@@ -12,7 +12,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/fe/{{$data->idFrameElement}}/constraints/grid"
+            hx-get="/fe/{{$idFrameElement}}/constraints/grid"
         ></div>
     </div>
 </div>

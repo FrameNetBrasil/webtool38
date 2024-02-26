@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Data\CreateDocumentData;
 use App\Models\DocumentModel;
 use App\Services\AppService;
 use Maestro\Persistence\Repository;
@@ -62,7 +63,8 @@ class Document extends Repository
             ->select(['*', 'name'])
             ->distinct(true)
             ->orderBy('name');
-        Base::entryLanguage($criteria);
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
         if ($filter->idDocument ?? false) {
             $criteria->where("idDocument = {$filter->idDocument}");
         }
@@ -74,6 +76,9 @@ class Document extends Repository
         }
         if ($filter->image ?? false) {
             $criteria->where("documentMM.sentenceMM.imageMM.name", "startswith", $filter->image);
+        }
+        if (isset($filter->name)) {
+            $criteria->where("name", "startswith", $filter->name);
         }
         return $criteria;
     }
@@ -127,17 +132,18 @@ class Document extends Repository
         return $idSubCorpus;
     }
 
-    public function create($data)
+    public function create(CreateDocumentData $data)
     {
         $this->beginTransaction();
         try {
+            $baseEntry = strtolower('doc_' . $data->nameEn);
             $entity = new Entity();
-            $idEntity = $entity->create('DO', $data->entry);
+            $idEntity = $entity->create('DO', $baseEntry);
             $entry = new Entry();
-            $entry->create($data->entry, $data->name, $idEntity);
+            $entry->create($baseEntry, $data->nameEn, $idEntity);
             $this->setPersistent(false);
             $id = $this->saveData([
-                'entry' => $data->entry,
+                'entry' => $baseEntry,
                 'active' => 1,
                 'idEntity' => $idEntity,
                 'idCorpus' => $data->idCorpus,
@@ -463,7 +469,7 @@ HERE;
         }
 
         $from = <<<HERE
-  FROM document 
+  FROM document
   INNER JOIN paragraph ON (document.idDocument = paragraph.idDocument)
   INNER JOIN sentence ON (paragraph.idParagraph = sentence.idParagraph)
   INNER JOIN annotationset ON (sentence.idSentence = annotationset.idSentence)

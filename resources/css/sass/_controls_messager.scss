@@ -23,6 +23,11 @@
      */
 }
 
+.messager-body {
+    width: auto !important;
+    display:flex;
+}
+
 .wt-messager-success {
 
     .messager-body {
@@ -89,6 +94,7 @@
     .body {
         padding-top: 0.75rem;
         flex-grow: 1;
+        width: auto !important;
 
         .label {
             display: inline-block;

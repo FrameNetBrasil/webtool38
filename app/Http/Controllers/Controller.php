@@ -50,7 +50,7 @@ class Controller extends BaseController
             $viewName = str_replace("\\", ".", str_replace("Controller", "", str_replace("App\\Http\\Controllers\\", "", $class))) . ".{$view}";
         }
         $vars = get_object_vars($this->data);
-        $vars['data'] = $this->data;
+        //$vars['data'] = $this->data;
         if (is_null($fragment)) {
             $response = response()
 //                ->view($viewName, ['data' => $this->data]);

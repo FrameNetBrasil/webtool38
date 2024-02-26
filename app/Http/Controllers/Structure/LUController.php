@@ -111,6 +111,7 @@ class LUController extends Controller
         $this->data->_layout = 'main';
         return $this->edit($id);
     }
+
     #[Delete(path: '/lu/{id}')]
     public function delete(string $id)
     {
@@ -144,63 +145,28 @@ class LUController extends Controller
     #[Get(path: '/lu/{id}/constraints')]
     public function constraints(string $id)
     {
-        $this->data->idLU = $id;
-        return $this->render("Structure.LU.Constraint.child");
+        data('idLU', $id);
+        return $this->render("Structure.Constraint.luChild");
     }
 
     #[Get(path: '/lu/{id}/constraints/formNew/{fragment?}')]
     public function constraintsFormNew(int $id, ?string $fragment = null)
     {
-        $this->data->idLU = $id;
-        $this->data->lu = new LU($id);
-        $this->data->fragment = $fragment;
-        return $this->render("Structure.LU.Constraint.formNew", $fragment);
+        data('idLU', $id);
+        data('lu', new LU($id));
+        data('fragment', $fragment ?? '');
+        return $this->render("Structure.Constraint.luFormNew", $fragment);
     }
 
     #[Get(path: '/lu/{id}/constraints/grid')]
     public function constraintsGrid(int $id)
     {
-        debug($this->data);
-        $this->data->idLU = $id;
+        data('idLU', $id);
         $lu = new LU($id);
+        data('lu', $lu);
         $constraint = new ViewConstraint();
-        $this->data->constraints = $constraint->listByIdConstrained($lu->idEntity);
-        return $this->render("Structure.LU.Constraint.grid");
-    }
-
-    #[Post(path: '/lu/{id}/constraints')]
-    public function constraintsNew($id)
-    {
-        try {
-            debug($this->data);
-            $this->data->idLU = $id;
-            if ($this->data->constraint == 'rel_lustandsforlu') {
-                $lu = new LU($id);
-                $luMetonym = new LU($this->data->idLUMetonymConstraint);
-                Base::createEntityRelation($lu->idEntity, $this->data->constraint, $luMetonym->idEntity);
-            } else if ($this->data->constraint == 'rel_luequivalence') {
-                $lu = new LU($id);
-                $luEquivalence = new LU($this->data->idLUEquivalenceConstraint);
-                Base::createEntityRelation($lu->idEntity, $this->data->constraint, $luEquivalence->idEntity);
-            }
-            $this->trigger('reload-gridConstraintLU');
-            return $this->renderNotify("success", "Constraint created.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
-    }
-
-    #[Delete(path: '/lu/constraints/{idEntityRelation}')]
-    public function deleteConstraint(int $idEntityRelation)
-    {
-        try {
-            $relation = new EntityRelation($idEntityRelation);
-            $relation->delete();
-            $this->trigger('reload-gridConstraintLU');
-            return $this->renderNotify("success", "Constraint deleted.");
-        } catch (\Exception $e) {
-            return $this->renderNotify("error", $e->getMessage());
-        }
+        data('constraints', $constraint->listByIdConstrained($lu->idEntity));
+        return $this->render("Structure.Constraint.luGrid");
     }
 
     #[Get(path: '/lu/{id}/semanticTypes')]

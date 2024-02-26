@@ -8,9 +8,9 @@
 }
 
 .color_frame {
-    color: var(--wt-frame-color);
-    fill: var(--wt-frame-color);
-    stroke: var(--wt-frame-color);
+    color: $frame-color;
+    fill: $frame-color;
+    stroke: $frame-color;
 }
 
 .color_frame--text {
@@ -43,4 +43,8 @@
 
 .color_lexicon {
     color: var(--wt-lexicon-color);
+}
+
+.color_corpus {
+    color: $corpus-color;
 }
