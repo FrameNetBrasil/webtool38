@@ -19,7 +19,8 @@
     }
 
     tr:nth-child(even) {
-        background-color: var(--wt-bg-datagrid-row-1);
+        //background-color: var(--wt-bg-datagrid-row-1);
+        background-color: white;//var(--wt-bg-datagrid-row-1);
     }
 
     tr:hover {

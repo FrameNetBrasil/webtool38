@@ -1,4 +1,4 @@
-<x-dynamic-component component="layout.{{$data->_layout ?? 'detail'}}">
+<x-dynamic-component component="layout.{{$_layout ?? 'detail'}}">
     <x-slot:title>
         Relation Type
     </x-slot:title>

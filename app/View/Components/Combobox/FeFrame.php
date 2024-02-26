@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Combobox;
 
+use App\Repositories\Frame;
 use App\Services\FrameService;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -23,7 +24,8 @@ class FeFrame extends Component
     )
     {
         $icon = config('webtool.fe.icon.grid');
-        $fes = FrameService::listFEforSelect($this->idFrame);
+        $frame = new Frame($idFrame);
+        $fes = $frame->listFE()->asQuery()->getResult();
         $this->options = [];
         if ($this->hasNull) {
             $this->options[] = [

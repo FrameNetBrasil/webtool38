@@ -5,7 +5,7 @@
         $('#mainGridTable').treegrid({
             fit: true,
             url: "/frame/listForTree",
-            queryParams: {{ Js::from($data->search) }},
+            queryParams: {{ Js::from($search) }},
             showHeader: false,
             rownumbers: false,
             idField: 'id',

@@ -6,11 +6,11 @@
     -moz-border-radius: var(--wt-controls-border-radius);
     -webkit-border-radius: var(--wt-controls-border-radius);
     border-radius: var(--wt-controls-border-radius);
-    border: 1px solid var(--wt-grey-8);
+    border: 1px solid var(--wt-border-form);
 
     .form-header {
         position: relative;
-        background-color: var(--wt-bg-form);
+        background-color: var(--wt-bg-form-header);
     }
 
     .form-title {

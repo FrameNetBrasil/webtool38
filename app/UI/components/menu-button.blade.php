@@ -1,4 +1,4 @@
-<a href="#" id="{{$id}}">{{$label}}</a>
+<a href="#" id="{{$id}}" {{$attributes}} >{{$label}}</a>
 @push('onload')
     $('#{{$id}}').menubutton({
         plain: {{$plain}},

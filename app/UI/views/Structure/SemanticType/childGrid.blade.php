@@ -1,14 +1,14 @@
 <x-datagrid
     id="gridChildST"
     title="SemanticTypes"
+    type="child"
     hx-trigger="reload-gridChildST from:body"
     hx-target="this"
     hx-swap="outerHTML"
     hx-get="/semanticType/{{$data->idEntity}}/childGrid"
-    height="250px"
 >
     @foreach($data->relations as $relation)
-        <tr class="">
+        <tr>
             <td class="wt-datagrid-action">
                 <div
                     class="action material-icons-outlined wt-datagrid-icon wt-icon-delete"

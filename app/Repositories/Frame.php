@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Data\UpdateFrameClassificationData;
 use App\Models\FrameModel;
 use App\Services\AppService;
 use App\Services\RelationService;
@@ -95,6 +96,8 @@ class Frame extends Repository
         Base::entryLanguage($criteria);
         return $criteria->asQuery()->asObjectArray()[0];
     }
+
+
 
     public function listByFilter($filter)
     {
@@ -476,6 +479,19 @@ HERE;
 //        $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name');
         $result = collect($this->query($cmd))->groupBy('entry')->all();
         return $result;
+    }
+
+    public function getClassificationLabels()
+    {
+        $classification = [];
+        $result = $this->getClassification();
+        foreach ($result as $framal => $values) {
+            foreach ($values as $row) {
+                $classification[$framal][] = $row['name'];
+            }
+        }
+        $classification['id'][] = "#" . $this->idFrame;
+        return $classification;
     }
 
     public function listFEDirectRelations(int $idEntityRelationBase)

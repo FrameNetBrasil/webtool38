@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Checkbox;
 
+use App\Repositories\Frame;
 use App\Services\FrameService;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -21,7 +22,8 @@ class FeFrame extends Component
     )
     {
         $icon = config('webtool.fe.icon.tree');
-        $fes = FrameService::listFEforSelect($this->idFrame);
+        $frame = new Frame($idFrame);
+        $fes = $frame->listFE()->asQuery()->getResult();
         $this->options = [];
         foreach($icon as $i => $j) {
             foreach ($fes as $fe) {

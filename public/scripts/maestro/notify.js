@@ -67,6 +67,7 @@
             content: "<span class='material-icons wt-messager-icon icon'></span><span class='label'>" + _9.label + "</span>" + _9.msg,
             timeout: 4000
         }, _9);
+        console.log(_a);
         var _b = $("<div class=\"messager-body\"></div>").appendTo("body");
         _b.dialog($.extend({}, _a, {
             noheader: (_a.title ? false : true),

@@ -1,0 +1,97 @@
+<x-layout.content>
+    <x-form id="feConstraintFormNew" title="New FrameElement Constraint" center="true">
+        <x-slot:toolbar>
+            <x-link-button
+                id="feConstraintFormNewFrame"
+                label="Frame"
+                hx-get="/fe/{{$idFrameElement}}/constraints/formNew/frame"
+                hx-target="#feConstraintFormNewFields"
+            ></x-link-button>
+            <x-link-button
+                id="feConstraintFormNewQualia"
+                label="Qualia"
+                hx-get="/fe/{{$idFrameElement}}/constraints/formNew/qualia"
+                hx-target="#feConstraintFormNewFields"
+            ></x-link-button>
+            <x-link-button
+                id="feConstraintFormNewMetonymFE"
+                label="Metonym-FE"
+                hx-get="/fe/{{$idFrameElement}}/constraints/formNew/metonymFE"
+                hx-target="#feConstraintFormNewFields"
+            ></x-link-button>
+            <x-link-button
+                id="feConstraintFormNewMetonymLU"
+                label="Metonym-LU"
+                hx-get="/fe/{{$idFrameElement}}/constraints/formNew/metonymLU"
+                hx-target="#feConstraintFormNewFields"
+            ></x-link-button>
+        </x-slot:toolbar>
+        <x-slot:fields>
+            <div id="feConstraintFormNewFields">
+                @if ($fragment)
+                    @fragment('frame')
+                        <x-layout.content>
+                            <x-hidden-field
+                                id="constraint"
+                                value="rel_constraint_frame"
+                            ></x-hidden-field>
+                            <x-combobox.frame
+                                id="idFrameConstraint"
+                                label="Frame"
+                            ></x-combobox.frame>
+                        </x-layout.content>
+                    @endfragment
+                    @fragment('qualia')
+                        <x-layout.content>
+                            <x-hidden-field
+                                id="constraint"
+                                value="rel_qualia"
+                            ></x-hidden-field>
+                            <x-combobox.qualia-relations
+                                id="idQualiaConstraint"
+                                label="Qualia relation"
+                            ></x-combobox.qualia-relations>
+                            <x-combobox.fe-frame
+                                id="idFEQualiaConstraint"
+                                label="Related FE"
+                                :idFrame="$frameElement->idFrame"
+                            ></x-combobox.fe-frame>
+                        </x-layout.content>
+                    @endfragment
+                    @fragment('metonymFE')
+                        <x-layout.content>
+                            <x-hidden-field
+                                id="constraint"
+                                value="rel_festandsforfe"
+                            ></x-hidden-field>
+                            <x-combobox.fe-frame
+                                id="idFEMetonymConstraint"
+                                label="Related FE"
+                                :idFrame="$frameElement->idFrame"
+                            ></x-combobox.fe-frame>
+                        </x-layout.content>
+                    @endfragment
+                    @fragment('metonymLU')
+                        <x-layout.content>
+                            <x-hidden-field
+                                id="constraint"
+                                value="rel_festandsforlu"
+                            ></x-hidden-field>
+                            <x-combobox.lu-frame
+                                id="idLUMetonymConstraint"
+                                label="Related LU"
+                                :idFrame="$frameElement->idFrame"
+                            ></x-combobox.lu-frame>
+                        </x-layout.content>
+                    @endfragment
+                @endif
+            </div>
+        </x-slot:fields>
+        <x-slot:buttons>
+            <x-submit
+                label="Add Constraint"
+                hx-post="/fe/{{$idFrameElement}}/constraints"
+            ></x-submit>
+        </x-slot:buttons>
+    </x-form>
+</x-layout.content>

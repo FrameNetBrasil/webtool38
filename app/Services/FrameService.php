@@ -20,12 +20,6 @@ class FrameService
 
 
 
-    public static function listFEforSelect(int $idFrame)
-    {
-        $frame = new Frame($idFrame);
-        return $frame->listFE()->asQuery()->getResult();
-    }
-
     public static function listLUforSelect(int $idFrame)
     {
         $frame = new Frame($idFrame);
@@ -33,17 +27,6 @@ class FrameService
     }
 
 
-
-
-
-
-    public static function newConstraintFE(string $constraintEntry, int $idFEConstrained, int $idFrameConstraint)
-    {
-        $constraint = Base::createEntity('CN', 'con');
-        $feConstrained = new FrameElement($idFEConstrained);
-        $frameConstraint = new Frame($idFrameConstraint);
-        Base::createConstraintInstance($constraint->idEntity, $constraintEntry, $feConstrained->idEntity, $frameConstraint->idEntity);
-    }
 
     public static function listSemanticTypes(int $idFrame)
     {
@@ -75,17 +58,6 @@ class FrameService
         $semanticType->add($frameElement->idEntity);
     }
 
-    public static function getClassification($frame)
-    {
-        $classification = [];
-        $result = $frame->getClassification();
-        foreach ($result as $framal => $values) {
-            foreach ($values as $row) {
-                $classification[$framal][] = $row['name'];
-            }
-        }
-        $classification['id'][] = "#" . $frame->idFrame;
-        return $classification;
-    }
+
 
 }

@@ -4,11 +4,11 @@
         <x-slot:edit>
             <div class="grid grid-nogutter">
                 <div class="col-8 title">
-                    <span class="color_frame">{{$data->frameElement->frame->name}}.{{$data->frameElement?->name}}</span>
+                    <span class="color_frame">{{$frameElement->frame->name}}.{{$frameElement?->name}}</span>
                 </div>
                 <div class="col-4 text-right description">
-                    <x-tag label="{{$data->frameElement->frame->name}}"></x-tag>
-                    <x-tag label="#{{$data->frameElement->idFrameElement}}"></x-tag>
+                    <x-tag label="{{$frameElement->frame->name}}"></x-tag>
+                    <x-tag label="#{{$frameElement->idFrameElement}}"></x-tag>
                 </div>
             </div>
         </x-slot:edit>
@@ -17,25 +17,25 @@
                 <x-link-button
                     id="menuFEEdit"
                     label="Edit"
-                    hx-get="/fe/{{$data->frameElement->idFrameElement}}/formEdit"
+                    hx-get="/fe/{{$frameElement->idFrameElement}}/formEdit"
                     hx-target="#fePane"
                 ></x-link-button>
                 <x-link-button
                     id="menuFEEntries"
                     label="Translations"
-                    hx-get="/fe/{{$data->frameElement->idFrameElement}}/entries"
+                    hx-get="/fe/{{$frameElement->idFrameElement}}/entries"
                     hx-target="#fePane"
                 ></x-link-button>
                 <x-link-button
                     id="menuFEConstraints"
                     label="Constraints"
-                    hx-get="/fe/{{$data->frameElement->idFrameElement}}/constraints"
+                    hx-get="/fe/{{$frameElement->idFrameElement}}/constraints"
                     hx-target="#fePane"
                 ></x-link-button>
                 <x-link-button
                     id="menuFESemanticTypes"
                     label="SemanticTypes"
-                    hx-get="/fe/{{$data->frameElement->idFrameElement}}/semanticTypes"
+                    hx-get="/fe/{{$frameElement->idFrameElement}}/semanticTypes"
                     hx-target="#fePane"
                 ></x-link-button>
             </div>

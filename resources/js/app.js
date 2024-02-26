@@ -17,6 +17,7 @@ import '../assets/fonts/oxygen/stylesheet.css';
 // import 'jointjs/dist/joint.css';
 import 'primeflex/primeflex.css';
 // import '/node_modules/@shoelace-style/shoelace/dist/themes/light.css';
+import '../css/root.scss';
 import '../css/easyui.scss';
 import '../css/app.scss';
 

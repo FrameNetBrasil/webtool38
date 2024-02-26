@@ -1,0 +1,97 @@
+:root {
+
+    /* units */
+    --wt-mini-unit: 4px;
+    --wt-unit: 8px;
+    --wt-2-unit: 16px;
+    --wt-row-unit: 32px;
+    --wt-row-control-unit: 40px;
+    --wt-row-detail-unit: 24px;
+
+    /* Color Theme */
+    //--wt-theme-1: #000000;
+    //--wt-theme-2: #2D57F7;
+    //--wt-theme-3: #346AE0;
+    //--wt-theme-4: #2D83F7;
+    //--wt-theme-5: #F0F8FF;
+
+    /* grey scale - from _variables */
+    --wt-grey : #9e9e9e;
+    --wt-grey-1 : #fafafa;
+    --wt-grey-2 : #f5f5f5;
+    --wt-grey-3 : #eeeeee;
+    --wt-grey-4 : #e0e0e0;
+    --wt-grey-5 : #bdbdbd;
+    --wt-grey-6 : #9e9e9e;
+    --wt-grey-7 : #757575;
+    --wt-grey-8 : #616161;
+    --wt-grey-9 : #424242;
+    --wt-grey-10 : #212121;
+
+    /* blue scale - from _variables */
+    --wt-blue : #2196f3;
+    --wt-blue-1 : #e3f2fd;
+    --wt-blue-2 : #bbdefb;
+    --wt-blue-3 : #90caf9;
+    --wt-blue-4 : #64b5f6;
+    --wt-blue-5 : #42a5f5;
+    --wt-blue-6 : #2196f3;
+    --wt-blue-7 : #1e88e5;
+    --wt-blue-8 : #1976d2;
+    --wt-blue-9 : #1565c0;
+    --wt-blue-10 : #0d47a1;
+
+
+    --color-canvas-inset: #f6f8fa;
+    --color-canvas-subtle: #f6f8fa;
+    --color-border-default: #d0d7de;
+
+    /* text - from github */
+    --wt-font-size: 14px;
+    --wt-text-color: rgb(31, 35, 40);
+    --wt-link: #111E6C;
+    --wt-icon-color: rgb(31, 35, 40);
+
+    /* background color */
+    --wt-bg-default: white;
+    --wt-bg-header:  var(--wt-grey-4);
+    --wt-bg-content: var(--wt-grey-5);
+    --wt-bg-footer: var(--wt-grey-5);
+    //--wt-bg-form: var(--wt-theme-5);
+    --wt-bg-form-fields: white;
+    --wt-bg-form-header: var(--wt-blue-1);
+    //--wt-button-save: var(--wt-theme-2);
+    //--wt-bg-datagrid-row-0: white;
+    //--wt-bg-datagrid-row-1: #F2F2F2;
+    //--wt-bg-datagrid-header: var(--wt-grey-5);
+    //--wt-bg-selected: #F2F2F2;
+    --wt-bg-panel-header: var(--wt-grey-1);
+    --wt-bg-panel-footer: var(--wt-grey-1);
+    --wt-bg-pane-nav:  var(--wt-grey-1);
+    --wt-bg-panel-body: white;
+    --wt-color-panel-header: rgb(31, 35, 40);
+    --wt-border-panel-header: var(--wt-grey-5);
+    --wt-border-form: var(--wt-grey-5);
+    --wt-bg-card-header: var(--wt-grey);
+    //--wt-bg-form-button: var(--wt-grey-7);
+
+    /* controls */
+    --wt-controls-border-radius: 2px 2px 2px 2px;
+    --wt-controls-border: 1px solid var(--wt-grey-5);
+
+    /* hover */
+    --wt-action-hover: var(--wt-grey-4);
+
+    /* dashboard */
+
+    --wt-dashboard-color1: #688bc9;
+    --wt-dashboard-color2: #a55394;
+    --wt-dashboard-color3: #407e42;
+    --wt-dashboard-color4: #e9a122;
+    --wt-dashboard-color5: #5f479e;
+    --wt-dashboard-color6: #85c04c;
+    --wt-dashboard-color7: #54c5af;
+    --wt-dashboard-color8: #e33357;
+
+    --sl-font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}

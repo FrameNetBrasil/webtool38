@@ -8,7 +8,7 @@ var manager = {
                 title: null,//type.charAt(0).toUpperCase() + type.slice(1),
                 label: type.charAt(0).toUpperCase() + type.slice(1),
                 msg: message,
-                timeout: 2000,
+                timeout: 4000,
                 showType: 'show',
                 style: {
                     right: '',

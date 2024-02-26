@@ -5,9 +5,9 @@
         hx-trigger="reload-gridFE from:body"
         hx-target="this"
         hx-swap="outerHTML"
-        hx-get="/frame/{{$data->idFrame}}/fes/grid"
+        hx-get="/frame/{{$idFrame}}/fes/grid"
     >
-        @foreach($data->fes as $fe)
+        @foreach($fes as $fe)
             <tr
                 hx-target="#feChildPane"
                 hx-swap="innerHTML"

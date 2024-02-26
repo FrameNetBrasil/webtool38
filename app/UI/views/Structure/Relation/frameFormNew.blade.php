@@ -5,7 +5,7 @@
         center="true"
     >
         <x-slot:fields>
-            <x-hidden-field id="new_idFrame" :value="$data->idFrame"></x-hidden-field>
+            <x-hidden-field id="new_idFrame" :value="$idFrame"></x-hidden-field>
             <x-combobox.relation id="new_relationType" group="frame"></x-combobox.relation>
             <x-combobox.frame id="new_idFrameRelated" label="Related Frame"></x-combobox.frame>
         </x-slot:fields>

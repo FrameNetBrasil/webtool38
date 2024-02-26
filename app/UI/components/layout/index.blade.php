@@ -93,22 +93,22 @@
 <script src="/scripts/dagre/dist/dagre.js"></script>
 <script src="/scripts/utils/md5.min.js"></script>
 
-<header class="header">
-    <section id="headerPane" class="grid grid-nogutter">
-        <section class="title col-6">
+<header class="flex flex-column">
+    <section class="headerPane grid grid-nogutter">
+        <section class="title md:col-6 sm:col-12">
             {!! config("webtool.mainTitle") !!}
         </section>
-        <nav class="col-6 text-right">
+        <nav class="md:col-6 sm:col-12 text-right">
             @include('components.userdata')
         </nav>
     </section>
 
-    <nav id="menuPane">
+    <nav class="menuPane">
         @include('components.menu')
     </nav>
 </header>
 
-<main id="centerPane">
+<main class="centerPane">
     <section id="contentPane">
         <div data-options="region:'center',border:false">
             {{ $slot }}
@@ -117,7 +117,6 @@
 </main>
 <script>
     document.body.addEventListener("notify", function (evt) {
-        console.log('gggg');
         manager.messager(evt.detail.type, evt.detail.message);
     })
     $(function () {

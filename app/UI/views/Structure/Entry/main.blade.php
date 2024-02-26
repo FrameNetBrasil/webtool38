@@ -1,11 +1,11 @@
 <x-layout.content>
     <x-form id="entryForm" title="Translations" center="true">
         <x-slot:fields>
-            @foreach($data->languages as $language)
+            @foreach($languages as $language)
                 @php
                     $idLanguage = $language['idLanguage'];
-                    debug($data->entries[$idLanguage]['description']);
-                    $description = mb_ereg_replace("\r\n","\\n",$data->entries[$idLanguage]['description']);
+                    debug($entries[$idLanguage]['description']);
+                    $description = mb_ereg_replace("\r\n","\\n",$entries[$idLanguage]['description']);
                     debug($description);
                 @endphp
                 <x-card
@@ -14,12 +14,12 @@
                 >
                     <x-hidden-field
                         id="idEntry_{{$idLanguage}}"
-                        :value="$data->entries[$idLanguage]['idEntry']"
+                        :value="$entries[$idLanguage]['idEntry']"
                     ></x-hidden-field>
                     <x-text-field
                         label="Name"
                         id="name_{{$idLanguage}}"
-                        :value="$data->entries[$idLanguage]['name']"
+                        :value="$entries[$idLanguage]['name']"
                     ></x-text-field>
                     <x-multiline-field
                         label="Definition"

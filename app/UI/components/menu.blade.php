@@ -10,7 +10,6 @@
 @endphp
 @foreach($actions as $id => $action)
     @php
-    debug($action);
         $menuData = MenuData::from([
             'id' => $id,
             'label' => $action[0],
@@ -25,6 +24,7 @@
             label="{!! $menuData->label !!}"
             icon="menu-{{$menuData->id}}"
             menu="#menu{{$menuData->id}}Items"
+            class="{!! ($menuData->id != 'report') ? 'desktop-only' : '' !!}"
         ></x-menu-button>
         <div id="menu{{$menuData->id}}Items">
             @foreach($menuData->items as $idItem => $item)

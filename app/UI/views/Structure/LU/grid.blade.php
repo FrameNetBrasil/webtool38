@@ -5,9 +5,9 @@
     hx-trigger="reload-gridLU from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/frame/{{$data->idFrame}}/lus/grid"
+    hx-get="/frame/{{$idFrame}}/lus/grid"
 >
-    @foreach($data->lus as $lu)
+    @foreach($lus as $lu)
         <tr
             hx-target="#luChildPane"
             hx-swap="innerHTML"

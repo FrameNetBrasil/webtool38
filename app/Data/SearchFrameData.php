@@ -11,6 +11,8 @@ class SearchFrameData extends Data
         public ?string $fe = '',
         public ?string $lu = '',
         public ?string $listBy = '',
+        public ?string $idFramalDomain = '',
+        public ?string $idFramalType = '',
         public string $_token = '',
     )
     {

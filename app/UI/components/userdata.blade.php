@@ -63,7 +63,9 @@
     <x-link-button
         id="signin"
         label="Login"
-        icon="person"
+        icon="menu-signin"
         href="{{$hrefLogin}}"
+        class="desktop-only"
     ></x-link-button>
 @endif
+

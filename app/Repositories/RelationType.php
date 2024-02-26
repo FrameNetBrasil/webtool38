@@ -41,6 +41,13 @@ class RelationType extends Repository
         $this->retrieveFromCriteria($criteria);
     }
 
+    public function getByEntry(string $entry): void
+    {
+        $criteria = $this->getCriteria()
+            ->where('entry', '=', $entry);
+        $this->retrieveFromCriteria($criteria);
+    }
+
     public function getName()
     {
         $criteria = $this->getCriteria()->select('entries.name as name');
@@ -67,6 +74,9 @@ class RelationType extends Repository
         }
         if (isset($filter->name)) {
             $criteria->where("name", "startswith", $filter->name);
+        }
+        if (isset($filter->relationType)) {
+            $criteria->where("name", "startswith", $filter->relationType);
         }
         return $criteria;
     }

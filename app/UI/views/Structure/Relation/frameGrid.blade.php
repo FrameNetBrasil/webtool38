@@ -5,9 +5,9 @@
     hx-trigger="reload-gridFrameRelation from:body"
     hx-target="this"
     hx-swap="outerHTML"
-    hx-get="/frame/{{$data->idFrame}}/relations/grid"
+    hx-get="/frame/{{$idFrame}}/relations/grid"
 >
-    @foreach($data->relations as $relation)
+    @foreach($relations as $relation)
         <tr class="">
             <td class="wt-datagrid-action">
                 <div

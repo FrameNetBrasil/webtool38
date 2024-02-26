@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Structure;
 use App\Data\CreateFrameData;
 use App\Data\CreateRelationFEInternalData;
 use App\Data\SearchFrameData;
+use App\Data\UpdateFrameClassificationData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Entry;
 use App\Repositories\Frame;
@@ -42,7 +43,7 @@ class FrameController extends Controller
     }
 
     #[Post(path: '/frame')]
-    public function newFrame()
+    public function postFrame()
     {
         try {
             $frame = new Frame();
@@ -77,6 +78,7 @@ class FrameController extends Controller
     public function listForTree()
     {
         $search = SearchFrameData::from($this->data);
+        debug($search);
         $result = [];
         $id = data('id', default:'');
         if ($id != '') {
@@ -89,6 +91,7 @@ class FrameController extends Controller
             if (($search->fe == '') && ($search->lu == '')) {
                 $frame = new ViewFrame();
                 $frames = $frame->listByFilter($search)->getResult();
+                debug($frames);
                 foreach ($frames as $row) {
                     $node = [];
                     $node['id'] = 'f' . $row['idFrame'];
@@ -127,13 +130,14 @@ class FrameController extends Controller
     #[Get(path: '/frame/{id}/main')]
     public function edit(string $id)
     {
-        data('frame', new Frame($id));
-        data('classification', FrameService::getClassification(data('frame')));
+        $frame = new Frame($id);
+        data('frame', $frame);
+        data('classification', $frame->getClassificationLabels());
         return $this->render("edit");
     }
 
     #[Get(path: '/frame/{id}/entries')]
-    public function formEntries(string $id)
+    public function entries(string $id)
     {
         $frame = new Frame($id);
         data('frame', $frame);
@@ -191,6 +195,54 @@ class FrameController extends Controller
     #[Get(path: '/frame/{id}/classification')]
     public function classification(string $id)
     {
+        $frame = new Frame($id);
+        data('idFrame', $id);
+        data('frame', $frame);
+        return $this->render("Structure.Classification.child");
+    }
+
+    #[Get(path: '/frame/{id}/classification/formFramalType')]
+    public function formFramalType(string $id)
+    {
+        data('idFrame', $id);
+        return $this->render("Structure.Classification.formFramalType");
+    }
+
+    #[Get(path: '/frame/{id}/classification/formFramalDomain')]
+    public function formFramalDomain(string $id)
+    {
+        data('idFrame', $id);
+        return $this->render("Structure.Classification.formFramalDomain");
+    }
+
+    #[Post(path: '/frame/{id}/classification/domain')]
+    public function framalDomain(string $id)
+    {
+        try {
+            $data = UpdateFrameClassificationData::validateAndCreate([
+                'framalData' => (array)data('framalDomain')
+            ]);
+            $frame = new Frame($id);
+            RelationService::updateFramalDomain($frame, $data);
+            return $this->renderNotify("success", "Domain updated.");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
+    }
+
+    #[Post(path: '/frame/{id}/classification/type')]
+    public function framalType(string $id)
+    {
+        try {
+            $data = UpdateFrameClassificationData::validateAndCreate([
+                'framalData' => (array)data('framalType')
+            ]);
+            $frame = new Frame($id);
+            RelationService::updateFramalType($frame, $data);
+            return $this->renderNotify("success", "Domain updated.");
+        } catch (\Exception $e) {
+            return $this->renderNotify("error", $e->getMessage());
+        }
     }
 
     #[Get(path: '/frame/{id}/relations')]
@@ -225,14 +277,14 @@ class FrameController extends Controller
     }
 
     #[Get(path: '/frame/{id}/feRelations/formNew')]
-    public function feRelationsFormNew(string $id)
+    public function formNewFERelations(string $id)
     {
         data('idFrame', $id);
         return $this->render("Structure.Relation.feInternalFormNew");
     }
 
     #[Get(path: '/frame/{id}/feRelations/grid')]
-    public function feRelationsGrid(string $id)
+    public function gridFERelations(string $id)
     {
         data('idFrame', $id);
         data('relations', RelationService::listRelationsFEInternal($id));
@@ -243,7 +295,10 @@ class FrameController extends Controller
     public function feRelationsNew(string $id)
     {
         try {
-            $data = CreateRelationFEInternalData::from(data());
+            $data = CreateRelationFEInternalData::validateAndCreate((array)data());
+            debug($data);
+//            $relationType->create($data);
+//            $data = CreateRelationFEInternalData::from(data());
             RelationService::createRelationFEInternal($data);
             $this->trigger('reload-gridFEInternalRelation');
             return $this->renderNotify("success", "Relation created.");

@@ -15,7 +15,7 @@ class ViewFrame extends Repository
     public function listByFilter($filter)
     {
         $listBy = $filter->listBy ?? '';
-        $listBySelect = '';
+        $select = ['idFrame','entry','active','idEntity','name','description'];
         if ($listBy == 'cluster') {
             $listBySelect = ',toRelations.toSemanticType.entries.name as cluster';
         }
@@ -26,14 +26,14 @@ class ViewFrame extends Repository
             $listBySelect = ',toRelations.toSemanticType.entries.name as domain';
         }
         $criteria = $this->getCriteria()
-            ->select('idFrame, entry, active, idEntity, name, description' . $listBySelect)
+            ->select($select)
             ->orderBy('entries.name');
-        if ($listBySelect != '') {
-            $criteria->setAssociationType('toRelations', 'left');
-            $criteria->setAssociationType('toRelations.toSemanticType', 'left');
-            $criteria->setAssociationType('toRelations.toSemanticType.entries', 'left');
-            $criteria->where("(toRelations.toSemanticType.entries.idLanguage = {$filter->idLanguage}) or (toRelations.toSemanticType.entries.idLanguage is null)");
-        }
+//        if ($listBySelect != '') {
+//            $criteria->setAssociationType('toRelations', 'left');
+//            $criteria->setAssociationType('toRelations.toSemanticType', 'left');
+//            $criteria->setAssociationType('toRelations.toSemanticType.entries', 'left');
+//            $criteria->where("(toRelations.toSemanticType.entries.idLanguage = {$filter->idLanguage}) or (toRelations.toSemanticType.entries.idLanguage is null)");
+//        }
         Base::entryLanguage($criteria);
         if (isset($filter->idFrame)) {
             $criteria->where("idFrame = {$filter->idFrame}");
@@ -61,19 +61,28 @@ class ViewFrame extends Repository
             $criteria->where("fes.idLanguage","=",AppService::getCurrentIdLanguage());
             $criteria->where("fes.name","startswith",$filter->fe);
         }
-        if (isset($filter->idDomain)) {
-            Base::relation($criteria, 'ViewFrame', 'Domain', 'rel_hasdomain');
-            $criteria->where("Domain.idDomain = {$filter->idDomain}");
+//        if (isset($filter->idDomain)) {
+//            Base::relation($criteria, 'ViewFrame', 'Domain', 'rel_hasdomain');
+//            $criteria->where("Domain.idDomain = {$filter->idDomain}");
+//        }
+        if (isset($filter->idFramalDomain)) {
+            $criteria->where('relations.relationType.entry', '=', "rel_framal_domain");
+            $criteria->where("relations.semanticType2.idSemanticType","=", $filter->idFramalDomain);
         }
-        if ($listBy == 'cluster') {
-            $criteria->where('toRelations.relationType', '=', "'rel_framal_cluster'");
+        if (isset($filter->idFramalType)) {
+            $criteria->where('relations.relationType.entry', '=', "rel_framal_type");
+            $criteria->where("relations.semanticType2.idSemanticType","=", $filter->idFramalType);
         }
-        if ($listBy == 'type') {
-            $criteria->where('toRelations.relationType', '=', "'rel_framal_type'");
-        }
-        if ($listBy == 'domain') {
-            $criteria->where('toRelations.relationType', '=', "'rel_framal_domain'");
-        }
+//        if ($listBy == 'cluster') {
+//            $criteria->where('toRelations.relationType', '=', "'rel_framal_cluster'");
+//        }
+//        if ($listBy == 'type') {
+//            $criteria->where('toRelations.relationType', '=', "'rel_framal_type'");
+//        }
+//        if ($listBy == 'domain') {
+//            $criteria->where('toRelations.relationType', '=', "'rel_framal_domain'");
+//        }
+        debug($criteria->asQuery()->getResult());
         return $criteria;
     }
 

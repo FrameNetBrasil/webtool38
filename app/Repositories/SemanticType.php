@@ -188,27 +188,30 @@ class SemanticType extends Repository
             ->select(['idSemanticType','name'])
             ->orderBy('name');
         $criteria->where("entries.entry","LIKE",'sty\_fd%');
-        Base::entryLanguage($criteria);
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
         return $criteria;
     }
 
     public function listFrameType()
     {
         $criteria = $this->getCriteria()
-            ->select("idSemanticType,entries.name")
-            ->orderBy('entries.name');
-        $criteria->where("entry LIKE 'sty\_ft%'");
-        Base::entryLanguage($criteria);
+            ->select(['idSemanticType','name'])
+            ->orderBy('name');
+        $criteria->where("entries.entry","LIKE",'sty\_ft%');
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
         return $criteria;
     }
 
     public function listFrameCluster()
     {
         $criteria = $this->getCriteria()
-            ->select("idSemanticType,entries.name, entries.description")
-            ->orderBy('entries.name');
-        $criteria->where("entry LIKE 'sty\_fc%'");
-        Base::entryLanguage($criteria);
+            ->select(['idSemanticType','name'])
+            ->orderBy('name');
+        $criteria->where("entries.entry","LIKE",'sty\_fc%');
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
         return $criteria;
     }
 

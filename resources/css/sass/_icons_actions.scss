@@ -6,6 +6,14 @@
     content: "clear";
 }
 
+.wt-icon-clear {
+    color: var(---wt-text-color);
+}
+
+.wt-icon-clear:before {
+    content: "clear";
+}
+
 .wt-icon-add {
     color: black;
 }

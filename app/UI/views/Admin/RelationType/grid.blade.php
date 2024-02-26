@@ -6,9 +6,9 @@
         hx-trigger="reload-gridRT from:body"
         hx-target="this"
         hx-swap="outerHTML"
-        hx-get="/relationgroup/{{$data->idRelationGroup}}/rts/grid"
+        hx-get="/relationgroup/{{$idRelationGroup}}/rts/grid"
     >
-        @foreach($data->rts as $rt)
+        @foreach($rts as $rt)
             <tr
                 hx-target="#rtChildPane"
                 hx-swap="innerHTML"

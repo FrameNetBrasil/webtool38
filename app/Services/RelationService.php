@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Data\CreateRelationFEInternalData;
 use App\Data\RelationData;
+use App\Data\UpdateFrameClassificationData;
 use App\Http\Controllers\Controller;
 use App\Repositories\EntityRelation;
 use App\Repositories\Frame;
 use App\Repositories\FrameElement;
+use App\Repositories\RelationType;
 use App\Repositories\SemanticType;
 use App\Repositories\ViewRelation;
 
@@ -28,6 +30,22 @@ class RelationService extends Controller
     {
         $relation = new EntityRelation();
         $relation->saveData($data->toArray());
+    }
+
+    static public function create(string $relationTypeEntry, int $idEntity1, int $idEntity2, ?int $idEntity3 = null, ?int $idRelation = null)
+    {
+        $rt = new RelationType();
+        $rt->getByEntry($relationTypeEntry);
+        $data = RelationData::from([
+            'idRelationType' =>
+        ]);
+        self::newRelation()
+        $ci->saveData([
+            'idConstraintType' => $ct->idConstraintType,
+            'idConstraint' => $idConstraint,
+            'idConstrained' => $idConstrained,
+            'idConstrainedBy' => $idConstrainedBy
+        ]);
     }
 
     static public function deleteAll(int $idEntity)
@@ -124,5 +142,54 @@ class RelationService extends Controller
             }
         }
     }
+
+    public static function updateFramalDomain(Frame $frame, UpdateFrameClassificationData $data) {
+        $relationType = new RelationType();
+        $relationType->getByEntry('rel_framal_domain');
+        $relation = new EntityRelation();
+        $relation->beginTransaction();
+        try {
+            $relation->removeFromEntityByRelationType($frame->idEntity, $relationType->idRelationType);
+            $st = new SemanticType();
+            foreach($data->framalData as $idSemanticType) {
+                $st->getbyId($idSemanticType);
+                $relation->setPersistent(false);
+                $relation->saveData([
+                    'idRelationType' => $relationType->idRelationType,
+                    'idEntity1' => $frame->idEntity,
+                    'idEntity2' => $st->idEntity
+                ]);
+            }
+            $relation->commit();
+        } catch (\Exception $e) {
+            $relation->rollback();
+            throw new \Exception("Error updating relations. " . $e);
+        }
+    }
+
+    public static function updateFramalType(Frame $frame, UpdateFrameClassificationData $data) {
+        $relationType = new RelationType();
+        $relationType->getByEntry('rel_framal_type');
+        $relation = new EntityRelation();
+        $relation->beginTransaction();
+        try {
+            $relation->removeFromEntityByRelationType($frame->idEntity, $relationType->idRelationType);
+            $st = new SemanticType();
+            foreach($data->framalData as $idSemanticType) {
+                $st->getbyId($idSemanticType);
+                $relation->setPersistent(false);
+                $relation->saveData([
+                    'idRelationType' => $relationType->idRelationType,
+                    'idEntity1' => $frame->idEntity,
+                    'idEntity2' => $st->idEntity
+                ]);
+            }
+            $relation->commit();
+        } catch (\Exception $e) {
+            $relation->rollback();
+            throw new \Exception("Error updating relations. " . $e);
+        }
+    }
+
 
 }

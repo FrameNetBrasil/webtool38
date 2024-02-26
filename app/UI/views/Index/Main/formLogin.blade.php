@@ -1,5 +1,5 @@
 <x-layout.index>
-    <div class="wt-container-center">
+    <div class="wt-container-center desktop-only">
         <div class="wt-container-center-content">
             <x-form id="formLogin" title="Login" center="true" >
                 <x-slot:fields>

@@ -4,7 +4,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/relationgroup/{{$data->idRelationGroup}}/rts/formNew"
+            hx-get="/relationgroup/{{$idRelationGroup}}/rts/formNew"
         ></div>
     </div>
     <div class="col-8">
@@ -12,7 +12,7 @@
             hx-trigger="load"
             hx-target="this"
             hx-swap="outerHTML"
-            hx-get="/relationgroup/{{$data->idRelationGroup}}/rts/grid"
+            hx-get="/relationgroup/{{$idRelationGroup}}/rts/grid"
         ></div>
     </div>
 </div>

@@ -48,6 +48,9 @@ class RelationGroup extends Repository
         if (isset($filter->name)) {
             $criteria->where("name", "startswith", $filter->name);
         }
+        if (isset($filter->relationGroup)) {
+            $criteria->where("name", "startswith", $filter->relationGroup);
+        }
         return $criteria;
     }
 

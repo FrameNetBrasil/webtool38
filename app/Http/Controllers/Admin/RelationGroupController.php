@@ -47,7 +47,9 @@ class RelationGroupController extends Controller
     #[Post(path: '/relationgroup/grid')]
     public function grid()
     {
+        debug($this->data);
         data('search', SearchRelationGroupData::from(data('search')));
+        debug(data('search'));
         session(['searchRG' => data('search')]);
         return $this->render("grid");
     }
@@ -62,7 +64,9 @@ class RelationGroupController extends Controller
     #[Post(path: '/relationgroup/listForTree')]
     public function listForTree()
     {
+        debug($this->data);
         $search = SearchRelationGroupData::from($this->data);
+        debug($search);
         $result = [];
         $id = data('id', default:'');
         if ($id != '') {
@@ -71,6 +75,7 @@ class RelationGroupController extends Controller
         } else {
             $icon = 'material-icons-outlined wt-tree-icon wt-icon-master';
             if (!isset($search->relationType)) {
+                debug('1');
                 $rg = new RelationGroup();
                 $rgs = $rg->listByFilter($search)->getResult();
                 foreach ($rgs as $row) {
@@ -84,6 +89,7 @@ class RelationGroupController extends Controller
                     $result[] = $node;
                 }
             } else {
+                debug('2');
                 $result = RelationTypeController::listForTreeByName($search->relationType);
                 $icon = 'material-icons-outlined wt-tree-icon wt-icon-detail';
             }

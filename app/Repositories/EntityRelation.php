@@ -25,11 +25,6 @@ class EntityRelation extends Repository
         parent::__construct(RelationModel::class, $id);
     }
 
-    public function getDescription()
-    {
-        return $this->getIdEntityRelation();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idEntityRelation');
@@ -200,6 +195,13 @@ HERE;
             ->delete();
     }
 
+    public function removeFromEntityByRelationType(int $idEntity, int $idRelationType)
+    {
+        $this->getCriteria()
+            ->whereRaw("(idEntity1 = {$idEntity}) and (idRelationType = {$idRelationType})")
+            ->delete();
+    }
+
     public function saveFrameRelations($relations)
     {
         $transaction = $this->beginTransaction();
@@ -236,6 +238,20 @@ HERE;
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();
+            throw new ERunTimeException("Error deleting relations. " . $e);
+        }
+    }
+
+    public function deleteFramalDomain(Frame $frame)
+    {
+        $this->beginTransaction();
+        try {
+            $relationType = new RelationType();
+            $relationType->getByEntry('rel_framal_domain');
+            $this->removeFromEntityByRelationType($frame->idEntity, $relationType->idRelationType);
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
             throw new ERunTimeException("Error deleting relations. " . $e);
         }
     }

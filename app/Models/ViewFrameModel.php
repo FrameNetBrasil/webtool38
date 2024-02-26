@@ -22,6 +22,9 @@ class ViewFrameModel extends Model {
         self::associationMany('entries', model: EntryModel::class, keys:'idEntity:idEntity');
         self::associationMany('lus', model: LUModel::class, keys: 'idFrame');
         self::associationMany('fes', model: FrameElementModel::class, keys: 'idFrame');
+        self::associationMany('entries', model: EntryModel::class, keys: 'idEntity:idEntity');
+        self::associationMany('relations', model: RelationModel::class, keys: 'idEntity:idEntity1');
+        self::associationMany('inverseRelations', model: RelationModel::class, keys: 'idEntity:idEntity2');
     }
 
 }

@@ -126,10 +126,10 @@
 
 .panel-header {
     background-color: var(--wt-bg-panel-header);
-    background: -webkit-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
-    background: -moz-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
-    background: -o-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
-    background: linear-gradient(to bottom,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
+    //background: -webkit-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
+    //background: -moz-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
+    //background: -o-linear-gradient(top,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
+    //background: linear-gradient(to bottom,var(--wt-bg-panel-header) 0,var(--wt-bg-panel-header) 100%);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--wt-bg-panel-header),endColorstr=var(--wt-bg-panel-header),GradientType=0);
 }

@@ -6,24 +6,29 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                 <x-input-field
                     id="search_frame"
-                    value="{{$data->search->frame}}"
+                    value="{{$search->frame}}"
                     placeholder="Search Frame"
                 ></x-input-field>
                 <x-input-field
                     id="search_fe"
-                    value="{{$data->search->fe}}"
+                    value="{{$search->fe}}"
                     placeholder="Search FE"
                 ></x-input-field>
                 <x-input-field
                     id="search_lu"
-                    value="{{$data->search->lu}}"
+                    value="{{$search->lu}}"
                     placeholder="Search LU"
                 ></x-input-field>
-                <x-combobox.frame-classification
-                    id="search_listBy"
-                    placeholder="List by"
-                    value="{{$data->search->listBy}}"
-                ></x-combobox.frame-classification>
+                <x-combobox.framal-domain
+                    id="search_idFramalDomain"
+                    placeholder="Domain"
+                    value="{{$search->idFramalDomain}}"
+                ></x-combobox.framal-domain>
+                <x-combobox.framal-type
+                    id="search_idFramalType"
+                    placeholder="Type"
+                    value="{{$search->idFramalType}}"
+                ></x-combobox.framal-type>
                 <x-submit
                     label="Search"
                     hx-post="/frame/grid"

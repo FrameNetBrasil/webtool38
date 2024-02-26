@@ -13,7 +13,7 @@ class RelationModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('entityrelation');
         self::attribute('idEntityRelation', key: Key::PRIMARY);
         self::attribute('idRelation', key: Key::FOREIGN);
@@ -34,7 +34,7 @@ class RelationModel extends Model
         self::associationOne('frame1', model: FrameModel::class, key: 'idEntity1:idEntity');
         self::associationOne('frame2', model: FrameModel::class, key: 'idEntity2:idEntity');
         self::associationOne('frame', model: FrameModel::class, key: 'idEntity2:idEntity');
-        self::associationOne('construction1', model: ConstructionModel::class, key: 'idEntity1:idEntity'); 
+        self::associationOne('construction1', model: ConstructionModel::class, key: 'idEntity1:idEntity');
         self::associationOne('construction2', model: ConstructionModel::class, key: 'idEntity2:idEntity');
         self::associationOne('construction', model: ConstructionModel::class, key: 'idEntity2:idEntity');
         self::associationOne('semanticType1', model: SemanticTypeModel::class, key: 'idEntity1:idEntity');

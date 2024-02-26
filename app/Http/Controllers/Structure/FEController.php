@@ -14,6 +14,7 @@ use App\Repositories\Qualia;
 use App\Repositories\ViewConstraint;
 use App\Repositories\ViewFrameElement;
 use App\Services\AppService;
+use App\Services\ConstraintService;
 use App\Services\EntryService;
 use App\Services\FrameService;
 use App\Services\RelationService;
@@ -197,46 +198,54 @@ class FEController extends Controller
     #[Get(path: '/fe/{id}/constraints')]
     public function constraints(string $id)
     {
-        $this->data->idFrameElement = $id;
-        return $this->render("Structure.FE.Constraint.child");
+        data('idFrameElement', $id);
+        return $this->render("Structure.Constraint.feChild");
     }
 
     #[Get(path: '/fe/{id}/constraints/formNew/{fragment?}')]
     public function constraintsFormNew(int $id, ?string $fragment = null)
     {
-        $this->data->idFrameElement = $id;
-        $this->data->frameElement = new FrameElement($id);
-        $this->data->fragment = $fragment;
-        return $this->render("Structure.FE.Constraint.formNew", $fragment);
+        data('idFrameElement', $id);
+        data('frameElement', new FrameElement($id));
+        data('fragment', $fragment ?? '');
+        return $this->render("Structure.Constraint.feFormNew", $fragment);
     }
 
     #[Get(path: '/fe/{id}/constraints/grid')]
     public function constraintsGrid(int $id)
     {
-        $this->data->idFrameElement = $id;
+        data('idFrameElement', $id);
         $fe = new FrameElement($id);
         $constraint = new ViewConstraint();
-        $this->data->constraints = $constraint->listByIdConstrained($fe->idEntity);
-        return $this->render("Structure.FE.Constraint.grid");
+        data('constraints', $constraint->listByIdConstrained($fe->idEntity));
+        return $this->render("Structure.Constraint.feGrid");
     }
 
     #[Post(path: '/fe/{id}/constraints')]
     public function constraintsNew($id)
     {
         try {
-            $this->data->idFrameElement = $id;
-            if ($this->data->constraint == 'rel_constraint_frame') {
-                FrameService::newConstraintFE($this->data->constraint, $id, $this->data->idFrameConstraint);
-            } else if ($this->data->constraint == 'rel_qualia') {
-                $fe = new FrameElement($id);
-                $feQualia = new FrameElement($this->data->idFEQualiaConstraint);
-                $qualia = new Qualia($this->data->idQualiaConstraint);
+            data('idFrameElement', $id);
+            $fe = new FrameElement($id);
+            $constraintEntry = data('constraint');
+            if ($constraintEntry == 'rel_constraint_frame') {
+                $cn = Base::createEntity('CN', 'con');
+                $frame = new Frame(data('idFrameConstraint'));
+                ConstraintService::create($cn->idEntity, $constraintEntry, $fe->idEntity, $frame->idEntity);
+            } else if ($constraintEntry == 'rel_qualia') {
+                $feQualia = new FrameElement(data('idFEQualiaConstraint'));
+                $qualia = new Qualia(data('idQualiaConstraint'));
+                $relation = RelationData::from([
+                    'i'
+                ]);
+
+                RelationService::newRelation($relation);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feQualia->idEntity, $qualia->idEntity);
-            } else if ($this->data->constraint == 'rel_festandsforfe') {
+            } else if ($constraint == 'rel_festandsforfe') {
                 $fe = new FrameElement($id);
                 $feMetonym = new FrameElement($this->data->idFEMetonymConstraint);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $feMetonym->idEntity);
-            } else if ($this->data->constraint == 'rel_festandsforlu') {
+            } else if ($constraint == 'rel_festandsforlu') {
                 $fe = new FrameElement($id);
                 $luMetonym = new LU($this->data->idLUMetonymConstraint);
                 Base::createEntityRelation($fe->idEntity, $this->data->constraint, $luMetonym->idEntity);

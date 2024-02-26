@@ -4,9 +4,9 @@
         <x-slot:nav>
             <x-form-search id="rgSearch">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-                <x-input-field id="search_relationGroup" :value="$data->search->relationGroup ?? ''"
+                <x-input-field id="search_relationGroup" :value="$search->relationGroup ?? ''"
                                placeholder="Search RelationGroup"></x-input-field>
-                <x-input-field id="search_relationType" :value="$data->search->relationType ?? ''"
+                <x-input-field id="search_relationType" :value="$search->relationType ?? ''"
                                placeholder="Search RelationType"></x-input-field>
                 <x-submit label="Search" hx-post="/relationgroup/grid" hx-target="#rgGrid"></x-submit>
             </x-form-search>
