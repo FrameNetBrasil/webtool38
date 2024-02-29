@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\DocumentMMModel;
+use App\Models\ObjectSentenceMMModel;
+use App\Services\AppService;
 use Maestro\Persistence\Repository;
 
 class DocumentMM extends Repository
@@ -154,7 +156,7 @@ class DocumentMM extends Repository
         $cmd = <<<HERE
 
 select distinct smm.idSentenceMM, smm.startTimestamp, smm.endTimestamp, smm.idSentence, smm.startTime, smm.idImageMM, smm.idOriginMM
-FROM sentencemm smm 
+FROM sentencemm smm
 where (smm.idSentence IN ({$listIdSentence}))
 order by smm.startTime
 
@@ -169,8 +171,8 @@ HERE;
     public function listObjectFrames()
     {
         $criteria = $this->getCriteria();
-        $criteria->select("objectmm.objectframes.frameNumber, 
-        objectmm.objectframes.x, 
+        $criteria->select("objectmm.objectframes.frameNumber,
+        objectmm.objectframes.x,
         objectmm.objectframes.y,
         objectmm.objectframes.width,
         objectmm.objectframes.height");
@@ -185,10 +187,10 @@ HERE;
         $viewFrameElement = new ViewFrameElement();
         $lu = new LU();
         $criteria = $this->getCriteria();
-        $criteria->select("objectmm.idObjectMM, 
-        objectmm.startFrame, objectmm.endFrame, 
-        objectmm.startTime, objectmm.endTime, 
-        objectmm.name, objectmm.status, objectmm.origin, 
+        $criteria->select("objectmm.idObjectMM,
+        objectmm.startFrame, objectmm.endFrame,
+        objectmm.startTime, objectmm.endTime,
+        objectmm.name, objectmm.status, objectmm.origin,
         objectmm.idLU, '' as lu, objectmm.idFrameElement, '' as idFrame, '' as frame, '' as idFE, '' as fe, '' as color");
         $criteria->where("idDocumentMM = {$this->getId()}");
         //$criteria->where("annotationmm.objectmm.status = 1");
@@ -363,7 +365,7 @@ HERE;
                 $inListIdSentence = implode(',', $listIdSentence);
 
                 $cmd = <<<HERE
-DELETE FROM sentencemm 
+DELETE FROM sentencemm
 where (idSentence IN ({$inListIdSentence}))
 and (origin = 1);
 
@@ -414,7 +416,7 @@ select idAnnotationSet from AnnotationSet where idSubCorpus = {$idSubCorpus}
 delete from layer where l.idAnnotationset in (
 select idAnnotationSet from AnnotationSet where idSubCorpus = {$idSubCorpus}
 ));
-DELETE from AnnotationSet where idSubCorpus = {$idSubCorpus}; 
+DELETE from AnnotationSet where idSubCorpus = {$idSubCorpus};
 
 HERE;
                 $document->getDb()->executeCommand($cmd);
@@ -429,7 +431,7 @@ HERE;
                 $listIdSentence = '0';
             }
             $cmd = <<<HERE
-DELETE FROM sentencemm 
+DELETE FROM sentencemm
 where (idSentence IN ({$listIdSentence}));
 
 HERE;
@@ -465,7 +467,7 @@ HERE;
                 ->getResult();
 
             $cmd = <<<HERE
-DELETE FROM sentencemm 
+DELETE FROM sentencemm
 where (idSentenceMM IN ({$listIdSentenceMM}));
 
 HERE;
@@ -487,9 +489,9 @@ delete from label where idLayer in (
 delete from layer where l.idAnnotationset in (
    select idAnnotationSet from AnnotationSet  where idSentence IN ({$listIdSentence})
 ));
-DELETE FROM annotationset 
+DELETE FROM annotationset
 where (idSentence IN ({$listIdSentence}));
-DELETE FROM sentence 
+DELETE FROM sentence
 where (idSentence IN ({$listIdSentence}));
 
 HERE;
@@ -528,7 +530,7 @@ HERE;
                     ->getResult();
 
                 $cmd = <<<HERE
-DELETE FROM sentencemm 
+DELETE FROM sentencemm
 where (idSentenceMM IN ({$listIdSentenceMM}));
 
 HERE;
@@ -543,9 +545,9 @@ HERE;
                     }
                     $listIdSentence = implode(',', $idSentenceToDelete);
                     $cmd = <<<HERE
-DELETE FROM annotationset 
+DELETE FROM annotationset
 where (idSentence IN ({$listIdSentence}));
-DELETE FROM sentence 
+DELETE FROM sentence
 where (idSentence IN ({$listIdSentence}));
 
 HERE;
@@ -575,7 +577,7 @@ where (idObjectMM IN (
     where (idDocumentMM = {$this->getIdDocumentMM()})
     and (origin = 1))
 );
-DELETE FROM objectmm 
+DELETE FROM objectmm
 where (idDocumentMM = {$this->getIdDocumentMM()})
 and (origin = 1);
 
@@ -676,5 +678,111 @@ HERE;
         return $result;
     }
 
+/*
+     public static function getById(int $id): object|array|null
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $filters = [
+            ['idDocumentMM','=',$id]
+        ];
+        return parent::one($filters, ['*']);
+    }
 
+    public static function getByIdDocument(int $idDocument): object|array|null
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $filters = [
+            ['document.corpus.entries.idLanguage', '=', $idLanguage],
+            ['document.entries.idLanguage', '=', $idLanguage],
+            ['idDocument','=',$idDocument]
+        ];
+        return parent::one($filters, ['idDocumentMM','idDocument','title','videoPath','videoHeight','videoWidth']);
+    }
+
+    public static function listByCorpusDocumentStatic(string $corpusName = '', string $documentName = ''): array
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $filters = [];
+        $filters[] = ['document.corpus.entries.idLanguage', '=', $idLanguage];
+        if ($corpusName != '') {
+            $filters[] = ['document.corpus.name', 'startswith', $corpusName];
+        }
+        $filters[] = ['document.entries.idLanguage', '=', $idLanguage];
+        if ($documentName != '') {
+            $filters[] = ['document.name', 'startswith', $documentName];
+        }
+        $filters[] = ['document.corpus.active','=',1];
+        $filters[] = ['document.active','=',1];
+        $filters[] = ['flickr30k','>',0];
+        return self::list($filters, [
+            'document.corpus.name as corpusName',
+            'document.corpus.idCorpus',
+            'document.name as documentName',
+            'document.idDocument'
+        ], [['document.corpus.name'],['document.name']]);
+    }
+
+    public static function listByCorpusDocumentDynamic(string $corpusName = '', string $documentName = ''): array
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $filters = [];
+        $filters[] = ['document.corpus.entries.idLanguage', '=', $idLanguage];
+        if ($corpusName != '') {
+            $filters[] = ['document.corpus.name', 'startswith', $corpusName];
+        }
+        $filters[] = ['document.entries.idLanguage', '=', $idLanguage];
+        if ($documentName != '') {
+            $filters[] = ['document.name', 'startswith', $documentName];
+        }
+        $filters[] = ['document.corpus.active','=',1];
+        $filters[] = ['document.active','=',1];
+        $filters[] = ['videoPath','<>',""];
+        return self::list($filters, [
+            'document.corpus.name as corpusName',
+            'document.corpus.idCorpus',
+            'document.name as documentName',
+            'document.idDocument',
+            'idDocumentMM'
+        ], [['document.corpus.name'],['document.name']]);
+    }
+
+    public static function listSentencesByDocument(int $idDocument, string $word = '', int $offset = 0, int $limit = 0): array
+    {
+        $filters = [];
+        $filters[] = ['idDocument','=', $idDocument];
+        if ($word != '') {
+            $filters[] = ['sentenceMM.sentence.text','contains', $word];
+        }
+        $count = self::getCriteria()
+            ->where($filters)
+            ->select('count(sentenceMM.idSentence) as c')
+            ->get()[0]['c'];
+        $criteriaCount1 = ObjectSentenceMMModel::getCriteria()
+            ->where('sentenceMM.documentMM.idDocument','=', $idDocument)
+            ->groupBy('idSentenceMM')
+            ->select(['idSentence','count(distinct idObjectMM) as quant']);
+        $criteria = self::getCriteria()
+            ->where($filters)
+            ->select([
+                'sentenceMM.idSentence',
+                'sentenceMM.idSentenceMM',
+                'sentenceMM.sentence.text',
+                'c1.quant'
+            ])
+            ->joinSub($criteriaCount1, 'c1', 'sentenceMM.idSentenceMM', '=', 'c1.idSentenceMM')
+            ->orderBy('sentenceMM.idSentence')
+            ->offset($offset);
+        if ($limit > 0) {
+            $criteria->limit($limit);
+        }
+        $result = $criteria
+            ->getResult()
+            ->toArray();
+        return [
+            'result' => $result,
+            'count' => $count
+        ];
+    }
+
+ */
 }

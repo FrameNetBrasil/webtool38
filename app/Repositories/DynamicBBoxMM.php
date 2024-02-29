@@ -23,11 +23,11 @@ class DynamicBBoxMM extends Repository
     }
 
 
-    public function listByObjectMM($idObjectMM)
+    public function listByObjectMM($idDynamicObjectMM)
     {
         $criteria = $this->getCriteria()
-            ->select('idObjectFrameMM, frameNumber, frameTime, x, y, width, height,frameNumber, frameTime, x, y, width, height, blocked')
-            ->where("idObjectMM = {$idObjectMM}")
+            ->select(['idDynamicBBoxMM', 'frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
+            ->where("idDynamicObjectMM", "=", $idDynamicObjectMM)
             ->orderBy('frameNumber');
         return $criteria;
     }
@@ -55,6 +55,7 @@ class DynamicBBoxMM extends Repository
     }
 
 
+    /*
     public function save($data = null)
     {
         $transaction = $this->beginTransaction();
@@ -68,6 +69,7 @@ class DynamicBBoxMM extends Repository
             throw new \Exception($e->getMessage());
         }
     }
+    */
 
 
 }

@@ -44,6 +44,9 @@
     <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
+    <script type="text/javascript" src="/scripts/video-js-8.11.5/video.min.js"></script>
+    <link href="/scripts/video-js-8.11.5/video-js.css" rel="stylesheet" />
+
     <!--
     <script type="text/javascript" src="/scripts/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript"

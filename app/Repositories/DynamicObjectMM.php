@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\DynamicObjectMMModel;
+use App\Services\AppService;
 use Maestro\Persistence\Repository;
 
 class DynamicObjectMM extends Repository
@@ -44,12 +45,96 @@ class DynamicObjectMM extends Repository
         return $criteria;
     }
 
+    public function getObjectsByDocument($idDocument)
+    {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $viewFrameElement = new ViewFrameElement();
+        $lu = new LU();
+        $criteria = $this->getCriteria();
+        $criteria->select([
+            'idDynamicObjectMM as idObjectMM',
+            'startFrame', 'endFrame',
+            'startTime', 'endTime',
+            'status', 'origin',
+            'idLU', "'' as lu",
+            'idFrameElement', "'' as idFrame", "'' as frame", "'' as idFE", "'' as fe", "'' as color"
+        ]);
+        $criteria->where("idDocument","=",$idDocument);
+        $criteria->orderBy('startTime,endTime');
+        $objects = $criteria->asQuery()->getResult();
+        $oMM = [];
+        foreach ($objects as $object) {
+            //mdump($object);
+            if ($object['idFrameElement']) {
+                $feCriteria = $viewFrameElement->getCriteria();
+                //$feCriteria->setAssociationAlias('frame.entries', 'frameEntries');
+                $feCriteria->select(['idFrame','frame.name as frame','idFrameElement as idFE','name as fe','color.rgbBg as color']);
+                $feCriteria->where("frame.idLanguage","=", $idLanguage);
+                $feCriteria->where("idLanguage","=",$idLanguage);
+                $feCriteria->where("idFrameElement","=",$object['idFrameElement']);
+                $fe = $feCriteria->asQuery()->getResult()[0];
+                $object['idFrame'] = $fe['idFrame'];
+                $object['frame'] = $fe['frame'];
+                $object['idFE'] = $fe['idFE'];
+                $object['fe'] = $fe['fe'];
+                $object['color'] = $fe['color'];
+            }
+            if ($object['idLU']) {
+                $lu->getById($object['idLU']);
+                //$object['lu'] = $lu->getName();
+                $object['lu'] = $lu->getFullName();
+            }
+            $oMM[] = $object;
+        }
+        $objects = [];
+        $objectFrameMM = new DynamicBBoxMM();
+        foreach ($oMM as $i => $object) {
+            $idObjectMM = $object['idObjectMM'];
+            $framesList = $objectFrameMM->listByObjectMM($idObjectMM)->asQuery()->getResult();
+            $object['frames'] = $framesList;
+            $object['idObject'] = $i + 1;
+            $object['idObjectClone'] = $object['idObject'];
+            $object['hidden'] = false;
+            $objects[] = (object)$object;
+        }
+        return $objects;
+    }
+
     public function updateObject($data)
     {
         if ($data->idObjectMM != -1) {
             $this->getById($data->idObjectMM);
         }
-        $objectFrameMM = new ObjectFrameMM();
+        $documentMM = new DocumentMM($data->idDocumentMM);
+        $objectFrameMM = new DynamicBBoxMM();
+        $transaction = $this->beginTransaction();
+        try {
+            $object = (object)[
+                'startTime' => $data->startTime,
+                'endTime' => $data->endTime,
+                'startFrame' => $data->startFrame,
+                'endFrame' => $data->endFrame,
+                'idDocument' => $documentMM->getIdDocument(),
+                'status' => ($data->idFrameElement > 0) ? 1 : 0,
+                'origin' => $data->origin ?: '2',
+                'idFrameElement' => $data->idFrameElement,
+                'idLU' => $data->idLU,
+            ];
+            mdump($this->getData());
+            $this->save($object);
+            Timeline::addTimeline("dynamicobjectmm", $this->getId(), "S");
+            $objectFrameMM->putFrames($this->idDynamicObjectMM, $data->frames);
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function updateObjectData($data) {
+        if ($data->idObjectMM != -1) {
+            $this->getById($data->idObjectMM);
+        }
         $transaction = $this->beginTransaction();
         try {
             $object = (object)[
@@ -65,25 +150,22 @@ class DynamicObjectMM extends Repository
             ];
             mdump($this->getData());
             $this->save($object);
-            Timeline::addTimeline("objectmm", $this->getId(), "S");
-            $objectFrameMM->putFrames($this->idObjectMM, $data->frames);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();
             throw new \Exception($e->getMessage());
         }
     }
-
     public function deleteObjects($idToDelete)
     {
         $transaction = $this->beginTransaction();
         try {
-            $objectFrameMM = new ObjectFrameMM();
+            $objectFrameMM = new DynamicBBoxMM();
             $deleteCriteria = $objectFrameMM->getDeleteCriteria();
-            $deleteCriteria->where('idObjectMM', 'IN', $idToDelete);
+            $deleteCriteria->where('idDynamicObjectMM', 'IN', $idToDelete);
             $deleteCriteria->delete();
             $deleteCriteria = $this->getDeleteCriteria();
-            $deleteCriteria->where('idObjectMM', 'IN', $idToDelete);
+            $deleteCriteria->where('idDynamicObjectMM', 'IN', $idToDelete);
             $deleteCriteria->delete();
             $transaction->commit();
         } catch (\Exception $e) {
@@ -96,9 +178,9 @@ class DynamicObjectMM extends Repository
     {
         $transaction = $this->beginTransaction();
         try {
-            $objectFrameMM = new ObjectFrameMM();
+            $objectFrameMM = new DynamicBBoxMM();
             $deleteCriteria = $objectFrameMM->getDeleteCriteria();
-            $deleteCriteria->where('idObjectFrameMM', '=', $idToDelete);
+            $deleteCriteria->where('idDynamicBBoxMM', '=', $idToDelete);
             $deleteCriteria->delete();
             $transaction->commit();
         } catch (\Exception $e) {
@@ -142,19 +224,21 @@ class DynamicObjectMM extends Repository
     */
 
 
+    /*
     public function save($data = null)
     {
         $transaction = $this->beginTransaction();
         try {
             $this->setData($data);
             parent::save();
-            Timeline::addTimeline("objectmm", $this->getId(), "S");
+            Timeline::addTimeline("dynamicobjectmm", $this->getId(), "S");
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();
             throw new \Exception($e->getMessage());
         }
     }
+    */
 
     public function getByIdFlickr30k($idFlickr30k)
     {

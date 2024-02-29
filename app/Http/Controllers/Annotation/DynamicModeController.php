@@ -6,6 +6,9 @@ use App\Data\SearchDynamicModeData;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Structure\DocumentController;
 use App\Repositories\Corpus;
+use App\Repositories\Document;
+use App\Repositories\DocumentMM;
+use App\Repositories\DynamicObjectMM;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
@@ -83,7 +86,23 @@ class DynamicModeController extends Controller
     #[Get(path: '/annotation/dynamicMode/annotation/{idDocument}')]
     public function annotation(int $idDocument)
     {
+        $document = new Document($idDocument);
+        $document->retrieveAssociation('corpus');
+        data('document', $document);
+        $documentMM = new DocumentMM();
+        $documentMM->getByIdDocument($idDocument);
+        data('documentMM', $documentMM);
+        data("objects", []);
         return $this->render("annotation");
+    }
+
+    #[Get(path: '/annotation/dynamicMode/gridObjects/{idDocument}')]
+    public function gridObjects(int $idDocument)
+    {
+        $dynamicObjectMM = new DynamicObjectMM();
+        data('idDocument', $idDocument);
+        data('objects', $dynamicObjectMM->getObjectsByDocument($idDocument));
+        return $this->render("Annotation.DynamicMode.Annotation.gridObjects");
     }
 
 

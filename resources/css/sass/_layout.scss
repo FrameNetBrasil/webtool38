@@ -272,3 +272,103 @@ body {
     }
 }
 
+.wt-layout-dynamic-annotation {
+
+    -moz-border-radius: var(--wt-controls-border-radius);
+    -webkit-border-radius: var(--wt-controls-border-radius);
+    border-radius: var(--wt-controls-border-radius);
+    border: var(--wt-controls-border);
+    box-sizing: border-box;
+
+    .header {
+        position: relative;
+        background-color: var(--wt-bg-header);
+        padding: var(--wt-mini-unit);
+    }
+
+    .title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: var(--wt-color-panel-header);
+        height: var(--wt-row-unit);
+        line-height: var(--wt-row-unit);
+        padding-left: var(--wt-mini-unit);
+    }
+
+    .edit {
+
+        background-color: var(--wt-bg-panel-body);
+
+        .editHeader {
+            padding-top: var(--wt-mini-unit);
+            padding-right: var(--wt-mini-unit);
+        }
+
+        .description {
+            font-size: 0.875rem;
+            height: var(--wt-row-detail-unit);
+            line-height: var(--wt-row-detail-unit);
+            padding-left: var(--wt-mini-unit);
+        }
+    }
+
+    .meta {
+        padding: var(--wt-mini-unit) 0 0 var(--wt-mini-unit);
+        height: var(--wt-row-control-unit);
+        background-color: var(--wt-bg-pane-nav);
+
+        .options {
+            border-bottom: 1px solid var(--wt-border-panel-header);
+        }
+    }
+
+    .main {
+        height: 100%;
+
+        .video{
+            width: 880px;
+            height: 560px;
+            box-sizing: border-box;
+            padding: var(--wt-unit);
+
+            .vjs-control-bar {
+                bottom: -30px;
+                opacity: 1 !important;
+                display:flex !important;
+            }
+
+            .info {
+                height: 32px;
+                line-height: 32px;
+                background-color: var(--wt-bg-pane-nav);
+                width: 852px;
+                margin-top: 30px;
+            }
+        }
+        .controls {
+            width: 880px;
+
+        }
+        .gridObjectSentence {
+            box-sizing: border-box;
+            height: 512px;
+            width: 100%;
+            padding: var(--wt-unit) var(--wt-unit) 0 0;
+
+            .gridTabs {
+                width:100%;
+            }
+
+        }
+        .object {
+
+        }
+    }
+
+    .new {
+        height: calc(100% - 0px);
+        padding: var(--wt-unit);
+        background-color: var(--wt-bg-panel-header);
+    }
+
+}
