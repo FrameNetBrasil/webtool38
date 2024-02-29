@@ -44,6 +44,7 @@ return [
             'corpusAnnotation' => ['Corpus Mode', '/annotation/corpus', 'MASTER', []],
 //            'staticFrameMode1' => ['Static Frame Mode 1', '/annotation/staticFrameMode1', 'staticFrameMode1', 'MASTER', 1, []],
 //            'staticFrameMode2' => ['Static Frame Mode 2', '/annotation/staticFrameMode2', 'staticFrameMode2', 'MASTER', 1, []],
+            'dynamicMode' => ['Dynamic Mode', '/annotation/dynamicMode', 'MASTER', []],
 //            'layers' => ['Manage Layers', '/layer/formManager', 'fa fa-list fa16px', 'JUNIOR', 1, []],
         ]],
         'report' => ['Report', '/report', '', [
