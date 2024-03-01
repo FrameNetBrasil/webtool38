@@ -1,6 +1,7 @@
 
 window.annotation = {
-    data: annotationData
+    data: annotationData,
+    objects:[],
 };
 
 console.log(annotation.data);

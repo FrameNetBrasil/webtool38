@@ -83,7 +83,7 @@ class DynamicModeController extends Controller
 
     }
 
-    #[Get(path: '/annotation/dynamicMode/annotation/{idDocument}')]
+    #[Get(path: '/annotation/dynamicMode/{idDocument}')]
     public function annotation(int $idDocument)
     {
         $document = new Document($idDocument);

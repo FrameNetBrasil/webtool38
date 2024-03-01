@@ -34,7 +34,7 @@
             onClickRow: (row) => {
                 if (row.type === 'document') {
                     let idDocument = row.id.substring(1);
-                    window.location.href = `Annotation/dynamicMode/annotation/${idDocument}`;
+                    window.location.href = `/annotation/dynamicMode/${idDocument}`;
                 }
             },
         });

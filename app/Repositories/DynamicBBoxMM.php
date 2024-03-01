@@ -32,6 +32,15 @@ class DynamicBBoxMM extends Repository
         return $criteria;
     }
 
+    public function listByObjectsMM(array $idDynamicObjectMM)
+    {
+        $criteria = $this->getCriteria()
+            ->select(['idDynamicBBoxMM', 'idDynamicObjectMM','frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
+            ->where("idDynamicObjectMM", "IN", $idDynamicObjectMM)
+            ->orderBy('idDynamicBBoxMM,frameNumber');
+        return $criteria;
+    }
+
     public function putFrames($idObjectMM, $frames)
     {
         $transaction = $this->beginTransaction();
