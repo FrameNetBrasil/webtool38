@@ -172,6 +172,7 @@ body {
             box-sizing: border-box;
         }
     }
+
     .new {
         height: calc(100% - 0px);
         padding: var(--wt-unit);
@@ -325,7 +326,7 @@ body {
     .main {
         height: 100%;
 
-        .video{
+        .video {
             width: 880px;
             height: 560px;
             box-sizing: border-box;
@@ -334,7 +335,7 @@ body {
             .vjs-control-bar {
                 bottom: -30px;
                 opacity: 1 !important;
-                display:flex !important;
+                display: flex !important;
             }
 
             .info {
@@ -345,62 +346,70 @@ body {
                 margin-top: 30px;
             }
         }
+
         .controls {
             width: 880px;
 
         }
+
         .gridObjectSentence {
             box-sizing: border-box;
             height: 512px;
             width: 100%;
             padding: var(--wt-unit) var(--wt-unit) 0 0;
 
-            #gridPanel {
-                max-width: inherit !important;
-                overflow-x: auto;
-            }
+            #dynamicModeGrid {
 
-            #gridTabs {
-                height:100%;
-            }
+                #dynamicModeTabs {
 
-            .gridTab {
-                height:100%;
-                width: 100% !important;
-                overflow-x: auto;
 
-                table {
-                    font-size: 0.875rem;
-                    //display: block;
-                    //overflow: auto;
-                    //table-layout: fixed;
-                    //width:1000px;
-                    border-collapse: collapse;
-                    width: 100% !important;
-                }
+                    #containerTableObjects {
+                        max-width: calc(100vw - 910px);
+                        overflow-x: auto;
+                        height: 520px;
 
-                thead, tbody, tr {
-                    display: table;
-//                    width: 100%;
-                    table-layout: fixed;
-                    //width:1000px;
-                    border-bottom: 1px solid var(--wt-border-panel-header);
-                }
-                 td {
-                     border-bottom:0;
-                 }
 
-                tbody {
-                    display: block;
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                    table-layout: fixed;
-                    max-height: 250px;
-                    width:1000px;
+                        table {
+                            font-size: 0.875rem;
+                            //display: block;
+                            display: table;
+                            overflow: auto;
+                            //table-layout: fixed;
+                            width:1000px;
+                            border-collapse: collapse;
+                            //width: 100% !important;
+                        }
+
+                        thead, tbody, tr {
+                            display: table;
+                            //                    width: 100%;
+                            table-layout: fixed;
+                            //width:1000px;
+                            border-bottom: 1px solid var(--wt-border-panel-header);
+                        }
+
+                        td {
+                            border-bottom: 0;
+                            white-space: nowrap;
+                        }
+
+                        /*
+                        tbody {
+                            display: block;
+                            overflow-y: auto;
+                            overflow-x: hidden;
+                            table-layout: fixed;
+                            max-height: 250px;
+                            //width: 1000px;
+                        }
+
+                         */
+                    }
                 }
             }
 
         }
+
         .object {
 
         }

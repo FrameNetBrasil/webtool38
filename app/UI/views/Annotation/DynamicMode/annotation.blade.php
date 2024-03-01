@@ -15,20 +15,21 @@
     </x-slot:grid>
     <x-slot:script>
         <script type="text/javascript">
+            const evtDOObjects = new Event("doObjects:ready");
             window.annotation = {
                 document: {{ Js::from($document) }},
                 documentMM: {{ Js::from($documentMM) }},
-                loadObjects: () => {
-                    return new Promise((resolve, reject) => {
-                        console.log('ajax call',annotation.document.idDocument);
-                        $.ajax({
-                            url: "/annotation/dynamicMode/gridObjects/" + annotation.document.idDocument,
-                            method: "GET",
-                            dataType: "json",
-                            success: (response) => {
-                                resolve(response);
-                            }
-                        });
+                objects: [],
+                loadObjects: async function () {
+                    await $.ajax({
+                        url: "/annotation/dynamicMode/gridObjects/" + annotation.document.idDocument,
+                        method: "GET",
+                        dataType: "json",
+                        success: (response) => {
+                            console.log(response);
+                            window.annotation.objects = response;
+                            document.dispatchEvent(evtDOObjects)
+                        }
                     });
                 },
                 deleteObjects: (toDelete) => {
@@ -109,6 +110,8 @@
                     });
                 }
             }
+            window.annotation.loadObjects();
+            console.log(window.annotation.objects);
             $(function () {
                 @include("Annotation.DynamicMode.Scripts.data")
 
