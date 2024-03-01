@@ -355,8 +355,49 @@ body {
             width: 100%;
             padding: var(--wt-unit) var(--wt-unit) 0 0;
 
-            .gridTabs {
-                width:100%;
+            #gridPanel {
+                max-width: inherit !important;
+                overflow-x: auto;
+            }
+
+            #gridTabs {
+                height:100%;
+            }
+
+            .gridTab {
+                height:100%;
+                width: 100% !important;
+                overflow-x: auto;
+
+                table {
+                    font-size: 0.875rem;
+                    //display: block;
+                    //overflow: auto;
+                    //table-layout: fixed;
+                    //width:1000px;
+                    border-collapse: collapse;
+                    width: 100% !important;
+                }
+
+                thead, tbody, tr {
+                    display: table;
+//                    width: 100%;
+                    table-layout: fixed;
+                    //width:1000px;
+                    border-bottom: 1px solid var(--wt-border-panel-header);
+                }
+                 td {
+                     border-bottom:0;
+                 }
+
+                tbody {
+                    display: block;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    table-layout: fixed;
+                    max-height: 250px;
+                    width:1000px;
+                }
             }
 
         }

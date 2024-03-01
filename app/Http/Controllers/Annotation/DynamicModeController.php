@@ -100,9 +100,10 @@ class DynamicModeController extends Controller
     public function gridObjects(int $idDocument)
     {
         $dynamicObjectMM = new DynamicObjectMM();
-        data('idDocument', $idDocument);
-        data('objects', $dynamicObjectMM->getObjectsByDocument($idDocument));
-        return $this->render("Annotation.DynamicMode.Annotation.gridObjects");
+//        data('idDocument', $idDocument);
+//        data('objects', $dynamicObjectMM->getObjectsByDocument($idDocument));
+//        return $this->render("Annotation.DynamicMode.Annotation.gridObjects");
+        return $dynamicObjectMM->getObjectsByDocument($idDocument);
     }
 
 

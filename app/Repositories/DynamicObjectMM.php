@@ -101,10 +101,10 @@ order by do.startTime asc
 SQL;
 //        $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name');
         $result = $this->query($cmd);
-        $objects = [];
         $oMM = [];
-        foreach ($result as $row) {
-            $objects[$row['idObjectMM']] = $row;
+        foreach ($result as $i => $row) {
+//            $row['order'] = $i + 1;
+//            $objects[] = $row;
             //mdump($object);
 //            if ($object['idFrameElement']) {
 //                $feCriteria = $viewFrameElement->getCriteria();
@@ -132,9 +132,17 @@ SQL;
         $objectFrameMM = new DynamicBBoxMM();
         $bboxList = $objectFrameMM->listByObjectsMM($oMM)->getResult();
         debug($bboxList[0]);
+        $bboxes = [];
         foreach ($bboxList as $bbox) {
-            $objects[$bbox['idDynamicObjectMM']]['bboxes'][] = $bbox;
+            $bboxes[$bbox['idDynamicObjectMM']][] = $bbox;
         }
+        $objects = [];
+        foreach ($result as $i => $row) {
+            $row['order'] = $i + 1;
+            $row['bboxes'] = $bboxes[$row['idObjectMM']];
+            $objects[] = $row;
+        }
+
 //        foreach ($oMM as $i => $object) {
 //            $idObjectMM = $object['idObjectMM'];
 //            $framesList = $objectFrameMM->listByObjectMM($idObjectMM)->asQuery()->getResult();
@@ -178,7 +186,8 @@ SQL;
         }
     }
 
-    public function updateObjectData($data) {
+    public function updateObjectData($data)
+    {
         if ($data->idObjectMM != -1) {
             $this->getById($data->idObjectMM);
         }
@@ -203,6 +212,7 @@ SQL;
             throw new \Exception($e->getMessage());
         }
     }
+
     public function deleteObjects($idToDelete)
     {
         $transaction = $this->beginTransaction();
