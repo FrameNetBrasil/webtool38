@@ -53,7 +53,9 @@ let annotationGridObject = {
             title: 'Start Frame [Time]',
             align: 'right',
             sortable: true,
-            width: 112,
+            //width: '25%',
+            width: '150px',
+            resizable:false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.startFrame + " [" + row.startTime + "s]" + "</span>";
             },
@@ -62,7 +64,9 @@ let annotationGridObject = {
             field: 'endFrame',
             title: 'End Frame [Time]',
             align: 'right',
-            width: 112,
+            //width: '25%',
+            width: '150px',
+            resizable:false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.endFrame + " [" + row.endTime + "s]" + "</span>";
             },
@@ -78,7 +82,9 @@ let annotationGridObject = {
         {
             field: 'lu',
             title: 'CV_Name (LU)',
-            width: 130,
+            resizable:false,
+            //width: '50%',
+            width: '300px',
         },
         // {
         //     field: 'origin',
@@ -161,8 +167,8 @@ document.addEventListener('doObjects:ready', () => {
     $('#gridObjects').datagrid({
         data: window.annotation.objects,
         border: 1,
-        width: 1200,
-        height: 544,
+        width: '100%',
+        // height: 544,
         fit: true,
         idField: 'idObjectMM',
         //title: 'Objects',

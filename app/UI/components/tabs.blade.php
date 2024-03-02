@@ -1,11 +1,11 @@
-<div class="wt-tabs" id="{{$id}}">
-<div class="wt-tabs-tabs flex flex-row">
+<div class="wt-tabs flex flex-column h-full w-full" id="{{$id}}">
+<div class="wt-tabs-tabs flex-none flex flex-row">
     @foreach ($tabs as $idTab => $tabName)
         <div class="wt-tabs-tabs-title {{ $idTab == $active ? 'activeTab' : '' }}" data-tab-value="#{{$idTab}}">{{$tabName}}</div>
     @endforeach
 </div>
 @foreach ($slots as $idSlot => $slot)
-    <div class="wt-tabs-content {{$idSlot == $active ? 'active' : ''}}" id="{{$idSlot}}" data-tab-info>
+    <div class="flex-grow-1 wt-tabs-content {{$idSlot == $active ? 'active' : ''}}" id="{{$idSlot}}" data-tab-info>
         {{ $$slot }}
     </div>
 @endforeach

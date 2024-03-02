@@ -1,5 +1,4 @@
 .wt-tabs {
-    overflow-y: auto;
 
     .wt-tabs-tabs {
         background-color: var(--wt-bg-panel-header);
@@ -32,6 +31,7 @@
 
     .wt-tabs-content {
         padding-top: var(--wt-unit);
+        height:100%;
     }
 
     //.active {

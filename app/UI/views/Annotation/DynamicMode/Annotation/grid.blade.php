@@ -39,7 +39,10 @@
         :slots="['tab1' => 'objects', 'tab2' => 'sentences']"
     >
         <x-slot name="objects">
-            <table id="gridObjects" style="height:500px"></table>
+            <div id="containerTableObjects">
+            <table id="gridObjects" style="height:500px">
+            </table>
+            </div>
             <!--
             <div id="containerTableObjects">
                 <table>

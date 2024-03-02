@@ -359,16 +359,22 @@ body {
             padding: var(--wt-unit) var(--wt-unit) 0 0;
 
             #dynamicModeGrid {
+                height: 100%;
+
+                table {
+                    font-size: 0.875rem;
+                }
 
                 #dynamicModeTabs {
 
 
                     #containerTableObjects {
-                        max-width: calc(100vw - 910px);
+                        width: calc(100vw - 920px);
                         overflow-x: auto;
                         height: 520px;
 
 
+                        /*
                         table {
                             font-size: 0.875rem;
                             //display: block;
@@ -392,6 +398,8 @@ body {
                             border-bottom: 0;
                             white-space: nowrap;
                         }
+
+                         */
 
                         /*
                         tbody {
