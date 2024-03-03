@@ -17,14 +17,6 @@ let annotationGridObject = {
         //     },
         // },
         // {
-        //     field: 'idObjectClone',
-        //     width: 24,
-        //     title: '<i class="faTool material wt-icon-clone"></i>',
-        //     formatter: function (value, row, index) {
-        //         return "<i class='material-outlined wt-icon-clone' style='cursor:pointer'></i>";
-        //     },
-        // },
-        // {
         //     field: 'idObject',
         //     title: '#',
         //     align: 'right',
@@ -40,6 +32,37 @@ let annotationGridObject = {
             title: 'idFE',
             hidden: true,
         },
+        {
+            field: 'delete',
+            width: '32px',
+            title: '',
+            formatter: function (value, row, index) {
+                return `<div class="wt-datagrid-action" style="width:24px">
+                                    <span
+                                        class="action material-icons-outlined wt-datagrid-icon wt-icon-delete cursor-pointer"
+                                        title="delete Object"
+                                        hx-delete="/annotation/dynamicMode/object/${row.idObjectMM}"
+                                    ></span></div>`
+            },
+        },
+        {
+            field: 'clone',
+            width: '32px',
+            title: '',
+            formatter: function (value, row, index) {
+                return `<div class="wt-datagrid-action" style="width:24px">
+                                    <span
+                                        class="action material-icons-outlined wt-datagrid-icon wt-icon-clone cursor-pointer"
+                                        title="clone Object"
+                                    ></span></div>`;
+            },
+        },
+        {
+            field: 'order',
+            width: '40px',
+            title: '#',
+            align: 'right',
+        },
         // {
         //     field: 'tag',
         //     width: 24,
@@ -54,7 +77,7 @@ let annotationGridObject = {
             align: 'right',
             sortable: true,
             //width: '25%',
-            width: '150px',
+            width: '120px',
             resizable:false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.startFrame + " [" + row.startTime + "s]" + "</span>";
@@ -65,20 +88,20 @@ let annotationGridObject = {
             title: 'End Frame [Time]',
             align: 'right',
             //width: '25%',
-            width: '150px',
+            width: '120px',
             resizable:false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.endFrame + " [" + row.endTime + "s]" + "</span>";
             },
         },
-        // {
-        //     field: 'frameFe',
-        //     title: 'FrameNet Frame.FE',
-        //     width: 185,
-        //     formatter: function (value, row, index) {
-        //         return (row.frame !== '') ? "<span  class='gridPaneFrameFE'>" + row.frame + "." + row.fe + "</span>" : '';
-        //     },
-        // },
+        {
+            field: 'frameFe',
+            title: 'FrameNet Frame.FE',
+            width: '300px',
+            formatter: function (value, row, index) {
+                return (row.frame !== '') ? "<span  class='gridPaneFrameFE'>" + row.frame + "." + row.fe + "</span>" : '';
+            },
+        },
         {
             field: 'lu',
             title: 'CV_Name (LU)',
@@ -86,36 +109,38 @@ let annotationGridObject = {
             //width: '50%',
             width: '300px',
         },
-        // {
-        //     field: 'origin',
-        //     title: 'Origin',
-        //     width: 100,
-        //     formatter: function (value, row, index) {
-        //         if (row.origin === '1') {
-        //             return "yolo";
-        //         }
-        //         if (row.origin === '2') {
-        //             return "manual";
-        //         }
-        //     },
-        // },
-        // {
-        //     field: 'status',
-        //     width: 24,
-        //     title: "<i class='material-outlined wt-icon-status'></i>",
-        //     formatter: function (value, row, index) {
-        //         if (row.idFE !== "") {
-        //             return "<i style='color:green' class='fas fa-check'></i>";
-        //         } else {
-        //             return "<i style='color:gold' class='fas fa-exclamation-triangle'></i>";
-        //         }
-        //     },
-        // },
-        // {
-        //     field: 'idDynamicObjectMM',
-        //     title: 'idObjectMM',
-        //     sortable: true,
-        // },
+        {
+            field: 'origin',
+            title: 'Origin',
+            width: '100px',
+            formatter: function (value, row, index) {
+                if (row.origin === 1) {
+                    return "yolo";
+                }
+                if (row.origin === 2) {
+                    return "manual";
+                }
+            },
+        },
+        {
+            field: 'status',
+            width: '32px',
+            title: "<span class='material-icons-outlined wt-datagrid-icon wt-icon-annotation-success'></span>",
+            formatter: function (value, row, index) {
+                if (row.idFE !== "") {
+                    return "<span class='material-icons-outlined wt-datagrid-icon wt-icon-annotation-success'></span>";
+                } else {
+                    return "<span class='material-icons-outlined wt-datagrid-icon wt-icon-annotation-warning'></span>";
+                }
+            },
+        },
+        {
+            field: 'idObjectMM',
+            title: 'id',
+            formatter: function (value, row, index) {
+                return `<span class="wt-tag">#${row.idObjectMM}</span>`;
+            },
+        },
     ],
     toolbar: [
         {
@@ -162,68 +187,66 @@ let annotationGridObject = {
     ]
 };
 
-document.addEventListener('doObjects:ready', () => {
-    console.log(window.annotation.objects);
-    $('#gridObjects').datagrid({
-        data: window.annotation.objects,
-        border: 1,
-        width: '100%',
-        // height: 544,
-        fit: true,
-        idField: 'idObjectMM',
-        //title: 'Objects',
-        showHeader: true,
-        singleSelect: false,
-        //toolbar: annotationGridObject.toolbar,
-        columns: [
-            annotationGridObject.columns
-        ],
-        rowStyler: function (index, row) {
-            console.log(row);
-            // let currentObject = that.$store.state.currentObject;
-            // if (currentObject && (row)) {
-            //     if (currentObject.idObject === row.idObject) {
-            //         return 'background-color:#6293BB;color:#fff;'; // return inline style
-            //     }
-            // }
-        },
-        onClickRow: function (index, row) {
-            // let currentState = that.$store.state.currentState;
-            // if (currentState === 'videoPaused') {
-            //     if (that.fieldClicked === 'locked') {
-            //         that.$store.dispatch('lockObject', row.idObject);
-            //     } else if (that.fieldClicked === 'hidden') {
-            //         if (row.hidden) {
-            //             that.$store.dispatch('showObject', row.idObject);
-            //             row.hidden = false;
-            //         } else {
-            //             that.$store.dispatch('hideObject', row.idObject);
-            //             row.hidden = true;
-            //         }
-            //         $('#gridObjects').datagrid('refreshRow', index);
-            //         that.$store.commit('redrawFrame', true);
-            //     } else if (that.fieldClicked === 'idObjectClone') {
-            //         that.duplicateObjects(that, [row.idObject])
-            //     } else if (that.fieldClicked === 'start') {
-            //         that.$store.commit('currentFrame', row.startFrame);
-            //         that.$store.dispatch('selectObject', row.idObject);
-            //     } else if (that.fieldClicked === 'end') {
-            //         that.$store.commit('currentFrame', row.endFrame);
-            //         that.$store.dispatch('selectObject', row.idObject);
-            //     } else {
-            //         that.$store.commit('currentFrame', row.startFrame);
-            //         that.$store.dispatch('selectObject', row.idObject);
-            //     }
-            // }
-        },
-        onClickCell: function (index, field, value) {
-            // let currentState = that.$store.state.currentState;
-            // if (currentState === 'videoPaused') {
-            //     that.fieldClicked = field;
-            // }
-        },
-        onBeforeSelect: function () {
-            return false;
-        },
-    });
+$('#gridObjects').datagrid({
+    data: [],
+    border: 1,
+    width: '100%',
+    // height: 544,
+    fit: true,
+    idField: 'idObjectMM',
+    //title: 'Objects',
+    showHeader: true,
+    singleSelect: false,
+    //toolbar: annotationGridObject.toolbar,
+    columns: [
+        annotationGridObject.columns
+    ],
+    rowStyler: function (index, row) {
+        //            console.log(row);
+        // let currentObject = that.$store.state.currentObject;
+        // if (currentObject && (row)) {
+        //     if (currentObject.idObject === row.idObject) {
+        //         return 'background-color:#6293BB;color:#fff;'; // return inline style
+        //     }
+        // }
+    },
+    onClickRow: function (index, row) {
+        // let currentState = that.$store.state.currentState;
+        // if (currentState === 'videoPaused') {
+        //     if (that.fieldClicked === 'locked') {
+        //         that.$store.dispatch('lockObject', row.idObject);
+        //     } else if (that.fieldClicked === 'hidden') {
+        //         if (row.hidden) {
+        //             that.$store.dispatch('showObject', row.idObject);
+        //             row.hidden = false;
+        //         } else {
+        //             that.$store.dispatch('hideObject', row.idObject);
+        //             row.hidden = true;
+        //         }
+        //         $('#gridObjects').datagrid('refreshRow', index);
+        //         that.$store.commit('redrawFrame', true);
+        //     } else if (that.fieldClicked === 'idObjectClone') {
+        //         that.duplicateObjects(that, [row.idObject])
+        //     } else if (that.fieldClicked === 'start') {
+        //         that.$store.commit('currentFrame', row.startFrame);
+        //         that.$store.dispatch('selectObject', row.idObject);
+        //     } else if (that.fieldClicked === 'end') {
+        //         that.$store.commit('currentFrame', row.endFrame);
+        //         that.$store.dispatch('selectObject', row.idObject);
+        //     } else {
+        //         that.$store.commit('currentFrame', row.startFrame);
+        //         that.$store.dispatch('selectObject', row.idObject);
+        //     }
+        // }
+    },
+    onClickCell: function (index, field, value) {
+        // let currentState = that.$store.state.currentState;
+        // if (currentState === 'videoPaused') {
+        //     that.fieldClicked = field;
+        // }
+    },
+    onBeforeSelect: function () {
+        return false;
+    },
 });
+$('#gridObjects').datagrid('loading');

@@ -14,6 +14,20 @@
         @include("Annotation.DynamicMode.Annotation.grid")
     </x-slot:grid>
     <x-slot:script>
+        <script type="text/javascript" src="/scripts/vatic/dist/compatibility.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/jszip.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/StreamSaver.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/polyfill.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/jsfeat.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/nudged.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/dist/pouchdb.min.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/vatic.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/FramesManager.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/OpticalFlow.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/BoundingBox.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/Frame.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/DynamicObject.js"></script>
+        <script type="text/javascript" src="/scripts/vatic/ObjectsTracker.js"></script>
         <script type="text/javascript">
             const evtDOObjects = new Event("doObjects:ready");
             window.annotation = {
@@ -26,9 +40,9 @@
                         method: "GET",
                         dataType: "json",
                         success: (response) => {
-                            console.log(response);
                             window.annotation.objects = response;
-                            document.dispatchEvent(evtDOObjects)
+                            //document.dispatchEvent(evtDOObjects);
+                            Alpine.store('doStore').dataState = 'loaded';
                         }
                     });
                 },
@@ -110,10 +124,13 @@
                     });
                 }
             }
-            window.annotation.loadObjects();
-            console.log(window.annotation.objects);
+
+            @include("Annotation.DynamicMode.Annotation.objectManager")
+            @include("Annotation.DynamicMode.Annotation.store")
+
+
             $(function () {
-                @include("Annotation.DynamicMode.Scripts.data")
+
 
             })
         </script>

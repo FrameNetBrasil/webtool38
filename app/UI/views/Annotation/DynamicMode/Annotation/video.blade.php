@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(function () {
-        let annotationVideo = {
+        window.annotationVideo = {
             fps: 25, // frames por segundo
             timeInterval: 25 / 1000, // intervalo entre frames
             state: 'paused',
@@ -10,23 +10,27 @@
             timeFromFrame(frameNumber) {
                 return ((frameNumber - 1) * annotationVideo.timeInterval) / 1000;
             },
+            framesRange: {
+                first: 1,
+                last: 1
+            }
         }
 
-        let videoInfo = Alpine.reactive({
-            timeCount: 0,
-            frameCount: 1,
-            timeDuration: 0,
-            frameDuration: 0,
-        })
+        // let videoInfo = Alpine.reactive({
+        //     timeCount: 0,
+        //     frameCount: 1,
+        //     timeDuration: 0,
+        //     frameDuration: 0,
+        // })
+        //
+        // Alpine.effect(() => {
+        //     document.querySelector('#timeCount').textContent = videoInfo.timeCount;
+        //     document.querySelector('#frameCount').textContent = videoInfo.frameCount;
+        //     document.querySelector('#timeDuration').textContent = videoInfo.timeDuration;
+        //     document.querySelector('#frameDuration').textContent = videoInfo.frameDuration;
+        // })
 
-        Alpine.effect(() => {
-            document.querySelector('#timeCount').textContent = videoInfo.timeCount;
-            document.querySelector('#frameCount').textContent = videoInfo.frameCount;
-            document.querySelector('#timeDuration').textContent = videoInfo.timeDuration;
-            document.querySelector('#frameDuration').textContent = videoInfo.frameDuration;
-        })
-
-        const player = videojs('vid1', {
+        const player = videojs('videoContainer', {
             controls: true,
             autoplay: false,
             preload: "auto",
@@ -67,7 +71,7 @@
             console.log(annotationVideo.state);
             if (annotationVideo.state === 'paused') {
                 let currentTime = player.currentTime();
-                if (videoInfo.frameCount > 1) {
+                if (Alpine.store('doStore').frameCount > 1) {
                     player.currentTime(currentTime - annotationVideo.timeInterval);
                 }
             }
@@ -76,20 +80,22 @@
         player.ready(function () {
             player.on('durationchange', () => {
                 let duration = player.duration();
-                videoInfo.timeDuration = parseInt(duration);
-                videoInfo.frameDuration = annotationVideo.frameFromTime(videoInfo.timeDuration);
+                Alpine.store('doStore').timeDuration = parseInt(duration);
+                let lastFrame = annotationVideo.frameFromTime(Alpine.store('doStore').timeDuration);
+                Alpine.store('doStore').frameDuration = lastFrame;
+                annotationVideo.framesRange.last = lastFrame;
             })
             player.on('timeupdate', () => {
                 let currentTime = player.currentTime();
                 //console.log(player.currentTime(), annotationVideo.state);
-                videoInfo.timeCount = parseInt(currentTime);
-                videoInfo.frameCount = annotationVideo.frameFromTime(currentTime);
+                Alpine.store('doStore').timeCount = parseInt(currentTime);
+                Alpine.store('doStore').updateCurrentFrame(annotationVideo.frameFromTime(currentTime));
             })
             player.on('play', () => {
-                annotationVideo.state = 'playing';
+                Alpine.store('doStore').currentVideoState = 'playing';
             })
             player.on('pause', () => {
-                annotationVideo.state = 'paused';
+                Alpine.store('doStore').currentVideoState = 'paused';
             })
         });
 
@@ -98,7 +104,7 @@
 </script>
 
 <video-js
-    id="vid1"
+    id="videoContainer"
     class="video-js"
     width="852"
     height="480"
@@ -114,12 +120,15 @@
         >
     </p>
 </video-js>
-<div class="info flex flex-row justify-content-between">
+<div x-data class="info flex flex-row justify-content-between">
     <div>
-        <span id="frameCount"></span> [<span id="timeCount"></span>s]
+        <span x-text="$store.doStore.frameCount"></span> [<span x-text="$store.doStore.timeCount"></span>s]
     </div>
     <div>
-        <span id="frameDuration"></span> [<span id="timeDuration"></span>s]
+        <span x-text="$store.doStore.currentVideoState"></span>
+    </div>
+    <div>
+        <span x-text="$store.doStore.frameDuration"></span> [<span x-text="$store.doStore.timeDuration"></span>s]
     </div>
 </div>
 
