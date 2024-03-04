@@ -9,13 +9,9 @@ class FramesManager {
         // };
         // this.db = {};
         this.frames = {};
-
         this.onReset = [];
-        //this.video = document.createElement('video');
-
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d');
-
         this.dimensionsInitialized = false;
         this.totalFrames = 0;
         this.processedFrames = 0;
@@ -101,7 +97,7 @@ class FramesManager {
             });
         }
     }
-
+*/
     setConfig(config) {
         this.config = config;
         this.video = document.getElementById(config.idVideoDOMElement);
@@ -111,17 +107,15 @@ class FramesManager {
             this.canvas.height = this.video.videoHeight;
         }
         this.interval = 1000 / this.config.fps;
+        this.config.imageMimeType = "image/png";
     }
 
-    async getFrameFromVideo(frameNumber) {
-        //let jumpToTime = (frameNumber - 1 ) * (this.interval);
-        //this.video.currentTime = jumpToTime;
-        //console.log('getFrameFromVideo currentTime = ' + this.video.currentTime);
+    async getFrameFromVideo() {
+        // considera que o frame de video está sendo exibido no canvas
         this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
         return new Promise((resolve, reject) => {
             this.canvas.toBlob(
                 (blob) => {
-                    //console.log(blob);
                     resolve(blob);
                 },
                 this.config.imageMimeType
@@ -129,43 +123,27 @@ class FramesManager {
         });
     }
 
-    addFrame(frameNumber, frame, imageMimeType) {
-        let attachment = frame;//new Blob(frame, {type: imageMimeType});
-
-        // this.db.putAttachment(frameNumber.toString(), this.attachmentName, attachment, imageMimeType).then(function (result) {
-        //     console.log('put in db ' + frameNumber.toString());
-        // }).catch(function (err) {
-        //     console.log(err);
-        // });
-
-        this.db[frameNumber] = frame;
+    addFrame(frameNumber, frameImage) {
+        this.frames[frameNumber] = frameImage;
     }
 
     async getFrame(frameNumber) {
-        //return this.db.getAttachment(frameNumber.toString(), this.attachmentName);
-        let frame = this.db[frameNumber];
-        //if (typeof frame === 'undefined') {
-        //    let f = '0000' + frameNumber;
-        //    let frame = await getFrameFromUrl(this.config.url + '/' + f.substr(-4) + this.config.imageExtension);
-        //    this.addFrame(frameNumber, frame, this.config.imageMimeType);
-        //    return frame;
-        //}
-        if (typeof frame === 'undefined') {
-            //let f = '0000' + frameNumber;
-            let frame = await this.getFrameFromVideo(frameNumber);
-            //console.log(frame);
-            this.addFrame(frameNumber, frame, this.config.imageMimeType);
-            return frame;
+        let frameImage = this.frames[frameNumber];
+        if (typeof frameImage === 'undefined') {
+            let frameImage = await this.getFrameFromVideo();
+            this.addFrame(frameNumber, frameImage);
+            return frameImage;
         }
-        return frame;
+        return frameImage;
     }
 
-    set(frames) {
-        this.frames = frames;
-        for (let i = 0; i < this.onReset.length; i++) {
-            this.onReset[i]();
+    /*
+        set(frames) {
+            this.frames = frames;
+            for (let i = 0; i < this.onReset.length; i++) {
+                this.onReset[i]();
+            }
         }
-    }
-    */
+        */
 }
 

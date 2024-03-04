@@ -1,9 +1,10 @@
 window.objectManager = {
     tracker: null,
     boxesContainer: document.querySelector('#videoContainer'),
-    init: () => {
+    tempObject: null,
+    init: (config) => {
         console.log('initing objectManager');
-        objectManager.tracker = new ObjectsTracker();
+        objectManager.tracker = new ObjectsTracker(config);
     },
 
     add: (annotatedObject) => {
@@ -13,9 +14,11 @@ window.objectManager = {
     push: (annotatedObject) => {
         dynamicObjects.tracker.add(annotatedObject);
     },
+    */
     get: (idObject) => {
-        return dynamicObjects.tracker.annotatedObjects.find(o => o.idObject === idObject);
+        return objectManager.tracker.annotatedObjects.find(o => o.idObject === idObject);
     },
+    /*
     clear: (annotatedObject) => {
         dynamicObjects.tracker.clear(annotatedObject);
     },
@@ -96,7 +99,7 @@ window.objectManager = {
                 onChange(Math.round(position.left), Math.round(position.top), Math.round(bbox.width()), Math.round(bbox.height()));
             }
         });
-        bbox.css('display','none')
+        bbox.css('display', 'none')
     },
     newBboxElement: () => {
         let dom = document.createElement('div');
@@ -106,7 +109,7 @@ window.objectManager = {
         return dom;
     },
 
-    annotateObjects: async (objects) => {
+    annotateObjects: (objects) => {
         objectManager.clearAll();
         // let boxesContainer = annotationVideoModel.boxesContainer;
         // let currentScale = annotationVideoModel.currentScale;
@@ -114,7 +117,9 @@ window.objectManager = {
         // console.log(objectsLoaded);
         //let i = 1;
         for (var object of objects) {
-            if ((object.startFrame >= annotationVideo.framesRange.first) && (object.startFrame <= annotationVideo.framesRange.last)) {
+            //console.log(object,annotationVideo.framesRange);
+            if ((object.startFrame >= annotationVideo.framesRange.first)
+                && (object.startFrame <= annotationVideo.framesRange.last)) {
                 let annotatedObject = new DynamicObject(object);
                 annotatedObject.dom = objectManager.newBboxElement();
                 objectManager.add(annotatedObject);
@@ -163,33 +168,53 @@ window.objectManager = {
         // dynamicStore.commit('objects', objectsLoaded)
         // dynamicStore.commit('updateGridPane', true)
     },
-    /*
-    addControlsToObject: (annotatedObject) => {
+    async creatingObject(event) {
+        if (objectManager.tempObject !== null) {
+            console.log('mouse click - create new object')
+            let data = await objectManager.createNewObject(objectManager.tempObject);
+            console.log('after createNewObject')
+            document.querySelector('#' + annotation.idVideo).style.cursor = 'default';
+            objectManager.tempObject = null;
+        } else {
+            let dom = objectManager.newBboxElement();
+            dom.style.left = event.x + 'px';
+            dom.style.top = event.y + 'px';
+            dom.style.borderColor = '#D3D3D3';
+            objectManager.tempObject = {
+                dom: dom
+            };
+        }
+    },
+
+    initializeNewObject: (annotatedObject, currentFrame) => {
         //console.log(annotatedObject);
-        annotatedObject.name = '';
+        annotatedObject.object = {
+            idFrame: -1,
+            frame: '',
+            idFE: -1,
+            fe: '',
+            startFrame: currentFrame,
+            endFrame: annotationVideo.framesRange.last
+        }
         annotatedObject.visible = true;
         annotatedObject.hidden = false;
         annotatedObject.locked = false;
-        annotatedObject.idFrame = -1;
-        annotatedObject.frame = '';
-        annotatedObject.idFE = -1;
-        annotatedObject.fe = '';
         annotatedObject.color = 'white';
-        annotatedObject.startFrame = this.currentFrame;
-        annotatedObject.endFrame = annotationVideoModel.framesRange.last;
     },
-    createNewObject: async (tempObject, currentScale, currentFrame) => {
+
+    createNewObject: async (tempObject) => {
+        let currentFrame = Alpine.store('doStore').currentFrame;
         if (currentFrame === 0) {
             currentFrame = 1;
         }
-        console.log('createNewObject',tempObject,currentScale,currentFrame);
-        let annotatedObject = new Object();
+        console.log('createNewObject',tempObject,currentFrame);
+        let annotatedObject = new DynamicObject(null);
         annotatedObject.dom = tempObject.dom;
-        let absolute = dynamicObjects.toAbsoluteCoord(tempObject.x, tempObject.y, tempObject.width, tempObject.height, currentScale);
-        let bbox = new BoundingBox(absolute.x, absolute.y, absolute.width, absolute.height);
-        annotatedObject.add(new Frame(currentFrame, bbox, true));
-        dynamicObjects.addControlsToObject(annotatedObject);
-        dynamicObjects.interactify(
+        let bbox = new BoundingBox(tempObject.x, tempObject.y, tempObject.width, tempObject.height);
+        let frameObject = new Frame(currentFrame, bbox, true);
+        annotatedObject.addToFrame(frameObject);
+        objectManager.initializeNewObject(annotatedObject, currentFrame);
+        objectManager.interactify(
             annotatedObject,
             (x, y, width, height) => {
                 let currentObject = annotatedObject;//this.$store.state.currentObject;
@@ -213,8 +238,8 @@ window.objectManager = {
                 // });
             }
         );
-        annotatedObject.startFrame = currentFrame;
-        annotatedObject.endFrame = annotationVideoModel.framesRange.last;
+        // annotatedObject.startFrame = currentFrame;
+        // annotatedObject.endFrame = annotationVideoModel.framesRange.last;
         console.log('##### creating newObject');
         let data = await dynamicObjects.saveObject(annotatedObject,{
             idDocumentMM: annotationVideoModel.documentMM.idDocumentMM,
@@ -228,11 +253,48 @@ window.objectManager = {
             endTime:(annotatedObject.endFrame - 1) / annotationVideoModel.fps,
         })
         $.messager.alert('Ok', "New object created.", 'info');
-        dynamicStore.commit('currentState', 'objectEditing')
+        //dynamicStore.commit('currentState', 'objectEditing')
 //        dynamicStore.dispatch('selectObjectMM', data.idObjectMM);
         return data;
     },
-    */
+    clearFrameObject: function () {
+        $('.bbox').css("display", "none");
+    },
+    drawFrameObject: function (frameNumber) {
+        // desenha a box do objeto atual correspondente ao frame indicado por frameNumber
+        //let that = this;
+        frameNumber = parseInt(frameNumber);
+        if (frameNumber < 1) {
+            return;
+        }
+        try {
+            let currentObjectState = Alpine.store('doStore').currentObjectState;
+            // apaga todas as boxes
+            $('.bbox').css("display", "none");
+            let currentObject = Alpine.store('doStore').currentObject;
+            console.log('drawFrame ' + frameNumber + ' ' + currentObjectState);
+            if (currentObject) {
+                let isEditing = ((currentObjectState === 'objectEditing') || (currentObjectState === 'objectTracking') || (currentObjectState === 'objectPaused'));
+                if (isEditing) {
+                    // se está editando, a box
+                    // - ou já existe (foi criada antes)
+                    // - ou precisa ser criada
+                    // em ambos os casos, passa os parâmetros para o tracker e deixa ele resolver
+                    let tracker = objectManager.tracker;
+                    tracker.getFrameWithObject(frameNumber, currentObject)
+                        .then(() => {
+                            currentObject.drawBoxInFrame(frameNumber);
+                        });
+                    //that.$store.commit('redrawFrame', false);
+                } else {
+                    console.log('drawFrame not editing', currentObject);
+                    currentObject.drawBoxInFrame(frameNumber);
+                }
+            }
+        } catch (e) {
+            manager.messager('error', e.message);
+        }
+    },
     getObjectFrameData: (currentObject, startFrame, endFrame) => {
         console.log('getObjectFrameData', currentObject, startFrame, endFrame)
         let data = [];
@@ -255,7 +317,7 @@ window.objectManager = {
             }
         }
         return {
-            frames:data,
+            frames: data,
             lastFrame: lastFrame
         }
     },
@@ -369,15 +431,15 @@ window.objectManager = {
             idDocumentMM: annotation.documentMM.idDocumentMM,
             startFrame: currentObject.object.startFrame,
             endFrame: currentObject.object.endFrame,
-            idFrame:currentObject.object.idFrame,
+            idFrame: currentObject.object.idFrame,
             idFrameElement: currentObject.object.idFE,
             idLU: currentObject.object.idLU,
             startTime: (currentObject.object.startFrame - 1) / annotationVideo.fps,
-            endTime:(currentObject.object.endFrame - 1) / annotationVideo.fps,
+            endTime: (currentObject.object.endFrame - 1) / annotationVideo.fps,
         }
         let frames = this.getObjectFrameData(currentObject, params.startFrame, params.endFrame);
         params.frames = frames.frames;
-        console.log('params',params);
+        console.log('params', params);
         let data = await annotation.updateObject(params);
     },
     /*

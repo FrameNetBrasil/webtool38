@@ -1,19 +1,19 @@
 <script type="text/javascript">
     $(function () {
         window.annotationVideo = {
-            fps: 25, // frames por segundo
-            timeInterval: 25 / 1000, // intervalo entre frames
             state: 'paused',
             frameFromTime(timeSeconds) {
-                return parseInt(timeSeconds * annotationVideo.fps) + 1;
+                return parseInt(timeSeconds * annotation.fps) + 1;
             },
             timeFromFrame(frameNumber) {
-                return ((frameNumber - 1) * annotationVideo.timeInterval) / 1000;
+                return ((frameNumber - 1) * annotation.timeInterval);
             },
             framesRange: {
                 first: 1,
                 last: 1
-            }
+            },
+            id: 'videoContainer',
+            player: null,
         }
 
         // let videoInfo = Alpine.reactive({
@@ -30,11 +30,12 @@
         //     document.querySelector('#frameDuration').textContent = videoInfo.frameDuration;
         // })
 
-        const player = videojs('videoContainer', {
+        window.annotationVideo.player = videojs(annotation.idVideo, {
             controls: true,
             autoplay: false,
             preload: "auto",
             playbackRates: [0.2, 0.5, 0.8, 1, 2],
+            bigPlayButton: false,
             children: {
                 controlBar: {
                     playToggle: true,
@@ -42,25 +43,35 @@
                     remainingTimeDisplay: false,
                     fullscreenToggle: false,
                     pictureInPictureToggle: false,
-                    bigPlayButton: false,
-
                 },
-                bigPlayButton: false,
                 mediaLoader: true,
                 loadingSpinner: true,
-
             }
         });
+        let player = window.annotationVideo.player;
+
+        player.player_.handleTechClick_ = function (event) {
+            let state = Alpine.store('doStore').currentVideoState;
+            if (state === 'creating') {
+                objectManager.creatingObject(event);
+            } else {
+                if (state === 'paused') {
+                    player.play();
+                }
+                if (state === 'playing') {
+                    player.pause();
+                }
+            }
+        };
 
         // button frame forward
         let btnForward = player.controlBar.addChild('button', {}, 0);
         let btnForwardDom = btnForward.el();
         btnForwardDom.innerHTML = '<span class="material-icons-outlined wt-icon">skip_next</span>';
         btnForwardDom.onclick = function () {
-            console.log(annotationVideo.state);
             if (annotationVideo.state === 'paused') {
                 let currentTime = player.currentTime();
-                player.currentTime(currentTime + annotationVideo.timeInterval);
+                player.currentTime(currentTime + annotation.timeInterval);
             }
         };
         // button frame backward
@@ -68,11 +79,10 @@
         let btnBackwardDom = btnBackward.el();
         btnBackwardDom.innerHTML = '<span class="material-icons-outlined wt-icon">skip_previous</span>';
         btnBackwardDom.onclick = function () {
-            console.log(annotationVideo.state);
             if (annotationVideo.state === 'paused') {
                 let currentTime = player.currentTime();
                 if (Alpine.store('doStore').frameCount > 1) {
-                    player.currentTime(currentTime - annotationVideo.timeInterval);
+                    player.currentTime(currentTime - annotation.timeInterval);
                 }
             }
         };
@@ -81,18 +91,21 @@
             player.on('durationchange', () => {
                 let duration = player.duration();
                 Alpine.store('doStore').timeDuration = parseInt(duration);
-                let lastFrame = annotationVideo.frameFromTime(Alpine.store('doStore').timeDuration);
+                let lastFrame = annotationVideo.frameFromTime(duration);
                 Alpine.store('doStore').frameDuration = lastFrame;
                 annotationVideo.framesRange.last = lastFrame;
+                Alpine.store('doStore').updateObjectList();
             })
             player.on('timeupdate', () => {
                 let currentTime = player.currentTime();
-                //console.log(player.currentTime(), annotationVideo.state);
                 Alpine.store('doStore').timeCount = parseInt(currentTime);
                 Alpine.store('doStore').updateCurrentFrame(annotationVideo.frameFromTime(currentTime));
             })
             player.on('play', () => {
-                Alpine.store('doStore').currentVideoState = 'playing';
+                let state = Alpine.store('doStore').currentVideoState;
+                if (state === 'paused') {
+                    Alpine.store('doStore').currentVideoState = 'playing';
+                }
             })
             player.on('pause', () => {
                 Alpine.store('doStore').currentVideoState = 'paused';

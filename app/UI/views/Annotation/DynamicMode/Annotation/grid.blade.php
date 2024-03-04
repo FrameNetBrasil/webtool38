@@ -1,9 +1,3 @@
-<script type="text/javascript">
-    $(function () {
-        @include("Annotation.DynamicMode.Annotation.gridObjects")
-    })
-</script>
-
 <div id="dynamicModeGrid">
     <x-tabs
         id="dynamicModeTabs"

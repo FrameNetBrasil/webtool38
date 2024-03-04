@@ -10,6 +10,9 @@
     <x-slot:video>
         @include("Annotation.DynamicMode.Annotation.video")
     </x-slot:video>
+    <x-slot:controls>
+        @include("Annotation.DynamicMode.Annotation.controls")
+    </x-slot:controls>
     <x-slot:grid>
         @include("Annotation.DynamicMode.Annotation.grid")
     </x-slot:grid>
@@ -33,6 +36,9 @@
             window.annotation = {
                 document: {{ Js::from($document) }},
                 documentMM: {{ Js::from($documentMM) }},
+                idVideo: 'videoContainer',
+                fps: 25, // frames por segundo
+                timeInterval: 1/25, // intervalo entre frames - 0.04s = 40ms
                 objects: [],
                 loadObjects: async function () {
                     await $.ajax({
@@ -125,6 +131,7 @@
                 }
             }
 
+            @include("Annotation.DynamicMode.Annotation.gridObjects")
             @include("Annotation.DynamicMode.Annotation.objectManager")
             @include("Annotation.DynamicMode.Annotation.store")
 

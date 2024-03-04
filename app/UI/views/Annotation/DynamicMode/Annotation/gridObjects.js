@@ -16,12 +16,6 @@ let annotationGridObject = {
         //         }
         //     },
         // },
-        // {
-        //     field: 'idObject',
-        //     title: '#',
-        //     align: 'right',
-        //     width: 56,
-        // },
         {
             field: 'idFrame',
             title: 'idFrame',
@@ -78,7 +72,7 @@ let annotationGridObject = {
             sortable: true,
             //width: '25%',
             width: '120px',
-            resizable:false,
+            resizable: false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.startFrame + " [" + row.startTime + "s]" + "</span>";
             },
@@ -89,7 +83,7 @@ let annotationGridObject = {
             align: 'right',
             //width: '25%',
             width: '120px',
-            resizable:false,
+            resizable: false,
             formatter: function (value, row, index) {
                 return "<span  class='gridPaneFrame'>" + row.endFrame + " [" + row.endTime + "s]" + "</span>";
             },
@@ -105,7 +99,7 @@ let annotationGridObject = {
         {
             field: 'lu',
             title: 'CV_Name (LU)',
-            resizable:false,
+            resizable: false,
             //width: '50%',
             width: '300px',
         },
@@ -171,20 +165,35 @@ let annotationGridObject = {
             text: 'Delete checked',
             iconCls: 'faTool material wt-icon-delete',
 //            handler: async function () {
-                // var toDelete = [];
-                // var checked = $('#gridObjects').datagrid('getChecked');
-                // $.each(checked, function (index, row) {
-                //     toDelete.push(row.idObjectMM);
-                // });
-                // await dynamicAPI.deleteObjects(toDelete);
-                // annotationVideoModel.currentIdObjectMM = -1;
-                // that.$store.commit('updateGridPane', true)
-                // that.$store.commit('currentObject', null)
-                // that.$store.commit('currentState', 'videoPaused')
-                // $.messager.alert('Ok', 'Objects deleted.', 'info');
-  //          }
+            // var toDelete = [];
+            // var checked = $('#gridObjects').datagrid('getChecked');
+            // $.each(checked, function (index, row) {
+            //     toDelete.push(row.idObjectMM);
+            // });
+            // await dynamicAPI.deleteObjects(toDelete);
+            // annotationVideoModel.currentIdObjectMM = -1;
+            // that.$store.commit('updateGridPane', true)
+            // that.$store.commit('currentObject', null)
+            // that.$store.commit('currentState', 'videoPaused')
+            // $.messager.alert('Ok', 'Objects deleted.', 'info');
+            //          }
         },
-    ]
+    ],
+    fieldClicked: null,
+    selectedObject: null,
+    selectRowByObject: (idObject) => {
+        if (annotationGridObject.selectedObject) {
+            let idObjectPrevious = annotationGridObject.selectedObject;
+            annotationGridObject.selectedObject = null;
+            $('#gridObjects').datagrid('refreshRow', idObjectPrevious - 1);
+        }
+        console.log('selectRowByObject', idObject);
+        //let rowIndex = $('#gridObjects').datagrid('getRowIndex', idObject);
+        annotationGridObject.selectedObject = idObject;
+        //console.log('rowIndex = ', rowIndex);
+        $('#gridObjects').datagrid('scrollTo', idObject - 1);
+        $('#gridObjects').datagrid('refreshRow', idObject - 1);
+    }
 };
 
 $('#gridObjects').datagrid({
@@ -193,7 +202,7 @@ $('#gridObjects').datagrid({
     width: '100%',
     // height: 544,
     fit: true,
-    idField: 'idObjectMM',
+    idField: 'order',
     //title: 'Objects',
     showHeader: true,
     singleSelect: false,
@@ -202,15 +211,22 @@ $('#gridObjects').datagrid({
         annotationGridObject.columns
     ],
     rowStyler: function (index, row) {
-        //            console.log(row);
-        // let currentObject = that.$store.state.currentObject;
-        // if (currentObject && (row)) {
-        //     if (currentObject.idObject === row.idObject) {
-        //         return 'background-color:#6293BB;color:#fff;'; // return inline style
-        //     }
-        // }
+        if (annotationGridObject.selectedObject && (annotationGridObject.selectedObject === row.order)) {
+            return 'background-color:#6293BB;color:#fff;'; // return inline style
+        }
     },
     onClickRow: function (index, row) {
+        let currentVideoState = Alpine.store('doStore').currentVideoState;
+        if (currentVideoState === 'paused') {
+            if (annotationGridObject.fieldClicked === 'startFrame') {
+                Alpine.store('doStore').selectObjectFrame(row.order, row.startFrame);
+            } else if (annotationGridObject.fieldClicked === 'endFrame') {
+                Alpine.store('doStore').selectObjectFrame(row.order, row.endFrame);
+            } else {
+                Alpine.store('doStore').selectObject(row.order);
+            }
+        }
+
         // let currentState = that.$store.state.currentState;
         // if (currentState === 'videoPaused') {
         //     if (that.fieldClicked === 'locked') {
@@ -240,6 +256,10 @@ $('#gridObjects').datagrid({
         // }
     },
     onClickCell: function (index, field, value) {
+        let currentVideoState = Alpine.store('doStore').currentVideoState;
+        if (currentVideoState === 'paused') {
+            annotationGridObject.fieldClicked = field;
+        }
         // let currentState = that.$store.state.currentState;
         // if (currentState === 'videoPaused') {
         //     that.fieldClicked = field;

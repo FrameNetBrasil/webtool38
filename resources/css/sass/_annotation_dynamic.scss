@@ -1,0 +1,41 @@
+.wt-dynamic-annotation {
+    .bbox {
+        border: 1px solid #D3D3D3;
+        position: absolute;
+        z-index: 3;
+    }
+
+    .bboxhighlight {
+        opacity: 1 !important;
+    }
+
+    .handle, .ui-resizable-handle {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 1px solid #D3D3D3;
+        background-color: rgba(255, 255, 0, .05);
+        position: absolute;
+    }
+
+    .center-drag {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: move;
+    }
+
+    .objectId {
+        width: 20px;
+        height: 14px;
+        line-height: 14px;
+        font-size: 12px;
+        background-color: white;
+        right: 0;
+        top: 0;
+        position: absolute;
+        color: black;
+        cursor: pointer;
+        padding-left: 2px;
+    }
+}

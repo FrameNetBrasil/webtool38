@@ -35,7 +35,7 @@ class DynamicBBoxMM extends Repository
     public function listByObjectsMM(array $idDynamicObjectMM)
     {
         $criteria = $this->getCriteria()
-            ->select(['idDynamicBBoxMM', 'idDynamicObjectMM','frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
+            ->select(['idDynamicBBoxMM', 'idDynamicObjectMM as idObjectMM','frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
             ->where("idDynamicObjectMM", "IN", $idDynamicObjectMM)
             ->orderBy('idDynamicBBoxMM,frameNumber');
         return $criteria;

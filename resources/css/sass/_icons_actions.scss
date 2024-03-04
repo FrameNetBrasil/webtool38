@@ -69,3 +69,19 @@
 .wt-icon-clone:before {
     content: "content_copy";
 }
+
+.wt-icon-create-object::before {
+    content: " \e148";
+}
+
+.wt-icon-end-object::before {
+    content: " \ef71";
+}
+
+.wt-icon-start-tracking::before {
+    content: " \e039";
+}
+.wt-icon-pause-tracking::before {
+    content: " \e036";
+}
+

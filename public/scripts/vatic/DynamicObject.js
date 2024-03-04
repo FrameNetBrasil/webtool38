@@ -6,8 +6,14 @@
 class DynamicObject {
     constructor(object) {
         this.object = object;
-        this.idObject = parseInt(object.order);
-        this.color = vatic.getColor(object.order);
+        if (object === null) {
+            // new Object
+            this.idObject = 0;
+            this.color = vatic.getColor(1);
+        } else {
+            this.idObject = parseInt(object.order);
+            this.color = vatic.getColor(object.order);
+        }
         this.visible = true;
         this.hidden = false;
         this.locked = false;
@@ -36,6 +42,56 @@ class DynamicObject {
         // this.startWord = -1;
         // this.endWord = -1;
         // this.idForNewBox = 0;
+    }
+
+    inFrame(frameNumber) {
+        return (this.object.startFrame <= frameNumber) && (this.object.endFrame >= frameNumber);
+    }
+
+
+    getFrameAt(frameNumber) {
+        for (let i = 0; i < this.frames.length; i++) {
+            let currentFrame = this.frames[i];
+            if (currentFrame.frameNumber > frameNumber) {
+                break;
+            }
+            if (currentFrame.frameNumber === frameNumber) {
+                return currentFrame;
+            }
+        }
+        return null;
+    }
+
+    drawBoxInFrame(frameNumber) {
+        this.dom.style.display = 'none';
+        let frameObject = this.getFrameAt(frameNumber);
+        if (frameObject) {
+            if (!this.hidden) {
+                if (frameObject.isVisible()) {
+                    let bbox = frameObject.bbox;
+                    this.dom.style.display = 'block';
+                    this.dom.style.width = bbox.width + 'px';
+                    this.dom.style.height = bbox.height + 'px';
+                    this.dom.style.left = bbox.x + 'px';
+                    this.dom.style.top = bbox.y + 'px';
+                    this.dom.style.borderStyle = 'dotted';
+                    this.dom.style.borderColor = this.color;
+                    this.dom.style.borderWidth = "medium";
+                    this.dom.style.backgroundColor = 'transparent';
+                    this.dom.style.opacity = 1;
+                    this.visible = true;
+                    if (frameObject.blocked) {
+                        this.dom.style.opacity = 0.5;
+                        this.dom.style.backgroundColor = 'white';
+                        this.dom.style.borderStyle = 'dashed';
+                    }
+                } else {
+                    this.dom.style.display = 'none';
+                    this.visible = false;
+                }
+            }
+        }
+
     }
 
     /*
@@ -172,9 +228,6 @@ class DynamicObject {
         return null;
     }
 
-    inFrame(frameNumber) {
-        return (this.startFrame <= frameNumber) && (this.endFrame >= frameNumber);
-    }
 
 
     removeFrame(frameNumber) {

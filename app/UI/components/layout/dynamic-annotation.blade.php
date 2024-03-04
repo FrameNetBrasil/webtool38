@@ -15,14 +15,14 @@
                 {{$meta}}
             </div>
         </div>
-        <section class="flex-grow-1">
+        <section class="flex-grow-1 wt-dynamic-annotation">
             <div class="main flex flex-row p-0 h-full">
                 <div class="left flex flex-column p-0 h-full">
                     <div class="video">
                         {{$video}}
                     </div>
                     <div class="controls">
-
+                        {{$controls}}
                     </div>
                 </div>
                 <div class="right flex flex-column p-0 h-full flex-grow-1">

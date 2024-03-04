@@ -129,17 +129,19 @@ SQL;
         }
 
 //        $objects = [];
-        $objectFrameMM = new DynamicBBoxMM();
-        $bboxList = $objectFrameMM->listByObjectsMM($oMM)->getResult();
-        debug($bboxList[0]);
         $bboxes = [];
-        foreach ($bboxList as $bbox) {
-            $bboxes[$bbox['idDynamicObjectMM']][] = $bbox;
+        if (count($result) > 0) {
+            $objectFrameMM = new DynamicBBoxMM();
+            $bboxList = $objectFrameMM->listByObjectsMM($oMM)->getResult();
+            debug($bboxList[0]);
+            foreach ($bboxList as $bbox) {
+                $bboxes[$bbox['idObjectMM']][] = $bbox;
+            }
         }
         $objects = [];
         foreach ($result as $i => $row) {
             $row['order'] = $i + 1;
-            $row['bboxes'] = $bboxes[$row['idObjectMM']];
+            $row['bboxes'] = $bboxes[$row['idObjectMM']] ?? [];
             $objects[] = $row;
         }
 
