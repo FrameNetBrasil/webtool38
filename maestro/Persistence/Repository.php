@@ -96,7 +96,12 @@ class Repository
 
     public function getData()
     {
-        return $this;
+        $data = [];
+        $attributes = $this->model->getClassMap()->getAttributesNames();
+        foreach ($attributes as $name) {
+            $data[$name] = $this->$name;
+        }
+        return (object)$data;
     }
 
     public function saveData($data): ?int

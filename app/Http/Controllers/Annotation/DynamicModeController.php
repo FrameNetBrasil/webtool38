@@ -107,4 +107,16 @@ class DynamicModeController extends Controller
     }
 
 
+    #[Post(path: '/annotation/dynamicMode/updateObject')]
+    public function updateObject() {
+        try {
+            $dynamicObjectMM = new DynamicObjectMM();
+            $dynamicObjectMM->updateObject($this->data);
+            return $dynamicObjectMM->getData();
+//            $this->renderJSon(json_encode(['type' => 'success', 'message' => 'Object saved.', 'data' => $result]));
+        } catch (\Exception $e) {
+//            $this->renderJSon(json_encode(['type' => 'error', 'message' => $e->getMessage()]));
+        }
+    }
+
 }

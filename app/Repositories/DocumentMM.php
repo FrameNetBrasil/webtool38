@@ -21,6 +21,7 @@ class DocumentMM extends Repository
     public ?int $videoHeight;
     public ?string $alignPath;
     public ?int $flickr30k;
+    public ?string $url;
     public ?int $idDocument;
     public ?int $idLanguage;
     public ?object $document;

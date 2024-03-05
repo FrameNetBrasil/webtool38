@@ -159,31 +159,32 @@ SQL;
 
     public function updateObject($data)
     {
-        if ($data->idObjectMM != -1) {
-            $this->getById($data->idObjectMM);
+        debug($data);
+        if ($data->idDynamicObjectMM) {
+            $this->getById($data->idDynamicObjectMM);
         }
         $documentMM = new DocumentMM($data->idDocumentMM);
-        $objectFrameMM = new DynamicBBoxMM();
-        $transaction = $this->beginTransaction();
+        $this->beginTransaction();
         try {
-            $object = (object)[
+            $object = [
                 'startTime' => $data->startTime,
                 'endTime' => $data->endTime,
                 'startFrame' => $data->startFrame,
                 'endFrame' => $data->endFrame,
-                'idDocument' => $documentMM->getIdDocument(),
+                'idDocument' => $documentMM->idDocument,
                 'status' => ($data->idFrameElement > 0) ? 1 : 0,
                 'origin' => $data->origin ?: '2',
                 'idFrameElement' => $data->idFrameElement,
                 'idLU' => $data->idLU,
             ];
-            mdump($this->getData());
-            $this->save($object);
+            $this->saveData($object);
             Timeline::addTimeline("dynamicobjectmm", $this->getId(), "S");
+            $objectFrameMM = new DynamicBBoxMM();
             $objectFrameMM->putFrames($this->idDynamicObjectMM, $data->frames);
-            $transaction->commit();
+            $this->commit();
         } catch (\Exception $e) {
-            $transaction->rollback();
+            debug($e->getMessage());
+            $this->rollback();
             throw new \Exception($e->getMessage());
         }
     }

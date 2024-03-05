@@ -69,8 +69,6 @@ let annotationGridObject = {
             field: 'startFrame',
             title: 'Start Frame [Time]',
             align: 'right',
-            sortable: true,
-            //width: '25%',
             width: '120px',
             resizable: false,
             formatter: function (value, row, index) {

@@ -7,7 +7,6 @@
 class ObjectsTracker {
     constructor(config) {
         this.framesManager = new FramesManager();
-        this.framesManager.setConfig(config);
         this.annotatedObjects = [];
         this.opticalFlow = new OpticalFlow();
         this.lastFrame = -1;
@@ -16,6 +15,10 @@ class ObjectsTracker {
             this.annotatedObjects = [];
             this.lastFrame = -1;
         });
+    }
+
+    config(config) {
+        this.framesManager.setConfig(config);
     }
 
     add(annotatedObject) {
@@ -119,13 +122,14 @@ class ObjectsTracker {
 
     startFrameObject(frameNumber, targetAnnotatedObject) {
         // procura o frame que tenha a box que possa servir de start para o tracker
-        let start = 0;
+        let start = frameNumber;
         if (targetAnnotatedObject.inFrame(frameNumber)) { // objeto está no frame
             let hasStart = false;
             let objectStartFrame = frameNumber;
             while (targetAnnotatedObject.object.startFrame <= objectStartFrame) {
                 // o objeto começa antes do frame frameNumber
-                if (targetAnnotatedObject.getFrameAt(objectStartFrame) == null) {
+                if (targetAnnotatedObject.getFrameAt(objectStartFrame) === null) {
+                    // não tem bbox no frame objectStartFrame; passa para o anterior
                     objectStartFrame--;
                 } else {
                     hasStart = true;
@@ -301,7 +305,7 @@ class ObjectsTracker {
                                 } else {
                                     // existe o AnnotatedObject no frame frameNumber, então coloca-o no array result
                                     console.log('    existe no frame corrente');
-                                    console.log(annotatedFrame.bbox);
+                                    console.log(frameObject.bbox);
                                     if (frameObject.bbox == null) {
                                         console.log('    existe no frame corrente com bbox null - calcular nova box');
                                         frameObject = annotatedObject.get(frameNumber - 1);
@@ -356,7 +360,7 @@ class ObjectsTracker {
                                     for (let i = 0; i < toCompute.length; i++) {
                                         let annotatedObject = toCompute[i].annotatedObject;
                                         let frameObject = new Frame(frameNumber, newBboxes[i], false);
-                                        annotatedObject.add(frameObject);
+                                        annotatedObject.addToFrame(frameObject);
                                         result.push({annotatedObject: annotatedObject, frameObject: frameObject});
                                     }
                                     resolve({img: img, objects: result});
@@ -375,7 +379,8 @@ class ObjectsTracker {
             } else {
                 this.opticalFlow.reset();
                 //let blob = this.framesManager.getFrame(frameNumber);
-                this.framesManager.getFrame(frameNumber).then((blob) => {
+                this.framesManager.getFrame(frameNumber)
+                    .then((blob) => {
                     vatic.blobToImage(blob).then((img) => {
                         let imageData = this.imageData(img);
                         this.opticalFlow.init(imageData);
@@ -388,11 +393,12 @@ class ObjectsTracker {
     }
 
     imageData(img) {
-        let canvas = this.ctx.canvas;
-        canvas.width = img.width;
-        canvas.height = img.height;
-        this.ctx.drawImage(img, 0, 0);
-        return this.ctx.getImageData(0, 0, canvas.width, canvas.height);
+        // let canvas = this.ctx.canvas;
+        // canvas.width = img.width;
+        // canvas.height = img.height;
+        // this.ctx.drawImage(img, 0, 0);
+        // return this.ctx.getImageData(0, 0, canvas.width, canvas.height);
+        return this.framesManager.ctx.getImageData(0, 0, this.framesManager.canvas.width, this.framesManager.canvas.height);
     }
 
 };

@@ -41,24 +41,23 @@ class DynamicBBoxMM extends Repository
         return $criteria;
     }
 
-    public function putFrames($idObjectMM, $frames)
+    public function putFrames($idDynamicObjectMM, $frames)
     {
-        $transaction = $this->beginTransaction();
+        $this->beginTransaction();
         try {
-            $deleteCriteria = $this->getDeleteCriteria();
-            $deleteCriteria->where("idObjectMM = {$idObjectMM}");
+            $deleteCriteria = $this->getCriteria();
+            $deleteCriteria->where("idDynamicObjectMM = {$idDynamicObjectMM}");
             $deleteCriteria->delete();
             foreach ($frames as $row) {
                 $frame = (object)$row;
                 $this->setPersistent(false);
-                $frame->idObjectMM = $idObjectMM;
-                $this->setData($frame);
-                parent::save();
-                Timeline::addTimeline("objectframemm", $this->getId(), "S");
+                $frame->idDynamicObjectMM = $idDynamicObjectMM;
+                $this->saveData($frame);
+                Timeline::addTimeline("dynamicboxmm", $this->getId(), "S");
             }
-            $transaction->commit();
+            $this->commit();
         } catch (\Exception $e) {
-            $transaction->rollback();
+            $this->rollback();
             throw new \Exception($e->getMessage());
         }
     }

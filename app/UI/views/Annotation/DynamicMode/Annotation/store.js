@@ -10,65 +10,67 @@ document.addEventListener('alpine:init', () => {
         currentObject: null,
         currentObjectState: 'none',
         newObjectState: 'none',
-        updateObjectList() {
-            this.dataState = 'loading';
-            window.annotation.loadObjects();
-        },
         init() {
+            annotation.objects.init();
+        },
+        config() {
             let config = {
-                idVideoDOMElement: annotation.idVideo,
-                fps: annotation.fps,
+                idVideoDOMElement: annotation.video.idVideo,
+                fps: annotation.video.fps,
             }
-            window.objectManager.init(config);
-            //this.updateObjectList();
+            annotation.objects.config(config);
+        },
+        async updateObjectList() {
+            this.dataState = 'loading';
+            await annotation.api.loadObjects();
         },
         updateCurrentFrame(frameNumber) {
             this.frameCount = this.currentFrame = frameNumber;
-            if (this.currentVideoState === 'paused') {
-                objectManager.drawFrameObject(frameNumber);
+            if ((this.currentVideoState === 'paused') || (this.newObjectState === 'tracking') || (this.newObjectState === 'editing')) {
+                console.error('===================');
+                annotation.objects.drawFrameObject(frameNumber);
             }
         },
         selectObject(idObject) {
             if (idObject === null) {
                 this.currentObject = null;
-                objectManager.clearFrameObject();
+                annotation.objects.clearFrameObject();
             } else {
-                let object = objectManager.get(idObject);
+                let object = annotation.objects.get(idObject);
                 this.currentObject = object;
                 console.log(object);
-                let time = annotationVideo.timeFromFrame(object.object.startFrame);
+                let time = annotation.video.timeFromFrame(object.object.startFrame);
                 console.log(time, object.object.startFrame);
-                annotationVideo.player.currentTime(time);
-                objectManager.drawFrameObject(object.object.startFrame);
+                annotation.video.player.currentTime(time);
+                annotation.objects.drawFrameObject(object.object.startFrame);
             }
             annotationGridObject.selectRowByObject(idObject);
+            this.newObjectState = 'editing';
+            this.currentVideoState = 'editing';
+        },
+        selectObjectByIdObjectMM(idObjectMM) {
+            let object = annotation.objects.getByIdObjectMM(idObjectMM);
+            this.selectObject(object.idObject);
         },
         selectObjectFrame(idObject, frameNumber) {
-            this.currentObject = objectManager.get(idObject);
+            this.currentObject = annotation.objects.get(idObject);
             annotationGridObject.selectRowByObject(idObject);
-            let time = annotationVideo.timeFromFrame(frameNumber);
-            annotationVideo.player.currentTime(time);
-            objectManager.drawFrameObject(frameNumber);
+            let time = annotation.video.timeFromFrame(frameNumber);
+            annotation.video.player.currentTime(time);
+            annotation.objects.drawFrameObject(frameNumber);
         },
         createObject() {
             if (this.currentVideoState === 'paused') {
                 console.log('create object');
-                document.querySelector('#btnCreateObject').disabled = true;
-                document.querySelector('#btnStartTracking').disabled = false;
-                document.querySelector('#btnPauseTracking').disabled = false;
-                document.querySelector('#btnEndObject').disabled = false;
-                this.selectObject(null);
-                document.querySelector('#' + annotation.idVideo).style.cursor = 'crosshair';
                 this.newObjectState = 'creating';
                 this.currentVideoState = 'creating';
+                this.selectObject(null);
+                //document.querySelector('#' + annotation.idVideo).style.cursor = 'crosshair';
+                annotation.objects.creatingObject();
             }
         },
         endObject() {
             console.log('end object');
-            document.querySelector('#btnCreateObject').disabled = false;
-            document.querySelector('#btnStartTracking').disabled = true;
-            document.querySelector('#btnPauseTracking').disabled = true;
-            document.querySelector('#btnEndObject').disabled = true;
             this.newObjectState = 'none';
             this.currentVideoState = 'paused';
 
@@ -87,10 +89,15 @@ document.addEventListener('alpine:init', () => {
         },
         startTracking() {
             console.log('start tracking');
+            this.newObjectState = 'tracking';
+            this.currentVideoState = 'tracking';
+            annotation.objects.tracking(true);
 
         },
         pauseTracking() {
             console.log('pause tracking');
+            this.newObjectState = 'editing';
+            this.currentVideoState = 'editing';
         },
     })
 
@@ -106,6 +113,47 @@ document.addEventListener('alpine:init', () => {
         const currentVideoState = Alpine.store('doStore').currentVideoState;
         if (currentVideoState === 'playing') {
             Alpine.store('doStore').selectObject(null);
+            document.querySelector('#btnCreateObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = true;
+            document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnEndObject').disabled = true;
+        }
+        if (currentVideoState === 'paused') {
+            document.querySelector('#btnCreateObject').disabled = false;
+        }
+    })
+    Alpine.effect(async () => {
+        const newObjectState = Alpine.store('doStore').newObjectState;
+        if (newObjectState === 'creating') {
+            document.querySelector('#btnCreateObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = true;
+            document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnEndObject').disabled = true;
+            annotation.video.disablePlayPause();
+        }
+        if (newObjectState === 'created') {
+            await objectManager.createdObject();
+        }
+        if (newObjectState === 'editing') {
+            document.querySelector('#btnCreateObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = false;
+            document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnEndObject').disabled = false;
+            annotation.video.disablePlayPause();
+        }
+        if (newObjectState === 'tracking') {
+            document.querySelector('#btnCreateObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = true;
+            document.querySelector('#btnPauseTracking').disabled = false;
+            document.querySelector('#btnEndObject').disabled = true;
+            annotation.video.disablePlayPause();
+        }
+        if (newObjectState === 'none') {
+            document.querySelector('#btnCreateObject').disabled = false;
+            document.querySelector('#btnStartTracking').disabled = true;
+            document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnEndObject').disabled = true;
+            annotation.video.enablePlayPause();
         }
     })
     Alpine.effect(async () => {
@@ -117,10 +165,9 @@ document.addEventListener('alpine:init', () => {
         }
         if (dataState === 'loaded') {
             console.log('Data Loaded');
-            let objects = window.annotation.objects;
-            objectManager.annotateObjects(objects);
+            window.annotation.objects.annotateObjects(annotation.objectList);
             $('#gridObjects').datagrid({
-                data: objects
+                data: annotation.objectList
             });
             $('#gridObjects').datagrid('loaded');
 

@@ -27,6 +27,7 @@ class DocumentMMModel extends Model
         self::attribute('alignPath');
         self::attribute('flickr30k');
         self::attribute('enabled');
+        self::attribute('url');
         self::attribute('idDocument', type: Type::INTEGER, key: Key::FOREIGN);
         self::attribute('idLanguage', type: Type::INTEGER, key: Key::FOREIGN);
         self::associationOne('document', model: DocumentModel::class, key: 'idDocument:idDocument');
