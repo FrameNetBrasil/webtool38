@@ -1,7 +1,7 @@
 @php
-    $imageURL = "http://flickr30k.frame.net.br/flickr30k-images/" . $data->imageMM->name;
-    $imageWidth = $data->imageMM->width;
-    $imageHeight = $data->imageMM->height;
+    $imageURL = "http://flickr30k.frame.net.br/flickr30k-images/" . $imageMM->name;
+    $imageWidth = $imageMM->width;
+    $imageHeight = $imageMM->height;
 
 @endphp
     <div style="display:flex; flex-direction: column; width:auto">

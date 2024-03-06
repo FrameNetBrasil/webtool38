@@ -1,17 +1,17 @@
 @php
-    $sentence = trim($data->sentence->text);
+    $sentence = trim($sentence->text);
     $words = explode(' ', $sentence);
-    $title = "";//($data->idFrame ? "Frame: " . $data->frame->name : "No Frame")
+    $title = "";//($idFrame ? "Frame: " . $frame->name : "No Frame")
 @endphp
 <x-layout.content>
     <div id="annotationStaticFrameMode1FETabs">
-        @if(count($data->frames) > 0)
+        @if(count($frames) > 0)
 
-            @foreach($data->frames as $idFrame => $frame)
+            @foreach($frames as $idFrame => $frame)
                 @php($idObject = 0)
                 <div title="{{$frame['name']}}" data-options="tools:'#tabTools_{{$idFrame}}'">
                     <form>
-                        @foreach($data->objects as $i => $object)
+                        @foreach($objects as $i => $object)
                             @php($phrase = '')
                             @for($w = $object['startWord'] - 1; $w < $object['endWord']; $w++)
                                 @php($phrase .= ' '. $words[$w])
@@ -34,7 +34,7 @@
                         @endforeach
                         <hr>
                         <x-button class="ml-2 mb-2" id="btnSubmitFE{{$i}}" label="Submit FEs"
-                                  hx-put="/annotation/staticFrameMode1/fes/{{$data->idStaticSentenceMM}}/{{$idFrame}}"></x-button>
+                                  hx-put="/annotation/staticFrameMode1/fes/{{$idStaticSentenceMM}}/{{$idFrame}}"></x-button>
                     </form>
                 </div>
             @endforeach
@@ -49,21 +49,21 @@
                     // fit:true
                     width:'100%'
                 });
-                @if(isset($data->idFrame))
+                @if(isset($idFrame))
                 console.log('selecting')
-                $('#annotationStaticFrameMode1FETabs').tabs('select', '{{$data->frames[$data->idFrame]['name']}}')
+                $('#annotationStaticFrameMode1FETabs').tabs('select', '{{$frames[$idFrame]['name']}}')
                 @endif
             })
         </script>
     </div>
-    @if(count($data->frames) > 0)
-        @foreach($data->frames as $idFrame => $frame)
+    @if(count($frames) > 0)
+        @foreach($frames as $idFrame => $frame)
             <div id="tabTools_{{$idFrame}}">
                 <a
                         href="javascript:void(0)"
                         class="easyui-tooltip material-icons-outlined wt-icon wt-icon-delete"
                         title="delete frame"
-                        hx-delete="/annotation/staticFrameMode1/fes/{{$data->idStaticSentenceMM}}/{{$idFrame}}"
+                        hx-delete="/annotation/staticFrameMode1/fes/{{$idStaticSentenceMM}}/{{$idFrame}}"
                         hx-target="body"
                 ></a>
             </div>

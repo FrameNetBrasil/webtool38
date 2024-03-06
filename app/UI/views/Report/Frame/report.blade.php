@@ -3,7 +3,7 @@
         <x-slot:menu>
             <div class="text-right">
                 <x-button id="btnDownload" label="Save as PDF" color="secondary" class="m-1"></x-button>
-                <x-button id="btnBack" label="Return to search" color="secondary" hx-get="/report/frames" hx-target="body"
+                <x-button id="btnBack" label="Return to search" color="secondary" hx-get="/report/frame" hx-target="body"
                           class="m-1"></x-button>
             </div>
         </x-slot:menu>
@@ -11,10 +11,10 @@
             <div id="frameReport">
                 <div class="grid">
                     <div class="col-6 title">
-                        {{$data->report['frame']->name}}
+                        {{$report['frame']->name}}
                     </div>
                     <div class="col-6 text-right">
-                        @foreach ($data->report['classification'] as $name => $values)
+                        @foreach ($report['classification'] as $name => $values)
                             [
                             @foreach ($values as $value)
                                 {{$value}}
@@ -24,13 +24,13 @@
                     </div>
                 </div>
                 <x-card title="Definition" class="frameReport__card">
-                    {!! $data->report['frame']->description !!}
+                    {!! $report['frame']->description !!}
                 </x-card>
                 <x-card title="Frame Elements" class="frameReport__card">
                     <x-card title="Core" class="frameReport__card">
                         <table id="feNuclear" class="frameReport__table">
                             <tbody>
-                            @foreach ($data->report['fe']['core'] as $fe)
+                            @foreach ($report['fe']['core'] as $fe)
                                 <tr>
                                     <td>
                                         <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
@@ -43,11 +43,11 @@
                             @endforeach
                             </tbody>
                         </table>
-                        @if ($data->report['fe']['core_unexpressed'])
+                        @if ($report['fe']['core_unexpressed'])
                             <x-card-plain title="Core-Unexpressed" class="frameReport__card">
                                 <table id="feCoreUnexpressed" class="frameReport__table">
                                     <tbody>
-                                    @foreach ($data->report['fe']['core_unexpressed'] as $fe)
+                                    @foreach ($report['fe']['core_unexpressed'] as $fe)
                                         <tr>
                                             <td>
                                                 <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
@@ -63,14 +63,14 @@
                                 </table>
                             </x-card-plain>
                         @endif
-                        @if ($data->report['fecoreset'])
+                        @if ($report['fecoreset'])
                             <table id="feCoreSet" class="frameReport__table">
                                 <tbody>
                                 <tr>
                                     <td class="header">FE Core set(s):</td>
                                 </tr>
                                 <tr>
-                                    <td class="pl-2">{{$data->report['fecoreset']}}</td>
+                                    <td class="pl-2">{{$report['fecoreset']}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -80,7 +80,7 @@
                     <x-card title="Non-Core">
                         <table id="feNonNuclear" class="frameReport__table">
                             <tbody>
-                            @foreach ($data->report['fe']['noncore'] as $fe)
+                            @foreach ($report['fe']['noncore'] as $fe)
                                 <tr>
                                     <td>
                                         <span class="color_{{$fe['idColor']}}">{{$fe['name']}}</span>
@@ -97,13 +97,13 @@
                 </x-card>
                 <x-card title="Frame-Frame Relations" class="frameReport__card">
                     @php($i = 0)
-                    @foreach ($data->report['relations'] as $name => $relations)
+                    @foreach ($report['relations'] as $name => $relations)
                         <x-card-plain
-                                title="{{$name}}" @class(["frameReport__card" => (++$i < count($data->report['relations']))])>
+                                title="{{$name}}" @class(["frameReport__card" => (++$i < count($report['relations']))])>
                             @foreach ($relations as $idFrame => $relation)
                                 <x-link-button
                                         id="btnRelation{{$idFrame}}"
-                                        href="/report/frames/{{$idFrame}}"
+                                        href="/report/frame/{{$idFrame}}"
                                         icon="frame__before"
                                         label="{{$relation['name']}}"
                                         plain="false"
@@ -114,10 +114,10 @@
                     @endforeach
                 </x-card>
                 <x-card title="Lexical Units" class="frameReport__card">
-                    @foreach ($data->report['lus'] as $idLU => $lu)
+                    @foreach ($report['lus'] as $idLU => $lu)
                         <x-link-button
                                 id="btnLU{{$idLU}}"
-                                href="/report/lus/{{$idLU}}"
+                                href="/report/lu/{{$idLU}}"
                                 icon="lu__before"
                                 label="{{$lu}}"
                                 plain="false"
@@ -131,7 +131,7 @@
     <script>
         const options = {
             margin: 0.5,
-            filename: '{{$data->report['frame']->name}}.pdf',
+            filename: '{{$report['frame']->name}}.pdf',
             image: {
                 type: 'jpeg',
                 quality: 500

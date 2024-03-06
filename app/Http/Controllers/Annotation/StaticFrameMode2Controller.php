@@ -23,8 +23,9 @@ class StaticFrameMode2Controller extends Controller
     #[Get(path: '/annotation/staticFrameMode2')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
-        $this->data->search->_token = csrf_token();
+        $search ??= (object)[];
+        $search->_token = csrf_token();
+        data('search', $search);
         return $this->render('browse');
     }
 
@@ -50,20 +51,19 @@ class StaticFrameMode2Controller extends Controller
 
     private function setData(int $idStaticSentenceMM)
     {
-        $this->data->idStaticSentenceMM = $idStaticSentenceMM;
-        $this->data->idStaticSentenceMMPrevious = AnnotationStaticFrameMode2Service::getPrevious($idStaticSentenceMM);
-        $this->data->idStaticSentenceMMNext = AnnotationStaticFrameMode2Service::getNext($idStaticSentenceMM);
+        data('idStaticSentenceMM', $idStaticSentenceMM);
+        data('idStaticSentenceMMPrevious',AnnotationStaticFrameMode2Service::getPrevious($idStaticSentenceMM) ?? '');
+        data('idStaticSentenceMMNext', AnnotationStaticFrameMode2Service::getNext($idStaticSentenceMM) ?? '');
         $staticSentenceMM = new StaticSentenceMM($idStaticSentenceMM);
-        $this->data->document = new Document($staticSentenceMM->idDocument);
-        $this->data->sentence = new Sentence($staticSentenceMM->idSentence);
-        $this->data->corpus = new Corpus($this->data->document->idCorpus);
+        data('document',new Document($staticSentenceMM->idDocument));
+        data('sentence', new Sentence($staticSentenceMM->idSentence));
+        data('corpus', new Corpus($this->data->document->idCorpus));
         $imageMM = new ImageMM($staticSentenceMM->idImageMM);
-        $this->data->imageMM = $imageMM->getData();
-//        $this->data->document = $documentMM->getAssociation('document', AppService::getCurrentIdLanguage());
+        data('imageMM', $imageMM->getData());
         $annotation = AnnotationStaticFrameMode2Service::getObjectsForAnnotationImage($idStaticSentenceMM);
-        $this->data->objects = $annotation['objects'];
-        $this->data->frames = $annotation['frames'];
-        debug($this->data);
+        data('objects', $annotation['objects']);
+        data('frames', $annotation['frames']);
+        //debug($this->data);
     }
 
     #[Get(path: '/annotation/staticFrameMode2/sentence/{idStaticSentenceMM}')]
@@ -95,13 +95,14 @@ class StaticFrameMode2Controller extends Controller
 //        debug($idFrame);
         if ($idFrame != '') {
             if (!AnnotationStaticFrameMode2Service::hasFrame($this->data->idStaticSentenceMM, $idFrame)) {
-                $this->data->idFrame = $idFrame;
+                data('idFrame', $idFrame);
                 $frame = new Frame($idFrame);
-                $this->data->frames[$idFrame] = [
+                $frames[$idFrame] = [
                     'name' => $frame->name,
                     'idFrame' => $idFrame,
                     'objects' => []
                 ];
+                data('frames', $frames);
             }
             return $this->render('fes');
         } else {

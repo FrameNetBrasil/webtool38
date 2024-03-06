@@ -103,11 +103,11 @@ class FramesManager {
         this.config = config;
         this.video = document.getElementById(config.idVideoDOMElement);
 //        console.log(document.querySelector('#' + annotation.idVideoJs));
-        const rect= this.video.getBoundingClientRect();
-        console.log(rect);
-        console.log($("#" + config.idVideoDOMElement).offset());
+//        const rect= this.video.getBoundingClientRect();
+//        console.log(rect);
+//        console.log($("#" + config.idVideoDOMElement).offset());
 
-        console.log(this.video);
+//        console.log(this.video);
        //if (!this.dimensionsInitialized) {
             this.dimensionsInitialized = true;
             this.canvas.width = annotation.video.originalDimensions.width;
@@ -119,11 +119,10 @@ class FramesManager {
         this.canvas.style.position = 'absolute';
         this.canvas.style.top = '0px';
         this.canvas.style.left = '0px';
-
         this.canvas.style.backgroundColor = "transparent";
         //}
         console.log(this.canvas);
-        this.interval = 1000 / this.config.fps;
+//        this.interval = 1000 / this.config.fps;
         this.config.imageMimeType = "image/png";
     }
 

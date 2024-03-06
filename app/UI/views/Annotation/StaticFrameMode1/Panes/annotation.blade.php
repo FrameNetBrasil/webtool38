@@ -6,8 +6,8 @@
             words: [],
             objects: [],
             image: {
-                width: {{$data->imageMM->width}},
-                height: {{$data->imageMM->height}}
+                width: {{$imageMM->width}},
+                height: {{$imageMM->height}}
             },
             createWords(sentence) {
                 this.sentence = sentence.trim();
@@ -137,7 +137,7 @@
 
 
         $(function () {
-            window.ky.get('/annotation/staticFrameMode1/sentence/{{$data->idStaticSentenceMM}}/object', {}).json().then((data) => {
+            window.ky.get('/annotation/staticFrameMode1/sentence/{{$idStaticSentenceMM}}/object', {}).json().then((data) => {
                 console.log(data);
                 window.annotation = {
                     data: data,

@@ -11,6 +11,6 @@
         @if($placeholder != '')
             prompt: '{{$placeholder}}',
        @endif
-        url: "/lus/listForEvent",
+        url: "/lu/listForEvent",
     });
 @endpush

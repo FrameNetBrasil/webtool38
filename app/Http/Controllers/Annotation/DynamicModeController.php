@@ -117,6 +117,7 @@ class DynamicModeController extends Controller
             return $dynamicObjectMM->getData();
 //            $this->renderJSon(json_encode(['type' => 'success', 'message' => 'Object saved.', 'data' => $result]));
         } catch (\Exception $e) {
+            debug($e->getMessage());
 //            $this->renderJSon(json_encode(['type' => 'error', 'message' => $e->getMessage()]));
         }
     }

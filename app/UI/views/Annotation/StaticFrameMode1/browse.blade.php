@@ -1,16 +1,13 @@
-<x-layout.index>
+@extends('Annotation.StaticFrameMode1.main')
+@section('content')
     <x-layout.browser>
-        <x-slot:title>
-            @include('Annotation.StaticFrameMode1.title')
-        </x-slot:title>
-        <x-slot:search>
+        <x-slot:nav>
             @include('Annotation.StaticFrameMode1.search')
-        </x-slot:search>
-        <x-slot:grid>
-            <div id="annotationStaticFrameMode1Grid" class="h-full p-0 w-full">
+        </x-slot:nav>
+        <x-slot:main>
+            <div id="staticMode1Grid" class="mainGrid">
                 @include('Annotation.StaticFrameMode1.grid')
             </div>
-        </x-slot:grid>
-        <x-slot:footer></x-slot:footer>
+        </x-slot:main>
     </x-layout.browser>
-</x-layout.index>
+@endsection

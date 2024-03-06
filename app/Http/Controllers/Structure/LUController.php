@@ -93,7 +93,10 @@ class LUController extends Controller
     #[Get(path: '/lu/listForEvent')]
     public function listForEvent()
     {
-        return LUService::listForEvent();
+        $data = Manager::getData();
+        $q = $data->q ?? '';
+        $lu = new LU();
+        return $lu->listForEvent($q);
     }
 
     #[Get(path: '/lu/{id}/edit')]

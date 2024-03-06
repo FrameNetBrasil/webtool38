@@ -19,6 +19,7 @@ document.addEventListener('alpine:init', () => {
                 fps: annotation.video.fps,
             }
             annotation.objects.config(config);
+            annotation.drawBox.config(config);
         },
         async updateObjectList() {
             this.dataState = 'loading';
@@ -26,7 +27,11 @@ document.addEventListener('alpine:init', () => {
         },
         updateCurrentFrame(frameNumber) {
             this.frameCount = this.currentFrame = frameNumber;
-            if ((this.currentVideoState === 'paused') || (this.newObjectState === 'tracking') || (this.newObjectState === 'editing')) {
+            if ((this.currentVideoState === 'paused')
+                || (this.newObjectState === 'tracking')
+                || (this.newObjectState === 'editing')
+                || (this.newObjectState === 'selected')
+            ) {
                 console.error('===================');
                 annotation.objects.drawFrameObject(frameNumber);
             }
@@ -35,6 +40,7 @@ document.addEventListener('alpine:init', () => {
             if (idObject === null) {
                 this.currentObject = null;
                 annotation.objects.clearFrameObject();
+                this.newObjectState = 'none';
             } else {
                 let object = annotation.objects.get(idObject);
                 this.currentObject = object;
@@ -43,9 +49,10 @@ document.addEventListener('alpine:init', () => {
                 console.log(time, object.object.startFrame);
                 annotation.video.player.currentTime(time);
                 annotation.objects.drawFrameObject(object.object.startFrame);
+                this.newObjectState = 'selected';
             }
             annotationGridObject.selectRowByObject(idObject);
-            this.newObjectState = 'selected';
+
 
         },
         selectObjectByIdObjectMM(idObjectMM) {
@@ -70,10 +77,10 @@ document.addEventListener('alpine:init', () => {
                 annotation.objects.creatingObject();
             }
         },
-        async endObject() {
+        endObject() {
             console.log('end object');
             this.currentObject.object.endFrame = this.currentFrame;
-            await annotation.objects.saveRawObject(this.currentObject)
+            annotation.objects.saveRawObject(this.currentObject)
             this.newObjectState = 'none';
             this.currentVideoState = 'paused';
 

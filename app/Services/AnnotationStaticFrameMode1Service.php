@@ -10,6 +10,7 @@ use App\Repositories\StaticBBoxMM;
 use App\Repositories\StaticObjectSentenceMM;
 use App\Repositories\StaticSentenceMM;
 use App\Repositories\UserAnnotation;
+use App\Repositories\Timeline;
 use Maestro\Persistence\Repository;
 use Orkester\Manager;
 
@@ -156,7 +157,7 @@ and (idDocument = (select idDocument from StaticSentenceMM where idStaticSentenc
                 ]);
             $criteria->order("idFrame");
             $annotations = $criteria->asQuery()->getResult();
-            ddump($annotations);
+
             foreach ($annotations as $annotation) {
                 if (!isset($frames[$annotation['idFrame']])) {
                     $frames[$annotation['idFrame']] = [
@@ -220,6 +221,7 @@ and (idDocument = (select idDocument from StaticSentenceMM where idStaticSentenc
                     'idFrame' => $idFrame,
                 ];
                 $annotationMM->saveData($data);
+                Timeline::addTimeline("staticannotationmm", $annotationMM->getId(), "C");
             }
         }
     }

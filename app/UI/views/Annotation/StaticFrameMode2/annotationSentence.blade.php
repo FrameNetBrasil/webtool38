@@ -1,6 +1,6 @@
 @php
-    $panelWestWidth = $data->imageMM->width + 30;
-    $panelImageHeight = $data->imageMM->height + 40;
+    $panelWestWidth = $imageMM->width + 30;
+    $panelImageHeight = $imageMM->height + 40;
 @endphp
 <x-layout.index>
     @include('Annotation.StaticFrameMode2.Panes.annotation')
@@ -23,10 +23,10 @@
         <div data-options="region:'center',border:0" style="padding:8px;">
             <div style="display:flex; flex-direction: column;">
                 <div class="framePaneHeader">
-                    <div>Corpus: {{$data->corpus->name}}</div>
-                    <div>Document: {{$data->document->name}}</div>
-                    <div>Image: {{$data->imageMM->name}}</div>
-                    <div>#idStaticSentenceMM: {{$data->idStaticSentenceMM}}</div>
+                    <div>Corpus: {{$corpus->name}}</div>
+                    <div>Document: {{$document->name}}</div>
+                    <div>Image: {{$imageMM->name}}</div>
+                    <div>#idStaticSentenceMM: {{$idStaticSentenceMM}}</div>
                 </div>
                 <div id="annotationImagePaneFrame">
                     @include('Annotation.StaticFrameMode2.Panes.framePane')
@@ -35,7 +35,23 @@
         </div>
     </div>
     <div id="annotationPaneDialog" class="easyui-panel" data-options="border:0" style="width:0;height:0"></div>
-    @include('Annotation.StaticFrameMode2.Panes.navigationPane')
+    <div id="panelTool">
+        <div class="navigationPane">
+            @if($idStaticSentenceMMPrevious)
+                <div class="navigationPane-previous">
+                    <span class="material-icons-outlined">arrow_back</span>
+                    <a href="/annotation/staticFrameMode2/sentence/{{$idStaticSentenceMMPrevious}}"><span>Previous</span></a>
+                </div>
+            @endif
+            @if($idStaticSentenceMMNext)
+                <div class="navigationPane-next">
+                    <a href="/annotation/staticFrameMode2/sentence/{{$idStaticSentenceMMNext}}">Next</a>
+                    <span class="material-icons-outlined">arrow_forward</span>
+                </div>
+            @endif
+        </div>
+    </div>
+
 
     <script type="text/javascript">
         $(function () {

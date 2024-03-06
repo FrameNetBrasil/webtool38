@@ -6,7 +6,7 @@
             fit: true,
             url: "/annotation/staticFrameMode1/listForTree",
             method: "GET",
-            queryParams: {{ Js::from($data->search) }},
+            queryParams: {{ Js::from($search) }},
             showHeader: true,
             rownumbers: false,
             idField: 'id',

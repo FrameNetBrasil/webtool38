@@ -38,12 +38,12 @@
                 documentMM: {{ Js::from($documentMM) }},
                 objectList: [],
             }
-            @include("Annotation.DynamicMode.Annotation.api")
-            @include("Annotation.DynamicMode.Annotation.video")
-            @include("Annotation.DynamicMode.Annotation.drawBox")
-            @include("Annotation.DynamicMode.Annotation.objects")
-            @include("Annotation.DynamicMode.Annotation.gridObjects")
-            @include("Annotation.DynamicMode.Annotation.store")
+            @include("Annotation.DynamicMode.Scripts.api")
+            @include("Annotation.DynamicMode.Scripts.video")
+            @include("Annotation.DynamicMode.Scripts.drawBox")
+            @include("Annotation.DynamicMode.Scripts.objects")
+            @include("Annotation.DynamicMode.Scripts.gridObjects")
+            @include("Annotation.DynamicMode.Scripts.store")
 
 
             $(function () {

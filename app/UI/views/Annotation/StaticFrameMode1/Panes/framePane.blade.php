@@ -2,7 +2,7 @@
     <form>
         <x-hidden-field
                 id="idStaticSentenceMM"
-                value="{{$data->idStaticSentenceMM}}"
+                value="{{$idStaticSentenceMM}}"
         ></x-hidden-field>
         <div class="flex flex-row flex-wrap gap-2">
             <x-combobox.frame

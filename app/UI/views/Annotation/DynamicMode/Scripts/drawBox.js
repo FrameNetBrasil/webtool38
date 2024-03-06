@@ -11,13 +11,26 @@ annotation.drawBox = {
         width: 0,
         height: 0
     },
+    config(config) {
+        console.log('init drawBox');
+        let video = document.getElementById(config.idVideoDOMElement);
+        console.log(video.offsetTop,video.offsetLeft);
+        const rect= video.getBoundingClientRect();
+        console.log(rect);
+        let $canvas = document.querySelector('#canvas');
+        annotation.drawBox.offsetX = rect.x;
+        annotation.drawBox.offsetY = rect.y;
+        $canvas.width = annotation.video.originalDimensions.width;
+        $canvas.height = annotation.video.originalDimensions.height;
+        $canvas.style.position = 'absolute';
+        $canvas.style.top = '0px';
+        $canvas.style.left = '0px';
+        $canvas.style.backgroundColor = "transparent";
+        console.log(annotation.drawBox)
+        // annotation.drawBox.scrollX = $canvas.scrollLeft();
+        // annotation.drawBox.scrollY = $canvas.scrollTop();
+    },
     init() {
-        let $canvas = $("#canvas");
-        annotation.drawBox.canvasOffset = $canvas.offset();
-        annotation.drawBox.offsetX = annotation.drawBox.canvasOffset.left;
-        annotation.drawBox.offsetY = annotation.drawBox.canvasOffset.top;
-        annotation.drawBox.scrollX = $canvas.scrollLeft();
-        annotation.drawBox.scrollY = $canvas.scrollTop();
         annotation.drawBox.isDown = false;
     },
     handleMouseDown(e) {
