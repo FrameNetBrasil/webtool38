@@ -69,6 +69,7 @@ class DynamicObject {
             if (!this.hidden) {
                 if (frameObject.isVisible()) {
                     let bbox = frameObject.bbox;
+                    this.dom.style.position = 'absolute';
                     this.dom.style.display = 'block';
                     this.dom.style.width = bbox.width + 'px';
                     this.dom.style.height = bbox.height + 'px';

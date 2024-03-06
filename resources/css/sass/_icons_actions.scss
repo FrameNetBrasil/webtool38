@@ -74,6 +74,10 @@
     content: " \e148";
 }
 
+.wt-icon-edit-object::before {
+    content: "edit";
+}
+
 .wt-icon-end-object::before {
     content: " \ef71";
 }

@@ -9,6 +9,7 @@ use App\Repositories\Corpus;
 use App\Repositories\Document;
 use App\Repositories\DocumentMM;
 use App\Repositories\DynamicObjectMM;
+use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
@@ -108,11 +109,25 @@ class DynamicModeController extends Controller
 
 
     #[Post(path: '/annotation/dynamicMode/updateObject')]
-    public function updateObject() {
+    public function updateObject()
+    {
         try {
             $dynamicObjectMM = new DynamicObjectMM();
             $dynamicObjectMM->updateObject($this->data);
             return $dynamicObjectMM->getData();
+//            $this->renderJSon(json_encode(['type' => 'success', 'message' => 'Object saved.', 'data' => $result]));
+        } catch (\Exception $e) {
+//            $this->renderJSon(json_encode(['type' => 'error', 'message' => $e->getMessage()]));
+        }
+    }
+
+    #[Delete(path: '/annotation/dynamicMode/{idDynamicObjectMM}')]
+    public function deleteObjectObject(int $idDynamicObjectMM)
+    {
+        try {
+            $dynamicObjectMM = new DynamicObjectMM($idDynamicObjectMM);
+            $dynamicObjectMM->delete();
+            return [];
 //            $this->renderJSon(json_encode(['type' => 'success', 'message' => 'Object saved.', 'data' => $result]));
         } catch (\Exception $e) {
 //            $this->renderJSon(json_encode(['type' => 'error', 'message' => $e->getMessage()]));

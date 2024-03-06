@@ -11,6 +11,22 @@ annotation.api = {
             }
         });
     },
+    deleteObject: async (idObjectMM) => {
+        let result = null;
+        await $.ajax({
+            url: "/annotation/dynamicMode/" + idObjectMM,
+            method: "DELETE",
+            dataType: "json",
+            data: {
+                _token: annotation._token
+            },
+            success: (response) => {
+                result = response;
+            }
+        });
+        return result;
+    },
+
     deleteObjects: (toDelete) => {
         let params = {
             toDelete: toDelete,
@@ -66,6 +82,7 @@ annotation.api = {
         });
         return result;
     },
+
     updateObjectData: (params) => {
         return new Promise((resolve, reject) => {
             try {

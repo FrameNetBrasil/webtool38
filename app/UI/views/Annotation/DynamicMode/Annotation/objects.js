@@ -152,20 +152,20 @@ annotation.objects = {
         console.log('objects annotated');
     },
     creatingObject() {
-        drawBox.init();
+        annotation.drawBox.init();
         console.log("creating new object")
         document.querySelector('#canvas').style.cursor = 'crosshair';
         $("#canvas").on ('mousedown', function (e) {
-            drawBox.handleMouseDown(e);
+            annotation.drawBox.handleMouseDown(e);
         });
         $("#canvas").on('mousemove', function (e) {
-            drawBox.handleMouseMove(e);
+            annotation.drawBox.handleMouseMove(e);
         });
         $("#canvas").on('mouseup', function (e) {
-            drawBox.handleMouseUp(e);
+            annotation.drawBox.handleMouseUp(e);
         });
         $("#canvas").on('mouseout', function (e) {
-            drawBox.handleMouseOut(e);
+            annotation.drawBox.handleMouseOut(e);
         });
     },
     async createdObject() {
@@ -175,9 +175,9 @@ annotation.objects = {
         $("#canvas").off('mousemove');
         $("#canvas").off('mouseup');
         $("#canvas").off('mouseout');
-        console.log(drawBox.box);
+        console.log(annotation.drawBox.box);
         let tempObject = {
-            bbox: new BoundingBox(drawBox.box.x, drawBox.box.y, drawBox.box.width, drawBox.box.height),
+            bbox: new BoundingBox(annotation.drawBox.box.x, annotation.drawBox.box.y, annotation.drawBox.box.width, annotation.drawBox.box.height),
             dom: annotation.objects.newBboxElement()
         };
         let data = await annotation.objects.createNewObject(tempObject);
@@ -193,7 +193,7 @@ annotation.objects = {
             idFE: -1,
             fe: '',
             startFrame: currentFrame,
-            endFrame: annotationVideo.framesRange.last
+            endFrame: annotation.video.framesRange.last
         };
         annotatedObject.visible = true;
         annotatedObject.hidden = false;
@@ -231,8 +231,8 @@ annotation.objects = {
                 idFrame: null,
                 idFrameElement: null,
                 idLU: null,
-                startTime: annotationVideo.timeFromFrame(annotatedObject.object.startFrame - 1),
-                endTime: annotationVideo.timeFromFrame(annotatedObject.object.endFrame),
+                startTime: annotation.video.timeFromFrame(annotatedObject.object.startFrame - 1),
+                endTime: annotation.video.timeFromFrame(annotatedObject.object.endFrame),
                 origin: 2,
                 frames: [],
             }
@@ -272,7 +272,8 @@ annotation.objects = {
                     let tracker = annotation.objects.tracker;
                     tracker.getFrameWithObject(frameNumber, currentObject)
                         .then((frameWithObjects) => {
-                            console.log(frameWithObjects);
+                            console.log('frameWithObject',frameWithObjects);
+                            console.log('frameNumber', frameNumber);
                             currentObject.drawBoxInFrame(frameNumber);
                         });
                     //that.$store.commit('redrawFrame', false);
@@ -295,7 +296,7 @@ annotation.objects = {
                 if (frame.bbox !== null) {
                     data.push({
                         frameNumber: frame.frameNumber,
-                        frameTime: annotationVideo.timeFromFrame(frame.frameNumber),
+                        frameTime: annotation.video.timeFromFrame(frame.frameNumber),
                         x: frame.bbox.x,
                         y: frame.bbox.y,
                         width: frame.bbox.width,
@@ -382,8 +383,6 @@ annotation.objects = {
         let data = await annotation.api.updateObject(params);
         console.log('object updated',data);
 
-        // annotationVideoModel.currentIdObjectMM = data.idObjectMM;
-        // dynamicStore.commit('updateGridPane', true)
         await Alpine.store('doStore').updateObjectList();
         Alpine.store('doStore').selectObjectByIdObjectMM(data.idDynamicObjectMM);
         return data;
@@ -412,40 +411,39 @@ annotation.objects = {
         }
         let data = await dynamicAPI.updateObjectData(params);
         console.log(data);
-        annotationVideoModel.currentIdObjectMM = data.idObjectMM;
+        annotation.videoModel.currentIdObjectMM = data.idObjectMM;
         dynamicStore.commit('updateGridPane', true)
         return data;
-    },
-    saveCurrentObject: async () => {
-        let object = dynamicStore.state.currentObject;
-        let currentObject = dynamicObjects.get(object.idObject);
-        console.log('saving currentObject', currentObject)
-        dynamicObjects.saveRawObject(currentObject)
     },
     */
     saveRawObject: async (currentObject) => {
         console.log('saving raw object #', currentObject.idObject)
         let params = {
-            idObjectMM: currentObject.idObjectMM,
-            idDocumentMM: annotation.documentMM.idDocumentMM,
+            idObjectMM: currentObject.object.idObjectMM,
+            idDynamicObjectMM: currentObject.object.idObjectMM,
             startFrame: currentObject.object.startFrame,
             endFrame: currentObject.object.endFrame,
             idFrame: currentObject.object.idFrame,
             idFrameElement: currentObject.object.idFE,
             idLU: currentObject.object.idLU,
-            startTime: (currentObject.object.startFrame - 1) / annotationVideo.fps,
-            endTime: (currentObject.object.endFrame - 1) / annotationVideo.fps,
+            startTime: annotation.video.timeFromFrame(currentObject.object.startFrame - 1),
+            endTime: annotation.video.timeFromFrame(currentObject.object.endFrame),
+            origin: 2,
+            frames: [],
         }
         let frames = annotation.objects.getObjectFrameData(currentObject, params.startFrame, params.endFrame);
+        console.log(frames);
         params.frames = frames.frames;
-        console.log('params', params);
+
         let data = await annotation.api.updateObject(params);
+        console.log('object updated',data);
+
     },
     /*
     deleteObject: async(currentObject) => {
         let msg = 'Current Object: #' + currentObject.idObject + ' [' + currentObject.idObjectMM + '] deleted.';
         await dynamicAPI.deleteObjects([currentObject.idObjectMM]);
-        annotationVideoModel.currentIdObjectMM = -1;
+        annotation.videoModel.currentIdObjectMM = -1;
         dynamicStore.commit('updateGridPane', true)
         $.messager.alert('Ok', msg, 'info');
     }

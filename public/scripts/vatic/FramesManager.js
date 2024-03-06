@@ -10,8 +10,8 @@ class FramesManager {
         // this.db = {};
         this.frames = {};
         this.onReset = [];
-        //this.canvas = document.createElement('canvas');
-        this.canvas = document.querySelector('#canvas');
+        this.canvas = document.createElement('canvas');
+        //this.canvas = document.querySelector('#canvas');
         this.ctx = this.canvas.getContext('2d');
         this.dimensionsInitialized = false;
         this.totalFrames = 0;

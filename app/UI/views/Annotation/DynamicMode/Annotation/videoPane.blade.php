@@ -24,6 +24,7 @@
             }
         });
         let player = annotation.video.player;
+        player.crossOrigin('anonymous')
 
         player.player_.handleTechClick_ = function (event) {
             console.log('video clicking')
@@ -41,6 +42,7 @@
         let btnForwardDom = btnForward.el();
         btnForwardDom.innerHTML = '<span class="material-icons-outlined wt-icon">skip_next</span>';
         btnForwardDom.onclick = function () {
+            console.log('click forward');
             let state = Alpine.store('doStore').currentVideoState;
             if ((state === 'paused') || (state === 'editing')) {
                 let currentTime = player.currentTime();
@@ -54,6 +56,7 @@
         let btnBackwardDom = btnBackward.el();
         btnBackwardDom.innerHTML = '<span class="material-icons-outlined wt-icon">skip_previous</span>';
         btnBackwardDom.onclick = function () {
+            console.log('click backward');
             let state = Alpine.store('doStore').currentVideoState;
             if ((state === 'paused') || (state === 'editing')) {
                 let currentTime = player.currentTime();
@@ -94,30 +97,30 @@
 
 
     })
-    //src="https://webtool.framenetbr.ufjf.br/apps/webtool/files/multimodal/Video_Store/full/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
+    // src="http://localhost:8001/videos/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
+    // src="https://webtool.framenetbr.ufjf.br/apps/webtool/files/multimodal/Video_Store/full/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
 </script>
 <div style="position:relative; width:852px;height:480px">
     <video-js
         id="videoContainer"
         class="video-js"
-        src="http://localhost:8001/videos/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
-
+        src="http://dynamic.frame.net.br/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
     >
     </video-js>
     <canvas id="canvas" width=0 height=0></canvas>
+    <div id="boxesContainer">
 </div>
 <div x-data class="info flex flex-row justify-content-between">
-    <div>
+    <div style="width:120px; text-align:left">
         <span x-text="$store.doStore.frameCount"></span> [<span x-text="$store.doStore.timeCount"></span>s]
     </div>
     <div>
         <span x-text="$store.doStore.currentVideoState"></span>|<span x-text="$store.doStore.newObjectState"></span>
     </div>
-    <div>
+    <div style="width:120px; text-align:right">
         <span x-text="$store.doStore.frameDuration"></span> [<span x-text="$store.doStore.timeDuration"></span>s]
     </div>
 </div>
-<div id="boxesContainer">
 
 </div>
 <style>

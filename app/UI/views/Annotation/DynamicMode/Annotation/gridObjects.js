@@ -220,6 +220,8 @@ $('#gridObjects').datagrid({
                 Alpine.store('doStore').selectObjectFrame(row.order, row.startFrame);
             } else if (annotationGridObject.fieldClicked === 'endFrame') {
                 Alpine.store('doStore').selectObjectFrame(row.order, row.endFrame);
+            } else if (annotationGridObject.fieldClicked === 'delete') {
+                Alpine.store('doStore').deleteObject(row.idObjectMM);
             } else {
                 Alpine.store('doStore').selectObject(row.order);
             }

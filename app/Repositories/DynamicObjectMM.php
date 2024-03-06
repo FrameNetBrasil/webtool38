@@ -216,6 +216,22 @@ SQL;
         }
     }
 
+    public function delete()
+    {
+        $this->beginTransaction();
+        try {
+            $objectFrameMM = new DynamicBBoxMM();
+            $deleteCriteria = $objectFrameMM->getCriteria();
+            $deleteCriteria->where('idDynamicObjectMM', '=', $this->idDynamicObjectMM);
+            $deleteCriteria->delete();
+            parent::delete();
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
     public function deleteObjects($idToDelete)
     {
         $transaction = $this->beginTransaction();
