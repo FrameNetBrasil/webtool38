@@ -151,6 +151,47 @@ annotation.objects = {
         }
         console.log('objects annotated');
     },
+    clearFrameObject: function () {
+        $('.bbox').css("display", "none");
+    },
+    drawFrameObject: function (frameNumber) {
+        // desenha a box do objeto atual correspondente ao frame indicado por frameNumber
+        //let that = this;
+        frameNumber = parseInt(frameNumber);
+        if (frameNumber < 1) {
+            return;
+        }
+        try {
+            let newObjectState = Alpine.store('doStore').newObjectState;
+            // apaga todas as boxes
+            $('.bbox').css("display", "none");
+            let currentObject = Alpine.store('doStore').currentObject;
+            console.log('drawFrame ' + frameNumber + ' ' + newObjectState);
+            if (currentObject) {
+                let isTracking = (newObjectState === 'tracking');
+                if (isTracking) {
+                    // se está editando, a box
+                    // - ou já existe (foi criada antes)
+                    // - ou precisa ser criada
+                    // em ambos os casos, passa os parâmetros para o tracker e deixa ele resolver
+
+                    let tracker = annotation.objects.tracker;
+                    tracker.getFrameWithObject(frameNumber, currentObject)
+                        .then((frameWithObjects) => {
+                            console.log('frameWithObject', frameWithObjects);
+                            console.log('frameNumber', frameNumber);
+                            currentObject.drawBoxInFrame(frameNumber);
+                        });
+                    //that.$store.commit('redrawFrame', false);
+                } else {
+                    console.log('drawFrame not tracking', currentObject);
+                    currentObject.drawBoxInFrame(frameNumber);
+                }
+            }
+        } catch (e) {
+            manager.messager('error', e.message);
+        }
+    },
     creatingObject() {
         annotation.drawBox.init();
         console.log("creating new object")
@@ -182,8 +223,6 @@ annotation.objects = {
         };
         let data = await annotation.objects.createNewObject(tempObject);
         console.log('after createNewObject');
-        Alpine.store('doStore').newObjectState = 'editing';
-        Alpine.store('doStore').currentVideoState = 'editing';
     },
     initializeNewObject: (annotatedObject, currentFrame) => {
         //console.log(annotatedObject);
@@ -193,7 +232,8 @@ annotation.objects = {
             idFE: -1,
             fe: '',
             startFrame: currentFrame,
-            endFrame: annotation.video.framesRange.last
+            //endFrame: annotation.video.framesRange.last
+            endFrame: currentFrame
         };
         annotatedObject.visible = true;
         annotatedObject.hidden = false;
@@ -244,50 +284,6 @@ annotation.objects = {
             Alpine.store('doStore').currentVideoState = 'paused';
             manager.messager('error', e.message);
             return null;
-        }
-    },
-    clearFrameObject: function () {
-        $('.bbox').css("display", "none");
-    },
-    drawFrameObject: function (frameNumber) {
-        // desenha a box do objeto atual correspondente ao frame indicado por frameNumber
-        //let that = this;
-        frameNumber = parseInt(frameNumber);
-        if (frameNumber < 1) {
-            return;
-        }
-        try {
-            let newObjectState = Alpine.store('doStore').newObjectState;
-            // apaga todas as boxes
-            $('.bbox').css("display", "none");
-            let currentObject = Alpine.store('doStore').currentObject;
-            console.log('drawFrame ' + frameNumber + ' ' + newObjectState);
-            if (currentObject) {
-                let isEditing = (
-                    (newObjectState === 'tracking')
-                    || (newObjectState === 'editing')
-                    || (newObjectState === 'selected')
-                );
-                if (isEditing) {
-                    // se está editando, a box
-                    // - ou já existe (foi criada antes)
-                    // - ou precisa ser criada
-                    // em ambos os casos, passa os parâmetros para o tracker e deixa ele resolver
-                    let tracker = annotation.objects.tracker;
-                    tracker.getFrameWithObject(frameNumber, currentObject)
-                        .then((frameWithObjects) => {
-                            console.log('frameWithObject', frameWithObjects);
-                            console.log('frameNumber', frameNumber);
-                            currentObject.drawBoxInFrame(frameNumber);
-                        });
-                    //that.$store.commit('redrawFrame', false);
-                } else {
-                    console.log('drawFrame not editing', currentObject);
-                    currentObject.drawBoxInFrame(frameNumber);
-                }
-            }
-        } catch (e) {
-            manager.messager('error', e.message);
         }
     },
     getObjectFrameData: (currentObject, startFrame, endFrame) => {
@@ -374,35 +370,6 @@ annotation.objects = {
         Alpine.store('doStore').selectObjectByIdObjectMM(data.idDynamicObjectMM);
         return data;
     },
-    /*
-    saveObjectData: async (currentObject, params) => {
-        console.log('saveObject', currentObject,params)
-
-        //  params = {
-        //     idObjectMM
-        //     idDocumentMM
-        //     startFrame
-        //     endFrame
-        //     idFrame
-        //     frame
-        //     idFrameElement
-        //     fe
-        //     idLU
-        //     lu
-        //     startTime
-        //     endTime
-        // }
-
-        if (params.startFrame > params.endFrame) {
-            throw new Error('endFrame must be greater or equal to startFrame.');
-        }
-        let data = await dynamicAPI.updateObjectData(params);
-        console.log(data);
-        annotation.videoModel.currentIdObjectMM = data.idObjectMM;
-        dynamicStore.commit('updateGridPane', true)
-        return data;
-    },
-    */
     saveRawObject: async (currentObject) => {
         try {
             console.log('saving raw object #', currentObject.idObject)
@@ -420,16 +387,7 @@ annotation.objects = {
                 origin: 2,
                 frames: [],
             }
-            let frames = annotation.objects.getObjectFrameData(currentObject, params.startFrame, params.endFrame);
-            console.log(frames);
-            params.frames = frames.frames;
-
-            let data = await annotation.api.updateObject(params);
-            console.log('object updated', data);
-            manager.messager("success", "Object updated.");
-            await Alpine.store('doStore').updateObjectList();
-            Alpine.store('doStore').selectObject(null);
-            return data;
+            annotation.objects.saveObject(currentObject, params);
         } catch (e) {
             Alpine.store('doStore').newObjectState = 'none';
             Alpine.store('doStore').currentVideoState = 'paused';
@@ -438,15 +396,6 @@ annotation.objects = {
         }
 
     },
-    /*
-    deleteObject: async(currentObject) => {
-        let msg = 'Current Object: #' + currentObject.idObject + ' [' + currentObject.idObjectMM + '] deleted.';
-        await dynamicAPI.deleteObjects([currentObject.idObjectMM]);
-        annotation.videoModel.currentIdObjectMM = -1;
-        dynamicStore.commit('updateGridPane', true)
-        $.messager.alert('Ok', msg, 'info');
-    }
-    */
     async tracking(canGoOn) {
         if (canGoOn) {
             let currentFrame = Alpine.store('doStore').currentFrame;
@@ -456,7 +405,7 @@ annotation.objects = {
                 annotation.video.gotoFrame(currentFrame);
                 Alpine.store('doStore').updateCurrentFrame(currentFrame);
                 await new Promise(r => setTimeout(r, 1000));
-                return annotation.objects.tracking(Alpine.store('doStore').newObjectState === 'tracking');
+                return annotation.objects.tracking(Alpine.store('doStore').currentVideoState === 'playingTracking');
             }
         }
     },

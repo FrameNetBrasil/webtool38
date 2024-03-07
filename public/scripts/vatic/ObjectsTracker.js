@@ -98,7 +98,7 @@ class ObjectsTracker {
     // obtem os dados de um AnnotatedObject especifico, no frame frameNumber
     getFrameWithObject(frameNumber, annotatedObject) {
         return new Promise((resolve, _) => {
-            console.log(annotatedObject);
+            //console.log(annotatedObject);
             let i = this.startFrameObject(frameNumber, annotatedObject);
             console.log(' getFrameWithObjects startFrame = ' + i + '  annotatedObject = ' + annotatedObject.idObject);
 //console.log('getFrameWithObjects frameNumber = ' + frameNumber + '  i = ' + i);
@@ -123,7 +123,7 @@ class ObjectsTracker {
     startFrameObject(frameNumber, targetAnnotatedObject) {
         // procura o frame que tenha a box que possa servir de start para o tracker
         let start = frameNumber;
-        if (targetAnnotatedObject.inFrame(frameNumber)) { // objeto está no frame
+        if (!targetAnnotatedObject.inFrame(frameNumber)) { // objeto não está no frame frameNumber
             let hasStart = false;
             let objectStartFrame = frameNumber;
             while (targetAnnotatedObject.object.startFrame <= objectStartFrame) {

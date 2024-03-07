@@ -29,8 +29,6 @@ document.addEventListener('alpine:init', () => {
             this.frameCount = this.currentFrame = frameNumber;
             if ((this.currentVideoState === 'paused')
                 || (this.newObjectState === 'tracking')
-                || (this.newObjectState === 'editing')
-                || (this.newObjectState === 'selected')
             ) {
                 console.error('===================');
                 annotation.objects.drawFrameObject(frameNumber);
@@ -49,11 +47,9 @@ document.addEventListener('alpine:init', () => {
                 console.log(time, object.object.startFrame);
                 annotation.video.player.currentTime(time);
                 annotation.objects.drawFrameObject(object.object.startFrame);
-                this.newObjectState = 'selected';
+                this.newObjectState = 'tracking';
             }
             annotationGridObject.selectRowByObject(idObject);
-
-
         },
         selectObjectByIdObjectMM(idObjectMM) {
             let object = annotation.objects.getByIdObjectMM(idObjectMM);
@@ -65,7 +61,7 @@ document.addEventListener('alpine:init', () => {
             let time = annotation.video.timeFromFrame(frameNumber);
             annotation.video.player.currentTime(time);
             annotation.objects.drawFrameObject(frameNumber);
-            this.newObjectState = 'selected';
+            this.newObjectState = 'tranking';
         },
         createObject() {
             if (this.currentVideoState === 'paused') {
@@ -103,14 +99,14 @@ document.addEventListener('alpine:init', () => {
         startTracking() {
             console.log('start tracking');
             this.newObjectState = 'tracking';
-            this.currentVideoState = 'tracking';
+            this.currentVideoState = 'playingTracking';
             annotation.objects.tracking(true);
 
         },
         pauseTracking() {
             console.log('pause tracking');
-            this.newObjectState = 'editing';
-            this.currentVideoState = 'editing';
+            this.newObjectState = 'tracking';
+            this.currentVideoState = 'pausedTracking';
         },
     })
 
@@ -147,25 +143,15 @@ document.addEventListener('alpine:init', () => {
         }
         if (newObjectState === 'created') {
             await annotation.objects.createdObject();
-        }
-        if (newObjectState === 'selected') {
-            document.querySelector('#btnCreateObject').disabled = true;
-            document.querySelector('#btnStartTracking').disabled = false;
-            document.querySelector('#btnPauseTracking').disabled = true;
-            document.querySelector('#btnEndObject').disabled = false;
-        }
-        if (newObjectState === 'editing') {
-            document.querySelector('#btnCreateObject').disabled = true;
-            document.querySelector('#btnStartTracking').disabled = false;
-            document.querySelector('#btnPauseTracking').disabled = true;
-            document.querySelector('#btnEndObject').disabled = false;
-            annotation.video.disablePlayPause();
+            Alpine.store('doStore').newObjectState = 'tracking';
+            Alpine.store('doStore').currentVideoState = 'pausedTracking';
         }
         if (newObjectState === 'tracking') {
+            let pausedTracking = Alpine.store('doStore').currentVideoState === 'pausedTracking';
             document.querySelector('#btnCreateObject').disabled = true;
-            document.querySelector('#btnStartTracking').disabled = true;
-            document.querySelector('#btnPauseTracking').disabled = false;
-            document.querySelector('#btnEndObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = !pausedTracking;
+            document.querySelector('#btnPauseTracking').disabled = pausedTracking;
+            document.querySelector('#btnEndObject').disabled = false;
             annotation.video.disablePlayPause();
         }
         if (newObjectState === 'none') {
