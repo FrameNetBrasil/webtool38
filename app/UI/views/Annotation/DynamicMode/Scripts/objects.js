@@ -59,7 +59,7 @@ annotation.objects = {
     interactify: (annotatedObject, onChange) => {
         let dom = annotatedObject.dom;
         let bbox = $(dom);
-        bbox.addClass('bbox');
+        //bbox.addClass('bbox');
         let createHandleDiv = (className, content = null) => {
             //console.log('className = ' + className + '  content = ' + content);
             let handle = document.createElement('div');
@@ -125,9 +125,17 @@ annotation.objects = {
                     (x, y, width, height) => {
                         let bbox = new BoundingBox(x, y, width, height);
                         let currentFrame = Alpine.store('doStore').currentFrame;
-                        let frameObject = new Frame(currentFrame, bbox, true);
+                        //let frameObject = new Frame(currentFrame, bbox, true, idDynamicBBoxMM);
+                        let frameObject = annotatedObject.getFrameAt(currentFrame);
+                        frameObject.bbox = bbox;
+                        frameObject.isGroundTruth = true;
                         annotatedObject.addToFrame(frameObject);
-                        annotation.objects.saveRawObject(annotatedObject);
+                        console.log(frameObject.idDynamicBBoxMM, bbox)
+                        //annotation.objects.saveRawObject(annotatedObject);
+                        annotation.api.updateBBox({
+                            idDynamicBBoxMM: frameObject.idDynamicBBoxMM,
+                            bbox: bbox
+                        });
                     }
                 );
                 let lastFrame = -1;
@@ -142,7 +150,8 @@ annotation.objects = {
                     let w = parseInt(polygon.width);
                     let h = parseInt(polygon.height);
                     bbox = new BoundingBox(x, y, w, h);
-                    let frameObject = new Frame(frameNumber, bbox, isGroundThrough);
+                    let idDynamicBBoxMM = parseInt(polygon.idDynamicBBoxMM);
+                    let frameObject = new Frame(frameNumber, bbox, isGroundThrough, idDynamicBBoxMM);
                     frameObject.blocked = (parseInt(polygon.blocked) === 1);
                     annotatedObject.addToFrame(frameObject);
                     lastFrame = frameNumber;
@@ -199,16 +208,16 @@ annotation.objects = {
         if (frameNumber < 1) {
             return;
         }
-            let state = Alpine.store('doStore').showHideBoxesState;
-            if (state === 'hide') {
-                $('.bbox').css("display", "none");
-            } else {
-                let objects = annotation.objects.tracker.annotatedObjects.filter(o => o.inFrame(frameNumber));
-                console.log(objects);
-                objects.forEach(o => {
-                    o.drawBoxInFrame(frameNumber, 'showing');
-                })
-            }
+        let state = Alpine.store('doStore').showHideBoxesState;
+        if (state === 'hide') {
+            $('.bbox').css("display", "none");
+        } else {
+            let objects = annotation.objects.tracker.annotatedObjects.filter(o => o.inFrame(frameNumber));
+            console.log(objects);
+            objects.forEach(o => {
+                o.drawBoxInFrame(frameNumber, 'showing');
+            })
+        }
     },
     creatingObject() {
         annotation.drawBox.init();
@@ -267,15 +276,15 @@ annotation.objects = {
             console.log('createNewObject', tempObject, currentFrame);
             let annotatedObject = new DynamicObject(null);
             annotatedObject.dom = tempObject.dom;
-            let frameObject = new Frame(currentFrame, tempObject.bbox, true);
+            let frameObject = new Frame(currentFrame, tempObject.bbox, true, null);
             annotatedObject.addToFrame(frameObject);
             annotation.objects.initializeNewObject(annotatedObject, currentFrame);
             annotation.objects.interactify(
                 annotatedObject,
-                (x, y, width, height) => {
+                (x, y, width, height, idDynamicBBoxMM) => {
                     let bbox = new BoundingBox(x, y, width, height);
                     let currentFrame = Alpine.store('doStore').currentFrame;
-                    let frameObject = new Frame(currentFrame, bbox, true);
+                    let frameObject = new Frame(currentFrame, bbox, true, idDynamicBBoxMM);
                     annotatedObject.addToFrame(frameObject);
                     annotation.objects.saveRawObject(annotatedObject);
                 }
@@ -352,7 +361,7 @@ annotation.objects = {
                 let w = parseInt(polygon.bbox.width);
                 let h = parseInt(polygon.bbox.height);
                 bbox = new BoundingBox(x, y, w, h);
-                let frameObject = new Frame(frameNumber, bbox, isGroundThrough);
+                let frameObject = new Frame(frameNumber, bbox, isGroundThrough, null);
                 frameObject.blocked = (parseInt(polygon.blocked) === 1);
                 currentObject.addToFrame(frameObject);
             }
@@ -370,7 +379,7 @@ annotation.objects = {
                 let w = parseInt(polygon.bbox.width);
                 let h = parseInt(polygon.bbox.height);
                 bbox = new BoundingBox(x, y, w, h);
-                let frameObject = new Frame(frameNumber, bbox, isGroundThrough);
+                let frameObject = new Frame(frameNumber, bbox, isGroundThrough, null);
                 frameObject.blocked = (parseInt(polygon.blocked) === 1);
                 currentObject.add(frameObject);
             }

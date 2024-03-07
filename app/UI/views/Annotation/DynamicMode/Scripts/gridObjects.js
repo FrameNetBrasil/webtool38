@@ -198,13 +198,10 @@ $('#gridObjects').datagrid({
     data: [],
     border: 1,
     width: '100%',
-    // height: 544,
     fit: true,
     idField: 'order',
-    //title: 'Objects',
     showHeader: true,
     singleSelect: false,
-    //toolbar: annotationGridObject.toolbar,
     columns: [
         annotationGridObject.columns
     ],
@@ -215,7 +212,8 @@ $('#gridObjects').datagrid({
     },
     onClickRow: function (index, row) {
         let currentVideoState = Alpine.store('doStore').currentVideoState;
-        if (currentVideoState === 'paused') {
+        let newObjectState = Alpine.store('doStore').newObjectState;
+        if ((currentVideoState === 'paused') && (newObjectState !== 'tracking')) {
             let currentObject = Alpine.store('doStore').currentObject;
             if (currentObject && (currentObject.object.order === row.order)) {
                 Alpine.store('doStore').selectObject(null);

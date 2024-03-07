@@ -13,6 +13,7 @@ document.addEventListener('alpine:init', () => {
         showHideBoxesState: 'hide',
         init() {
             annotation.objects.init();
+            annotation.gridSentences.loadSentences();
         },
         config() {
             let config = {
@@ -31,6 +32,7 @@ document.addEventListener('alpine:init', () => {
             this.frameCount = this.currentFrame = frameNumber;
             if ((this.currentVideoState === 'paused')
                 || (this.newObjectState === 'tracking')
+                || (this.newObjectState === 'showing')
             ) {
                 console.error('===================');
                 annotation.objects.drawFrameObject(frameNumber);
@@ -39,7 +41,7 @@ document.addEventListener('alpine:init', () => {
         selectObject(idObject) {
             if (idObject === null) {
                 this.currentObject = null;
-                annotation.objects.clearFrameObject();
+
                 this.newObjectState = 'none';
             } else {
                 let object = annotation.objects.get(idObject);
@@ -143,11 +145,17 @@ document.addEventListener('alpine:init', () => {
                 document.querySelector('#btnStartTracking').disabled = true;
                 document.querySelector('#btnPauseTracking').disabled = true;
                 document.querySelector('#btnEndObject').disabled = true;
+                document.querySelector('#btnShowHideObjects').disabled = true;
+                let rate =  annotation.video.player.playbackRate();
+                if (rate > 0.9) {
+                    Alpine.store('doStore').newObjectState = 'none';
+                }
             }
         }
         if (currentVideoState === 'paused') {
             if (!newObjectStateTracking) {
                 document.querySelector('#btnCreateObject').disabled = false;
+                document.querySelector('#btnShowHideObjects').disabled = false;
             }
         }
     })
@@ -184,6 +192,7 @@ document.addEventListener('alpine:init', () => {
             annotation.video.disablePlayPause();
         }
         if (newObjectState === 'none') {
+            annotation.objects.clearFrameObject();
             document.querySelector('#btnCreateObject').disabled = false;
             document.querySelector('#btnStartTracking').disabled = true;
             document.querySelector('#btnPauseTracking').disabled = true;

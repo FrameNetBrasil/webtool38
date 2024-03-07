@@ -11,7 +11,10 @@
             </div>
         </x-slot>
         <x-slot name="sentences">
-            // different content
+            <div id="containerTableSentences">
+                <table id="gridSentences" style="height:500px">
+                </table>
+            </div>
         </x-slot>
     </x-tabs>
 </div>

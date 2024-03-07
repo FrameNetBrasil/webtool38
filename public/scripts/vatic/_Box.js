@@ -3,7 +3,7 @@
 /**
  * Represents a bounding box associated to an (image) object.
  */
-class Box {
+class _Box {
     constructor(id, dom, bbox, isGroundTruth, idObject) {
         this.id = id;
         this.dom = dom;

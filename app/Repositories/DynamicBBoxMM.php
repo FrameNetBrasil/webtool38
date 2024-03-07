@@ -35,7 +35,7 @@ class DynamicBBoxMM extends Repository
     public function listByObjectsMM(array $idDynamicObjectMM)
     {
         $criteria = $this->getCriteria()
-            ->select(['idDynamicBBoxMM', 'idDynamicObjectMM as idObjectMM','frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
+            ->select(['idDynamicBBoxMM', 'idDynamicObjectMM as idObjectMM', 'frameNumber', 'x', 'y', 'width', 'height', 'frameNumber', 'frameTime', 'blocked'])
             ->where("idDynamicObjectMM", "IN", $idDynamicObjectMM)
             ->orderBy('idDynamicBBoxMM,frameNumber');
         return $criteria;
@@ -55,6 +55,20 @@ class DynamicBBoxMM extends Repository
                 $this->saveData($frame);
                 Timeline::addTimeline("dynamicboxmm", $this->getId(), "S");
             }
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function updateBBox(array $bbox)
+    {
+        $this->beginTransaction();
+        debug($this);
+        try {
+            $this->setData($bbox);
+            parent::save();
             $this->commit();
         } catch (\Exception $e) {
             $this->rollback();

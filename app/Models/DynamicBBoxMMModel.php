@@ -12,7 +12,7 @@ class DynamicBBoxMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('dynamicbboxmm');
         self::attribute('idDynamicBBoxMM', key: Key::PRIMARY);
         self::attribute('frameNumber', type: Type::INTEGER);
@@ -23,13 +23,6 @@ class DynamicBBoxMMModel extends Model
         self::attribute('height', type: Type::INTEGER);
         self::attribute('blocked', type: Type::INTEGER);
         self::attribute('idDynamicObjectMM', type: Type::INTEGER, key: Key::FOREIGN);
-    }
-
-    public static function listByObjectMM(int $idDynamicObjectMM): array
-    {
-        $filters = [];
-        $filters[] = ['idDynamicObjectMM','=', $idDynamicObjectMM];
-        return self::list($filters, ['*'], 'frameNumber');
     }
 
 }

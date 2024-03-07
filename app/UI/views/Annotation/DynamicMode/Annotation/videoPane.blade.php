@@ -97,8 +97,6 @@
 
 
     })
-    // src="http://localhost:8001/videos/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
-    // src="https://webtool.framenetbr.ufjf.br/apps/webtool/files/multimodal/Video_Store/full/afa00f72fb6fe767d051f2dff2633ee3e67eecdd.mp4"
 </script>
 <div style="position:relative; width:852px;height:480px">
     <video-js
@@ -109,37 +107,17 @@
     </video-js>
     <canvas id="canvas" width=0 height=0></canvas>
     <div id="boxesContainer">
-</div>
-<div x-data class="info flex flex-row justify-content-between">
-    <div style="width:120px; text-align:left">
-        <span x-text="$store.doStore.frameCount"></span> [<span x-text="$store.doStore.timeCount"></span>s]
     </div>
-    <div>
-        <span x-text="$store.doStore.currentVideoState"></span>|<span x-text="$store.doStore.newObjectState"></span>
+    <div x-data class="info flex flex-row justify-content-between">
+        <div style="width:120px; text-align:left">
+            <span x-text="$store.doStore.frameCount"></span> [<span x-text="$store.doStore.timeCount"></span>s]
+        </div>
+        <div>
+            <span x-text="$store.doStore.currentVideoState"></span>|<span x-text="$store.doStore.newObjectState"></span>
+        </div>
+        <div style="width:120px; text-align:right">
+            <span x-text="$store.doStore.frameDuration"></span> [<span x-text="$store.doStore.timeDuration"></span>s]
+        </div>
     </div>
-    <div style="width:120px; text-align:right">
-        <span x-text="$store.doStore.frameDuration"></span> [<span x-text="$store.doStore.timeDuration"></span>s]
-    </div>
-</div>
 
 </div>
-<style>
-    /*
-    canvas{
-        border: 1px solid red;
-        position: absolute;
-        top:171px;
-        left:11px;
-        display:block;
-        height:480px;
-        width:852px;
-        background-color: white;
-
-    }
-    #canvasContainer{
-        position:relative;
-    }
-
-     */
-</style>
-

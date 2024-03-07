@@ -8,7 +8,9 @@ use App\Http\Controllers\Structure\DocumentController;
 use App\Repositories\Corpus;
 use App\Repositories\Document;
 use App\Repositories\DocumentMM;
+use App\Repositories\DynamicBBoxMM;
 use App\Repositories\DynamicObjectMM;
+use App\Services\AnnotationDynamicService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
@@ -135,4 +137,24 @@ class DynamicModeController extends Controller
         }
     }
 
+    #[Post(path: '/annotation/dynamicMode/updateBBox')]
+    public function updateBBox()
+    {
+        try {
+            debug($this->data);
+            $dynamicBBoxMM = new DynamicBBoxMM(data('idDynamicBBoxMM'));
+            $dynamicBBoxMM->updateBBox(data('bbox'));
+            return $dynamicBBoxMM->getData();
+//            $this->renderJSon(json_encode(['type' => 'success', 'message' => 'Object saved.', 'data' => $result]));
+        } catch (\Exception $e) {
+            debug($e->getMessage());
+//            $this->renderJSon(json_encode(['type' => 'error', 'message' => $e->getMessage()]));
+        }
+    }
+
+    #[Get(path: '/annotation/dynamicMode/gridSentences/{idDocument}')]
+    public function gridSentences(int $idDocument)
+    {
+        return (array)AnnotationDynamicService::listSentencesByDocument($idDocument);
+    }
 }

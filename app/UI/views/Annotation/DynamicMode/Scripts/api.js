@@ -44,13 +44,17 @@ annotation.api = {
             $.messager.alert('Error', e.message, 'error');
         }
     },
-    listSentences: (idDocumentMM) => {
-        let url = "/index.php/webtool/annotation/dynamic/sentences/" + idDocumentMM;
-        let sentences = [];
-        manager.doAjax(url, (response) => {
-            sentences = response;
-        }, {});
-        return sentences;
+    loadSentences: async () => {
+        let result = null;
+        await $.ajax({
+            url: "/annotation/dynamicMode/gridSentences/" + annotation.document.idDocument,
+            method: "GET",
+            dataType: "json",
+            success: (response) => {
+                result = response;
+            }
+        });
+        return result;
     },
     listFrame: () => {
         let url = "/index.php/webtool/data/frame/combobox";
@@ -73,6 +77,20 @@ annotation.api = {
         let result = null;
         await $.ajax({
             url: "/annotation/dynamicMode/updateObject",
+            method: "POST",
+            dataType: "json",
+            data: params,
+            success: (response) => {
+                result = response;
+            }
+        });
+        return result;
+    },
+    updateBBox: async (params) => {
+        params._token = annotation._token;
+        let result = null;
+        await $.ajax({
+            url: "/annotation/dynamicMode/updateBBox",
             method: "POST",
             dataType: "json",
             data: params,

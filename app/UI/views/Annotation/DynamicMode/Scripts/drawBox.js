@@ -24,6 +24,7 @@ annotation.drawBox = {
         $canvas.style.top = '0px';
         $canvas.style.left = '0px';
         $canvas.style.backgroundColor = "transparent";
+        $canvas.style.zIndex = 1;
         // annotation.drawBox.scrollX = $canvas.scrollLeft();
         // annotation.drawBox.scrollY = $canvas.scrollTop();
     },

@@ -43,6 +43,7 @@
             @include("Annotation.DynamicMode.Scripts.drawBox")
             @include("Annotation.DynamicMode.Scripts.objects")
             @include("Annotation.DynamicMode.Scripts.gridObjects")
+            @include("Annotation.DynamicMode.Scripts.gridSentences")
             @include("Annotation.DynamicMode.Scripts.store")
 
 
