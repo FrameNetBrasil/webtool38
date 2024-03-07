@@ -3,6 +3,23 @@
         border: 1px solid #D3D3D3;
         position: absolute;
         z-index: 3;
+        box-sizing: border-box;
+
+        .objectId {
+            /*width: 20px;*/
+            height: 14px;
+            line-height: 14px;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: white;
+            left: -2px;
+            top: -2px;
+            position: absolute;
+            color: black;
+            cursor: pointer;
+            padding: 2px;
+        }
+
     }
 
     .bboxhighlight {
@@ -25,17 +42,5 @@
         cursor: move;
     }
 
-    .objectId {
-        width: 20px;
-        height: 14px;
-        line-height: 14px;
-        font-size: 12px;
-        background-color: white;
-        right: 0;
-        top: 0;
-        position: absolute;
-        color: black;
-        cursor: pointer;
-        padding-left: 2px;
-    }
+
 }

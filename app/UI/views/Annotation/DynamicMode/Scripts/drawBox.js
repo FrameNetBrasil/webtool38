@@ -1,6 +1,7 @@
 annotation.drawBox = {
     canvas: document.getElementById("canvas"),
     ctx: canvas.getContext("2d"),
+    color: vatic.getColor(0),
     prevStartX: 0,
     prevStartY: 0,
     prevWidth: 0,
@@ -12,11 +13,8 @@ annotation.drawBox = {
         height: 0
     },
     config(config) {
-        console.log('init drawBox');
         let video = document.getElementById(config.idVideoDOMElement);
-        console.log(video.offsetTop,video.offsetLeft);
         const rect= video.getBoundingClientRect();
-        console.log(rect);
         let $canvas = document.querySelector('#canvas');
         annotation.drawBox.offsetX = rect.x;
         annotation.drawBox.offsetY = rect.y;
@@ -26,7 +24,6 @@ annotation.drawBox = {
         $canvas.style.top = '0px';
         $canvas.style.left = '0px';
         $canvas.style.backgroundColor = "transparent";
-        console.log(annotation.drawBox)
         // annotation.drawBox.scrollX = $canvas.scrollLeft();
         // annotation.drawBox.scrollY = $canvas.scrollTop();
     },
@@ -103,6 +100,7 @@ annotation.drawBox = {
 
         // draw a new rect from the start position
         // to the current mouse position
+        annotation.drawBox.ctx.strokeStyle = annotation.drawBox.color.bg;
         annotation.drawBox.ctx.strokeRect(annotation.drawBox.startX, annotation.drawBox.startY, width, height);
 
         annotation.drawBox.prevStartX = annotation.drawBox.startX;

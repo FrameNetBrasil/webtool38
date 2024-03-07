@@ -12,7 +12,7 @@ class FramesManager {
         this.onReset = [];
         this.canvas = document.createElement('canvas');
         //this.canvas = document.querySelector('#canvas');
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = this.canvas.getContext('2d', {willReadFrequently: true});
         this.dimensionsInitialized = false;
         this.totalFrames = 0;
         this.processedFrames = 0;
@@ -102,35 +102,18 @@ class FramesManager {
     setConfig(config) {
         this.config = config;
         this.video = document.getElementById(config.idVideoDOMElement);
-//        console.log(document.querySelector('#' + annotation.idVideoJs));
-//        const rect= this.video.getBoundingClientRect();
-//        console.log(rect);
-//        console.log($("#" + config.idVideoDOMElement).offset());
-
-//        console.log(this.video);
-       //if (!this.dimensionsInitialized) {
-            this.dimensionsInitialized = true;
-            this.canvas.width = annotation.video.originalDimensions.width;
-            this.canvas.height = annotation.video.originalDimensions.height;
-        // this.canvas.style.position = 'absolute';
-        // this.canvas.style.top = rect.top + 'px';//'0px';
-        // this.canvas.style.left = rect.left + 'px';//'0px';
-
+        this.dimensionsInitialized = true;
+        this.canvas.width = annotation.video.originalDimensions.width;
+        this.canvas.height = annotation.video.originalDimensions.height;
         this.canvas.style.position = 'absolute';
         this.canvas.style.top = '0px';
         this.canvas.style.left = '0px';
         this.canvas.style.backgroundColor = "transparent";
-        //}
-        console.log(this.canvas);
-//        this.interval = 1000 / this.config.fps;
         this.config.imageMimeType = "image/png";
     }
 
     async getFrameFromVideo() {
         // considera que o frame de video está sendo exibido no canvas
-        console.log(this.canvas);
-        console.log(this.ctx);
-        console.log(this.canvas.width, this.canvas.height);
         this.video.crossOrigin = "*";
         this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
         return new Promise((resolve, reject) => {

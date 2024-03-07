@@ -1,7 +1,9 @@
 "use strict";
 
 let vatic = {
-    colors: ["#f21f26",
+    bgcolors: [
+        "#ffff00",
+        "#f21f26",
         "#91c879",
         "#5780d4",
         "#cdeb2d",
@@ -16,6 +18,24 @@ let vatic = {
         "#84059a",
         "#999867",
         "#f8b90d"],
+    fgcolors: [
+        "#000",
+        "#FFF",
+        "#000",
+        "#000",
+        "#000",
+        "#FFF",
+        "#000",
+        "#FFF",
+        "#000",
+        "#000",
+        "#000",
+        "#000",
+        "#000",
+        "#FFF",
+        "#000",
+        "#000"],
+
    blobToImage: function (blob) {
         return new Promise((result, _) => {
             console.log('===============================');
@@ -56,6 +76,10 @@ let vatic = {
 
 
     getColor(i) {
-        return this.colors[((i - 1) % 14)];
+        let c = (i % 15);
+        return {
+            bg: this.bgcolors[c],
+            fg: this.fgcolors[c],
+        };
     }
 }

@@ -180,17 +180,35 @@ annotation.objects = {
                         .then((frameWithObjects) => {
                             console.log('frameWithObject', frameWithObjects);
                             console.log('frameNumber', frameNumber);
-                            currentObject.drawBoxInFrame(frameNumber);
+                            currentObject.drawBoxInFrame(frameNumber, 'tracking');
                         });
                     //that.$store.commit('redrawFrame', false);
                 } else {
                     console.log('drawFrame not tracking', currentObject);
-                    currentObject.drawBoxInFrame(frameNumber);
+                    currentObject.drawBoxInFrame(frameNumber, 'showing');
                 }
             }
         } catch (e) {
             manager.messager('error', e.message);
         }
+    },
+    drawFrameBoxes: function (frameNumber) {
+        // show/hide todas as boxes existentes no frame frameNumber
+        //let that = this;
+        frameNumber = parseInt(frameNumber);
+        if (frameNumber < 1) {
+            return;
+        }
+            let state = Alpine.store('doStore').showHideBoxesState;
+            if (state === 'hide') {
+                $('.bbox').css("display", "none");
+            } else {
+                let objects = annotation.objects.tracker.annotatedObjects.filter(o => o.inFrame(frameNumber));
+                console.log(objects);
+                objects.forEach(o => {
+                    o.drawBoxInFrame(frameNumber, 'showing');
+                })
+            }
     },
     creatingObject() {
         annotation.drawBox.init();
@@ -277,6 +295,9 @@ annotation.objects = {
                 frames: [],
             }
             let data = await annotation.objects.saveObject(annotatedObject, params);
+            Alpine.store('doStore').selectObjectByIdObjectMM(data.idDynamicObjectMM);
+
+            //Alpine.store('doStore').newObjectState = 'tracking';
             manager.messager("success", "New object created.");
             return data;
         } catch (e) {
@@ -314,7 +335,6 @@ annotation.objects = {
     },
 
     saveObject: async (currentObject, params) => {
-        console.log('##### saving newObject');
         params.idDocumentMM = annotation.documentMM.idDocumentMM;
         console.log('saveObject', currentObject, params)
         if (params.startFrame > params.endFrame) {
@@ -367,7 +387,6 @@ annotation.objects = {
         console.log('object updated', data);
 
         await Alpine.store('doStore').updateObjectList();
-        Alpine.store('doStore').selectObjectByIdObjectMM(data.idDynamicObjectMM);
         return data;
     },
     saveRawObject: async (currentObject) => {
@@ -405,7 +424,7 @@ annotation.objects = {
                 annotation.video.gotoFrame(currentFrame);
                 Alpine.store('doStore').updateCurrentFrame(currentFrame);
                 await new Promise(r => setTimeout(r, 1000));
-                return annotation.objects.tracking(Alpine.store('doStore').currentVideoState === 'playingTracking');
+                return annotation.objects.tracking(Alpine.store('doStore').currentVideoState === 'playing');
             }
         }
     },

@@ -280,8 +280,9 @@ class ObjectsTracker {
                         .then((img) => {
                             let result = [];
                             let toCompute = [];
-                            if (annotatedObject.inFrame(frameNumber)) {
-                                console.log('** tracking object ' + annotatedObject.idObject + '  frameNumber = ' + frameNumber)
+                            //if (annotatedObject.inFrame(frameNumber)) {
+                            console.log('** tracking object ' + annotatedObject.idObject + '  frameNumber = ' + frameNumber)
+                            try {
                                 let frameObject = annotatedObject.getFrameAt(frameNumber);
                                 //console.log(annotatedFrame);
                                 if (frameObject === null) {
@@ -290,7 +291,8 @@ class ObjectsTracker {
                                     frameObject = annotatedObject.getFrameAt(frameNumber - 1);
                                     if (frameObject == null) {
                                         // também não existe no anterior
-                                        console.log('    não existe no frame ' + (frameNumber - 1));
+                                        console.log('    não existe no frame anterior' + (frameNumber - 1));
+                                        throw new Error("Tracking must be done sequentially!");
                                         //throw 'tracking must be done sequentially';
                                         //continue; // passa para o próximo AnnotatedObject
                                     } else {
@@ -303,15 +305,16 @@ class ObjectsTracker {
                                         toCompute.push({annotatedObject: annotatedObject, bbox: frameObject.bbox});
                                     }
                                 } else {
-                                    // existe o AnnotatedObject no frame frameNumber, então coloca-o no array result
+                                    // existe o AnnotatedObject no frame frameNumber
                                     console.log('    existe no frame corrente');
                                     console.log(frameObject.bbox);
                                     if (frameObject.bbox == null) {
                                         console.log('    existe no frame corrente com bbox null - calcular nova box');
                                         frameObject = annotatedObject.get(frameNumber - 1);
                                         if (frameObject == null) {
-                                            // também não existe no anterior
-                                            console.log('    não existe no frame ' + (frameNumber - 1));
+                                            // não existe no anterior
+                                            console.log('    não existe no frame anterior ' + (frameNumber - 1));
+                                            throw new Error("Tracking must be done sequentially!");
                                             //throw 'tracking must be done sequentially';
                                             //continue; // passa para o próximo AnnotatedObject
                                         }
@@ -326,8 +329,12 @@ class ObjectsTracker {
                                         result.push({annotatedObject: annotatedObject, frameObject: frameObject});
                                     }
                                 }
+                                //}
+                                //}
+                            } catch (e) {
+                                manager.messager('error', e.message);
+                                resolve({img: null, objects: []});
                             }
-                            //}
 
                             let bboxes = toCompute.map(c => c.bbox);
                             //console.log(bboxes)
@@ -365,6 +372,7 @@ class ObjectsTracker {
                                     }
                                     resolve({img: img, objects: result});
                                 });
+
                         });
                 });
         });
@@ -381,13 +389,13 @@ class ObjectsTracker {
                 //let blob = this.framesManager.getFrame(frameNumber);
                 this.framesManager.getFrame(frameNumber)
                     .then((blob) => {
-                    vatic.blobToImage(blob).then((img) => {
-                        let imageData = this.imageData(img);
-                        this.opticalFlow.init(imageData);
-                        this.lastFrame = frameNumber;
-                        resolve();
+                        vatic.blobToImage(blob).then((img) => {
+                            let imageData = this.imageData(img);
+                            this.opticalFlow.init(imageData);
+                            this.lastFrame = frameNumber;
+                            resolve();
+                        });
                     });
-                });
             }
         });
     }

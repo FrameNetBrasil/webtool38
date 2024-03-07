@@ -79,7 +79,7 @@
 }
 
 .wt-icon-end-object::before {
-    content: " \ef71";
+    content: "block";
 }
 
 .wt-icon-start-tracking::before {
@@ -89,3 +89,14 @@
     content: " \e036";
 }
 
+.wt-icon-stop-tracking::before {
+    content: " \ef71";
+}
+
+.wt-icon-show-hide-objects-on::before {
+    content: "visibility";
+}
+
+.wt-icon-show-hide-objects-off::before {
+    content: "visibility_off";
+}

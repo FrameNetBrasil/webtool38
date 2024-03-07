@@ -374,6 +374,29 @@ body {
                 }
             }
 
+            .btn-option {
+                border: 0px;
+                background-color: $secondary;
+                color: white;
+                cursor:pointer;
+
+                .label {
+                    color: white;
+                }
+
+            }
+
+
+            .btn-option:disabled {
+                border: 0px;
+                background-color: var(--wt-grey-4);
+                color: var(--wt-grey-8);
+                cursor:default;
+
+                .label {
+                    color: var(--wt-grey-8);
+                }
+            }
             .label {
                 line-height:18px;
             }

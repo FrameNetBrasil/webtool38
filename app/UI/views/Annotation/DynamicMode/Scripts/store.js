@@ -10,6 +10,7 @@ document.addEventListener('alpine:init', () => {
         currentObject: null,
         currentObjectState: 'none',
         newObjectState: 'none',
+        showHideBoxesState: 'hide',
         init() {
             annotation.objects.init();
         },
@@ -26,6 +27,7 @@ document.addEventListener('alpine:init', () => {
             await annotation.api.loadObjects();
         },
         updateCurrentFrame(frameNumber) {
+            console.log('updateCurrentFrame',this.currentVideoState,this.newObjectState);
             this.frameCount = this.currentFrame = frameNumber;
             if ((this.currentVideoState === 'paused')
                 || (this.newObjectState === 'tracking')
@@ -47,7 +49,7 @@ document.addEventListener('alpine:init', () => {
                 console.log(time, object.object.startFrame);
                 annotation.video.player.currentTime(time);
                 annotation.objects.drawFrameObject(object.object.startFrame);
-                this.newObjectState = 'tracking';
+                this.newObjectState = 'showing';
             }
             annotationGridObject.selectRowByObject(idObject);
         },
@@ -61,24 +63,23 @@ document.addEventListener('alpine:init', () => {
             let time = annotation.video.timeFromFrame(frameNumber);
             annotation.video.player.currentTime(time);
             annotation.objects.drawFrameObject(frameNumber);
-            this.newObjectState = 'tranking';
+            this.newObjectState = 'showing';
         },
         createObject() {
             if (this.currentVideoState === 'paused') {
                 console.log('create object');
                 this.newObjectState = 'creating';
-                this.currentVideoState = 'creating';
                 this.selectObject(null);
-                //document.querySelector('#' + annotation.idVideo).style.cursor = 'crosshair';
                 annotation.objects.creatingObject();
             }
         },
-        endObject() {
-            console.log('end object');
-            this.currentObject.object.endFrame = this.currentFrame;
-            annotation.objects.saveRawObject(this.currentObject)
-            this.newObjectState = 'none';
-            this.currentVideoState = 'paused';
+        async endObject() {
+            if (this.currentVideoState === 'paused') {
+                console.log('end object');
+                this.currentObject.object.endFrame = this.currentFrame;
+                await annotation.objects.saveRawObject(this.currentObject)
+                this.selectObject(null);
+            }
 
             //     //this.$store.dispatch('endObject');
             //     // this.$store.commit('currentMode', 'video');
@@ -93,20 +94,35 @@ document.addEventListener('alpine:init', () => {
             if (this.currentVideoState === 'paused') {
                 await annotation.api.deleteObject(idObjectMM);
                 this.updateObjectList();
+                this.selectObject(null);
             }
         },
 
         startTracking() {
             console.log('start tracking');
             this.newObjectState = 'tracking';
-            this.currentVideoState = 'playingTracking';
+            this.currentVideoState = 'playing';
             annotation.objects.tracking(true);
 
         },
         pauseTracking() {
             console.log('pause tracking');
             this.newObjectState = 'tracking';
-            this.currentVideoState = 'pausedTracking';
+            this.currentVideoState = 'paused';
+        },
+        stopTracking() {
+            console.log('stop tracking');
+            this.currentVideoState = 'paused';
+            this.selectObject(null);
+        },
+        showHideObjects() {
+            console.log('show/hide objects');
+            if (this.showHideBoxesState === 'show') {
+                this.showHideBoxesState = 'hide';
+            } else {
+                this.showHideBoxesState = 'show';
+            }
+            annotation.objects.drawFrameBoxes(this.currentFrame)
         },
     })
 
@@ -120,16 +136,19 @@ document.addEventListener('alpine:init', () => {
     })
     Alpine.effect(() => {
         const currentVideoState = Alpine.store('doStore').currentVideoState;
+        const newObjectStateTracking = (Alpine.store('doStore').newObjectState === 'tracking');
         if (currentVideoState === 'playing') {
-            Alpine.store('doStore').selectObject(null);
-            document.querySelector('#btnCreateObject').disabled = true;
-            document.querySelector('#btnStartTracking').disabled = true;
-            document.querySelector('#btnPauseTracking').disabled = true;
-            document.querySelector('#btnEndObject').disabled = true;
-            Alpine.store('doStore').newObjectState = 'none';
+            if (!newObjectStateTracking) {
+                document.querySelector('#btnCreateObject').disabled = true;
+                document.querySelector('#btnStartTracking').disabled = true;
+                document.querySelector('#btnPauseTracking').disabled = true;
+                document.querySelector('#btnEndObject').disabled = true;
+            }
         }
         if (currentVideoState === 'paused') {
-            document.querySelector('#btnCreateObject').disabled = false;
+            if (!newObjectStateTracking) {
+                document.querySelector('#btnCreateObject').disabled = false;
+            }
         }
     })
     Alpine.effect(async () => {
@@ -138,26 +157,37 @@ document.addEventListener('alpine:init', () => {
             document.querySelector('#btnCreateObject').disabled = true;
             document.querySelector('#btnStartTracking').disabled = true;
             document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnStopTracking').disabled = true;
             document.querySelector('#btnEndObject').disabled = true;
             annotation.video.disablePlayPause();
         }
         if (newObjectState === 'created') {
             await annotation.objects.createdObject();
             Alpine.store('doStore').newObjectState = 'tracking';
-            Alpine.store('doStore').currentVideoState = 'pausedTracking';
+            Alpine.store('doStore').currentVideoState = 'paused';
+        }
+        if (newObjectState === 'showing') {
+            document.querySelector('#btnCreateObject').disabled = true;
+            document.querySelector('#btnStartTracking').disabled = false;
+            document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnStopTracking').disabled = true;
+            document.querySelector('#btnEndObject').disabled = true;
+            annotation.video.enablePlayPause();
         }
         if (newObjectState === 'tracking') {
-            let pausedTracking = Alpine.store('doStore').currentVideoState === 'pausedTracking';
+            let pausedTracking = Alpine.store('doStore').currentVideoState === 'paused';
             document.querySelector('#btnCreateObject').disabled = true;
             document.querySelector('#btnStartTracking').disabled = !pausedTracking;
             document.querySelector('#btnPauseTracking').disabled = pausedTracking;
-            document.querySelector('#btnEndObject').disabled = false;
+            document.querySelector('#btnStopTracking').disabled = !pausedTracking;
+            document.querySelector('#btnEndObject').disabled = !pausedTracking;
             annotation.video.disablePlayPause();
         }
         if (newObjectState === 'none') {
             document.querySelector('#btnCreateObject').disabled = false;
             document.querySelector('#btnStartTracking').disabled = true;
             document.querySelector('#btnPauseTracking').disabled = true;
+            document.querySelector('#btnStopTracking').disabled = true;
             document.querySelector('#btnEndObject').disabled = true;
             annotation.video.enablePlayPause();
         }
@@ -176,6 +206,8 @@ document.addEventListener('alpine:init', () => {
                 data: annotation.objectList
             });
             $('#gridObjects').datagrid('loaded');
+            Alpine.store('doStore').newObjectState = 'none';
+            Alpine.store('doStore').currentVideoState = 'paused';
 
         }
     })

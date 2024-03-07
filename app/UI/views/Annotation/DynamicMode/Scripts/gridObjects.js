@@ -28,7 +28,7 @@ let annotationGridObject = {
         },
         {
             field: 'delete',
-            width: '32px',
+            width: '28px',
             title: '',
             formatter: function (value, row, index) {
                 return `<div class="wt-datagrid-action" style="width:24px">
@@ -41,7 +41,7 @@ let annotationGridObject = {
         },
         {
             field: 'clone',
-            width: '32px',
+            width: '28px',
             title: '',
             formatter: function (value, row, index) {
                 return `<div class="wt-datagrid-action" style="width:24px">
@@ -216,14 +216,19 @@ $('#gridObjects').datagrid({
     onClickRow: function (index, row) {
         let currentVideoState = Alpine.store('doStore').currentVideoState;
         if (currentVideoState === 'paused') {
-            if (annotationGridObject.fieldClicked === 'startFrame') {
-                Alpine.store('doStore').selectObjectFrame(row.order, row.startFrame);
-            } else if (annotationGridObject.fieldClicked === 'endFrame') {
-                Alpine.store('doStore').selectObjectFrame(row.order, row.endFrame);
-            } else if (annotationGridObject.fieldClicked === 'delete') {
-                Alpine.store('doStore').deleteObject(row.idObjectMM);
+            let currentObject = Alpine.store('doStore').currentObject;
+            if (currentObject && (currentObject.object.order === row.order)) {
+                Alpine.store('doStore').selectObject(null);
             } else {
-                Alpine.store('doStore').selectObject(row.order);
+                if (annotationGridObject.fieldClicked === 'startFrame') {
+                    Alpine.store('doStore').selectObjectFrame(row.order, row.startFrame);
+                } else if (annotationGridObject.fieldClicked === 'endFrame') {
+                    Alpine.store('doStore').selectObjectFrame(row.order, row.endFrame);
+                } else if (annotationGridObject.fieldClicked === 'delete') {
+                    Alpine.store('doStore').deleteObject(row.idObjectMM);
+                } else {
+                    Alpine.store('doStore').selectObject(row.order);
+                }
             }
         }
 

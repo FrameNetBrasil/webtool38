@@ -44,7 +44,7 @@
         btnForwardDom.onclick = function () {
             console.log('click forward');
             let state = Alpine.store('doStore').currentVideoState;
-            if ((state === 'paused') || (state === 'editing')) {
+            if (state === 'paused') {
                 let currentTime = player.currentTime();
                 let newTime = currentTime + annotation.video.timeInterval;
                 console.log('newTime', newTime);
@@ -58,7 +58,7 @@
         btnBackwardDom.onclick = function () {
             console.log('click backward');
             let state = Alpine.store('doStore').currentVideoState;
-            if ((state === 'paused') || (state === 'editing')) {
+            if (state === 'paused') {
                 let currentTime = player.currentTime();
                 if (Alpine.store('doStore').frameCount > 1) {
                     let newTime = currentTime - annotation.video.timeInterval;
