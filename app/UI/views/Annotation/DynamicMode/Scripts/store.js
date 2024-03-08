@@ -13,7 +13,6 @@ document.addEventListener('alpine:init', () => {
         showHideBoxesState: 'hide',
         init() {
             annotation.objects.init();
-            annotation.gridSentences.loadSentences();
         },
         config() {
             let config = {

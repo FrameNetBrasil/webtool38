@@ -23,10 +23,12 @@
 
     [data-tab-info] {
         display: none;
+        //visibility: hidden;
     }
 
     .active[data-tab-info] {
         display: block;
+        //visibility: visible;
     }
 
     .wt-tabs-content {

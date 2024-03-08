@@ -17,8 +17,10 @@
     const tabInfos = document.querySelectorAll('[data-tab-info]')
     tabs.forEach(tab => {
         tab.addEventListener('click', (x) => {
+            @if($onSelect != '')
+                {!! $onSelect !!}(tab.dataset.tabValue.substring(1))
+            @endif
             const target = document.querySelector(tab.dataset.tabValue);
-            console.log(target,x.target);
             tabInfos.forEach(tabInfo => {
                 tabInfo.classList.remove('active')
             })

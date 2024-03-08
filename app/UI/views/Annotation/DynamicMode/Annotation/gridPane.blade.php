@@ -1,8 +1,9 @@
 <div id="dynamicModeGrid">
     <x-tabs
         id="dynamicModeTabs"
-        :tabs="['tab1'=>'Objects','tab2'=>'Sentences']"
-        :slots="['tab1' => 'objects', 'tab2' => 'sentences']"
+        :tabs="['tabObjects'=>'Objects','tabSentences'=>'Sentences']"
+        :slots="['tabObjects' => 'objects', 'tabSentences' => 'sentences']"
+        onSelect="{!! 'annotation.gridSentences.onSelectGrid' !!}"
     >
         <x-slot name="objects">
             <div id="containerTableObjects">

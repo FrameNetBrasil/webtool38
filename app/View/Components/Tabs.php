@@ -15,7 +15,8 @@ class Tabs extends Component
     public function __construct(
         public string $id,
         public array $tabs,
-        public array $slots
+        public array $slots,
+        public ?string $onSelect = ''
     )
     {
         $this->active = array_keys($tabs)[0];

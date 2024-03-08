@@ -1,10 +1,6 @@
 annotation.gridSentences = {
     columns: [
         {
-            field: 'idAnnotationSet',
-            hidden: true,
-        },
-        {
             field: 'idDynamicSentenceMM',
             hidden: true,
         },
@@ -12,120 +8,125 @@ annotation.gridSentences = {
             field: 'startTime',
             title: 'Start Frame [Time]',
             align: 'right',
-            width: 112,
+            width: '120px',
+            resizable: false,
+            formatter: function (value, row, index) {
+                return "<span  class='gridPaneFrame'>" + row.startFrame + " [" + row.startTime + "s]" + "</span>";
+            },
         },
-        /*
         {
             field: 'endTime',
             title: 'End Frame [Time]',
             align: 'right',
-            width: 112,
+            width: '120px',
+            resizable: false,
+            formatter: function (value, row, index) {
+                return "<span  class='gridPaneFrame'>" + row.endFrame + " [" + row.endTime + "s]" + "</span>";
+            },
         },
         {
             field: 'play',
-            width: 24,
+            width: '28px',
             title: '',
             formatter: function (value, row, index) {
-                return '<i class="fas fa-play"></i>';
+                return `<div class="wt-datagrid-action" style="width:24px; cursor:pointer"><span class='material-icons wt-datagrid-icon wt-icon-play'></span></div>`;
             },
         },
         {
             field: 'play3',
-            width: 56,
+            width: '64px',
             title: '',
             formatter: function (value, row, index) {
-                return '<i class="fas fa-play"></i> +- 3';
+                return `<div class="wt-datagrid-action" style="width:64px; cursor:pointer"><span class='material-icons wt-datagrid-icon wt-icon-range'></span> 3s <span class='material-icons wt-datagrid-icon wt-icon-play'></span></div>`;
             },
         },
         {
             field: 'play5',
-            width: 56,
+            width: '64px',
             title: '',
             formatter: function (value, row, index) {
-                return '<i class="fas fa-play"></i> +- 5';
+                return `<div class="wt-datagrid-action" style="width:64px; cursor:pointer"><span class='material-icons wt-datagrid-icon wt-icon-range'></span> 5s <span class='material-icons wt-datagrid-icon wt-icon-play'></span></div>`;
             },
         },
-        
-         */
         {
             field: 'decorated',
             title: 'Sentence',
             align: 'left',
-            width: 300,
+            width: '900px',
         },
     ],
+    dataLoaded: false,
+    async onSelectGrid(tab) {
+        console.log('select grid', tab);
+        if (tab === 'tabSentences') {
+            if (!annotation.gridSentences.dataLoaded) {
+                console.log('loading');
+                await annotation.gridSentences.loadSentences();
+                annotation.gridSentences.dataLoaded = true;
+            }
+        }
+    },
     async loadSentences() {
         let sentences = await annotation.api.loadSentences();
+        sentences.forEach(o => {
+            o.startFrame = annotation.video.frameFromTime(o.startTime);
+            o.endFrame = annotation.video.frameFromTime(o.endTime);
+        })
         console.log(sentences);
-        $('#gridSentences').datagrid('loadData', sentences);
+        $('#gridSentences').datagrid({data:sentences});
+        $('#gridSentences').datagrid('loaded');
     }
 }
 
 
-
 $('#gridSentences').datagrid({
     data: [],
+    // url: "/annotation/dynamicMode/gridSentences/" + annotation.document.idDocument,
+    // method: "GET",
     border: 1,
-    width: '100%',
+    //width: '100%',
     fit: true,
     idField: 'idDynamicSentenceMM',
     showHeader: true,
     singleSelect: true,
     nowrap: false,
+    loadMsg: '',
     columns: [annotation.gridSentences.columns],
     onClickCell: function (index, field, value) {
         let currentVideoState = Alpine.store('doStore').currentVideoState;
         let newObjectState = Alpine.store('doStore').newObjectState;
-        if (currentState === 'videoPaused') {
+        if ((currentVideoState === 'paused') && (newObjectState !== 'tracking')) {
             console.log(index, field, value);
-            /*
             let rows = $('#gridSentences').datagrid('getRows');
             let row = rows[index];
-            if (field === 'startTimestamp') {
-                let startFrame = that.frameFromTime(value);
-                that.$store.commit('currentFrame', startFrame);
-            }
-            if (field === 'startFrame') {
-                that.$store.commit('currentFrame', value);
-            }
-            if (field === 'endTimestamp') {
-                let startFrame = that.frameFromTime(value);
-                that.$store.commit('currentFrame', startFrame);
-            }
-            if (field === 'endFrame') {
-                that.$store.commit('currentFrame', value);
-            }
-            if (field === 'text') {
-                let startFrame = that.frameFromTime(row.startTimestamp);
-                that.$store.commit('currentFrame', startFrame);
-            }
+            let startTime = row.startTime;
+            let endTime = row.endTime;
             if (field === 'play') {
-                let startFrame = that.frameFromTime(row.startTimestamp);
-                that.$store.commit('currentFrame', startFrame);
-                let stopFrame = that.frameFromTime(row.endTimestamp);
-                that.$store.commit('currentStopFrame', stopFrame);
-                that.$store.commit('currentState', 'videoPlaying');
+                console.log('startTime',startTime);
+                let playRange = {
+                    startFrame: annotation.video.frameFromTime(startTime),
+                    endFrame: annotation.video.frameFromTime(endTime)
+                }
+                annotation.video.playRange(playRange);
             }
             if (field === 'play3') {
-                let startFrame = that.frameFromTime(row.startTimestamp);
-                let endFrame = that.frameFromTime(row.endTimestamp);
-                let start = startFrame - (annotationVideoModel.fps * 3)
-                let stop = endFrame + (annotationVideoModel.fps * 3);
-                that.$store.commit('currentFrame', start);
-                that.$store.commit('currentStopFrame', stop);
-                that.$store.commit('currentState', 'videoPlaying');
+                console.log('startTime',startTime - 3);
+                let playRange = {
+                    startFrame: annotation.video.frameFromTime(startTime - 3),
+                    endFrame: annotation.video.frameFromTime(endTime + 3)
+                }
+                annotation.video.playRange(playRange);
             }
             if (field === 'play5') {
-                let startFrame = that.frameFromTime(row.startTimestamp);
-                let endFrame = that.frameFromTime(row.endTimestamp);
-                let start = startFrame - (annotationVideoModel.fps * 5)
-                let stop = endFrame + (annotationVideoModel.fps * 5);
-                that.$store.commit('currentFrame', start);
-                that.$store.commit('currentStopFrame', stop);
-                that.$store.commit('currentState', 'videoPlaying');
+                console.log('startTime',startTime - 5);
+                let playRange = {
+                    startFrame: annotation.video.frameFromTime(startTime - 5),
+                    endFrame: annotation.video.frameFromTime(endTime + 5)
+                }
+                annotation.video.playRange(playRange);
             }
-            */
-
         }
+
     },
 });
+$('#gridSentences').datagrid('loading');

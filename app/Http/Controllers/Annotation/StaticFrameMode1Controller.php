@@ -97,6 +97,7 @@ class StaticFrameMode1Controller extends Controller
         }
 //        debug($idFrame);
         if ($idFrame != '') {
+            $frames = data('frames');
             if (!AnnotationStaticFrameMode1Service::hasFrame($this->data->idStaticSentenceMM, $idFrame)) {
                 data('idFrame',$idFrame);
                 $frame = new Frame($idFrame);
@@ -105,6 +106,7 @@ class StaticFrameMode1Controller extends Controller
                     'idFrame' => $idFrame,
                     'objects' => []
                 ];
+                //debug($frames);
                 data('frames', $frames);
             }
             return $this->render('fes');

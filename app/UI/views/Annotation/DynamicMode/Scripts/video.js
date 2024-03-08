@@ -18,6 +18,7 @@ annotation.video = {
         first: 1,
         last: 1
     },
+    playingRange: null,
     gotoFrame(frameNumber) {
         let time = annotation.video.timeFromFrame(frameNumber);
         annotation.video.player.currentTime(time);
@@ -37,5 +38,10 @@ annotation.video = {
             $btn.style.color = "grey";
             $btn.style.cursor = "default";
         }
+    },
+    playRange(range) {
+        annotation.video.playingRange = range;
+        annotation.video.gotoFrame(range.startFrame)
+        annotation.video.player.play();
     }
 }
