@@ -15,6 +15,8 @@ class Frame extends Component
         public string $id,
         public string $label,
         public string $placeholder = '',
+        public ?string $onChange = '',
+        public ?string $onSelect = '',
     )
     {
     }

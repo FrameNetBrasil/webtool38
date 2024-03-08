@@ -437,4 +437,26 @@ annotation.objects = {
             }
         }
     },
+    async cloneObject(idObject) {
+        let sourceObject = annotation.objects.get(idObject)
+        let cloneObject = new DynamicObject(sourceObject.object);
+        cloneObject.cloneFrom(sourceObject);
+        let params = {
+            idDocumentMM: annotation.documentMM.idDocumentMM,
+            idObjectMM: null,
+            idDynamicObjectMM: null,
+            startFrame: cloneObject.object.startFrame,
+            endFrame: cloneObject.object.endFrame,
+            idFrame: null,
+            idFrameElement: null,
+            idLU: null,
+            startTime: annotation.video.timeFromFrame(cloneObject.object.startFrame),
+            endTime: annotation.video.timeFromFrame(cloneObject.object.endFrame),
+            origin: 2,
+            frames: cloneObject.object.frames,
+        }
+        let data = await annotation.objects.saveObject(cloneObject, params);
+        Alpine.store('doStore').selectObjectByIdObjectMM(data.idDynamicObjectMM);
+        manager.messager("success", "Object cloned.");
+    }
 }

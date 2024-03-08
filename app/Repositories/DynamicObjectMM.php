@@ -76,12 +76,12 @@ select do.idDynamicObjectMM as idObjectMM,
        do.status,
        do.origin,
        do.idLU,
-       IF(do.idLU,concat(entries_flu.name,'.',lu.name),'')as lu,
+       IF(do.idLU,concat(entries_flu.name,'.',lu.name),'') as lu,
        do.idFrameElement,
        fe.idFrame,
-       entries_f.name as frame,
+       IFNULL(entries_f.name, '')  as frame,
        do.idFrameElement as idFE,
-       entries_fe.name as fe,
+       IFNULL(entries_fe.name, '') as fe,
        color.rgbBg as color
 from dynamicobjectmm do
          left join frameelement as fe on do.idFrameElement = fe.idFrameElement
@@ -96,7 +96,7 @@ where (do.idDocument = {$idDocument})
 and ((entries_f.idLanguage = {$idLanguage}) or (entries_f.idLanguage is null))
 and ((entries_fe.idLanguage = {$idLanguage}) or (entries_fe.idLanguage is null))
 and ((entries_flu.idLanguage = {$idLanguage}) or (entries_flu.idLanguage is null))
-order by do.startTime asc
+order by do.startTime asc,do.endTime asc
 
 SQL;
 //        $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name');
@@ -179,8 +179,10 @@ SQL;
             ];
             $this->saveData($object);
             Timeline::addTimeline("dynamicobjectmm", $this->getId(), "S");
-            $objectFrameMM = new DynamicBBoxMM();
-            $objectFrameMM->putFrames($this->idDynamicObjectMM, $data->frames);
+            if (count($data->frames)) {
+                $objectFrameMM = new DynamicBBoxMM();
+                $objectFrameMM->putFrames($this->idDynamicObjectMM, $data->frames);
+            }
             $this->commit();
         } catch (\Exception $e) {
             debug($e->getMessage());

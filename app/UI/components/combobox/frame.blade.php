@@ -11,6 +11,12 @@
         @if($placeholder != '')
             prompt: '{{$placeholder}}',
         @endif
+        @if($onChange != '')
+            onChange: {!! $onChange !!},
+        @endif
+        @if($onSelect != '')
+            onSelect: {!! $onSelect !!},
+        @endif
         url: "/report/frame/listForSelect"
     });
 @endpush

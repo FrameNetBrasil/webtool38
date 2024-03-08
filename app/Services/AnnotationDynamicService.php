@@ -24,35 +24,38 @@ class AnnotationDynamicService
         $result = [];
         $dynamicSentenceMM = new DynamicSentenceMM();
         $sentences = $dynamicSentenceMM->listByDocument($idDocument);
-        $as = new ViewAnnotationSet();
+        $vas = new ViewAnnotationSet();
+        $annotation = collect($vas->listFECEByIdDocument($idDocument))->groupBy('idSentence')->all();
         foreach ($sentences as $sentence) {
-            $targets = $as->listTargetBySentence($sentence['idSentence']);
-            $sentence['decorated'] = self::decorateSentence($sentence['text'], $targets);
+            if (isset($annotation[$sentence['idSentence']])) {
+                $sentence['decorated'] = self::decorateSentence($sentence['text'], $annotation[$sentence['idSentence']]);
+            } else {
+                $targets = [];// $vas->listTargetBySentence($sentence['idSentence']);
+                $sentence['decorated'] = self::decorateSentence($sentence['text'], $targets);
+            }
             $result[] = $sentence;
         }
-        debug($result);
         return $result;
     }
-
-
     public static function decorateSentence($sentence, $labels)
     {
         $decorated = "";
         $ni = "";
         $i = 0;
         foreach ($labels as $label) {
-            //$style = 'background-color:#' . $label['rgbBg'] . ';color:#' . $label['rgbFg'] . ';';
+            $style = 'background-color:#' . $label['rgbBg'] . ';color:#' . $label['rgbFg'] . ';';
             if ($label['startChar'] >= 0) {
+                $title = isset($label['frameName']) ? " title='{$label['frameName']}' " : '';
                 $decorated .= mb_substr($sentence, $i, $label['startChar'] - $i);
-                //$decorated .= "<span style='{$style}'>" . mb_substr($sentence, $label['startChar'], $label['endChar'] - $label['startChar'] + 1) . "</span>";
-                $decorated .= "<span class='color_target'>" . mb_substr($sentence, $label['startChar'], $label['endChar'] - $label['startChar'] + 1) . "</span>";
+                $decorated .= "<span {$title} style='{$style}'>" . mb_substr($sentence, $label['startChar'], $label['endChar'] - $label['startChar'] + 1) . "</span>";
                 $i = $label['endChar'] + 1;
             } else { // null instantiation
-                $ni .= "<span class='color_target'>" . $label['instantiationType'] . "</span> " . $decorated;
+                $ni .= "<span style='{$style}'>" . $label['instantiationType'] . "</span> " . $decorated;
             }
         }
         $decorated = $ni . $decorated . mb_substr($sentence, $i);
         return $decorated;
     }
+
 
 }

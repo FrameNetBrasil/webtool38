@@ -30,7 +30,7 @@
                         {{$grid}}
                     </div>
                     <div class="object">
-
+                        {{$form}}
                     </div>
                 </div>
             </div>

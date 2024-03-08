@@ -224,6 +224,8 @@ $('#gridObjects').datagrid({
                     Alpine.store('doStore').selectObjectFrame(row.order, row.endFrame);
                 } else if (annotationGridObject.fieldClicked === 'delete') {
                     Alpine.store('doStore').deleteObject(row.idObjectMM);
+                } else if (annotationGridObject.fieldClicked === 'clone') {
+                    annotation.objects.cloneObject(row.order);
                 } else {
                     Alpine.store('doStore').selectObject(row.order);
                 }

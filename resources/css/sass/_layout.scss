@@ -409,7 +409,7 @@ body {
 
         .gridObjectSentence {
             box-sizing: border-box;
-            height: 512px;
+            height: 464px;
             width: 100%;
             padding: var(--wt-unit) var(--wt-unit) 0 0;
 
@@ -424,12 +424,12 @@ body {
                     #containerTableObjects {
                         width: calc(100vw - 920px);
                         overflow-x: auto;
-                        height: 496px;
+                        height: 400px;
                     }
                     #containerTableSentences {
                         width: calc(100vw - 920px);
                         overflow-x: auto;
-                        height: 496px;
+                        height: 400px;
                     }
                 }
             }
@@ -437,7 +437,7 @@ body {
         }
 
         .object {
-
+            width: calc(100vw - 920px);
         }
 
         #boxesContainer {

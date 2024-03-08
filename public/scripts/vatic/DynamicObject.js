@@ -19,29 +19,6 @@ class DynamicObject {
         this.locked = false;
         this.dom = null;
         this.frames = [];
-
-        // this.chkObject = 0;
-        // this.idObject = -1;
-        // this.idObjectMM = -1;
-        // this.frames = [];
-        // this.boxes = [];
-        // this.name = '';
-        // this.idFrame = -1;
-        // this.idFE = -1;
-        // this.idLU = -1;
-        // this.color = '#D3D3D3';
-        // this.startFrame = -1;
-        // this.endFrame = -1;
-        // this.startTimestamp = -1;
-        // this.endTimestamp = -1;
-        // this.frame = '';
-        // this.fe = '';
-        // this.lu = '';
-        // this.origin = '2';
-        // this.state = 'clean';
-        // this.startWord = -1;
-        // this.endWord = -1;
-        // this.idForNewBox = 0;
     }
 
     inFrame(frameNumber) {
@@ -143,29 +120,23 @@ class DynamicObject {
         this.endWord = parseInt(object.endWord);
     }
 
-
+*/
 
     cloneFrom(sourceObject) {
         // this.idObject is unique
-        this.idObjectMM = null;
-        this.name = sourceObject.name;
-        this.idFrame = -1;
-        this.frame = '';
-        this.idFE = -1;
-        this.fe = '';
-        this.idLU = -1;
-        this.lu = '';
-        this.color = sourceObject.color;
+        this.object = sourceObject.object;
+        this.object.idDynamicObjectMM = null;
+        this.object.idFrame = null;
+        this.object.frame = '';
+        this.object.idFE = null;
+        this.object.fe = '';
+        this.object.idLU = null;
+        this.object.lu = '';
+        this.idObject = 0;
+        this.color = vatic.getColor(1);
+        this.visible = sourceObject.visible;
         this.hidden = sourceObject.hidden;
         this.locked = sourceObject.locked;
-        this.origin = sourceObject.origin;
-        this.startFrame = sourceObject.startFrame;
-        this.endFrame = sourceObject.endFrame;
-        this.startTimestamp = sourceObject.startTimestamp;
-        this.endTimestamp = sourceObject.endTimestamp;
-        this.state = sourceObject.state;
-        this.startWord = sourceObject.startWord;
-        this.endWord = sourceObject.endWord;
         this.dom = sourceObject.dom;
         this.frames = [];
         for (var frame of sourceObject.frames) {
@@ -173,6 +144,7 @@ class DynamicObject {
         }
     }
 
+    /*
     setState(state) {
         this.state = state;
     }

@@ -72,7 +72,6 @@ annotation.gridSentences = {
             o.startFrame = annotation.video.frameFromTime(o.startTime);
             o.endFrame = annotation.video.frameFromTime(o.endTime);
         })
-        console.log(sentences);
         $('#gridSentences').datagrid({data:sentences});
         $('#gridSentences').datagrid('loaded');
     }

@@ -44,6 +44,27 @@ HERE;
         return $this->query($cmd);
     }
 
+    public function listFECEByIdDocument($idDocument) {
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $cmd = <<<HERE
+SELECT l.*, e.name as frameName
+        FROM view_labelfecetarget l
+join view_annotationset a on (l.idAnnotationset = a.idAnnotationSet)
+join view_sentence s on (a.idSentence = s.idSentence)
+join document_sentence ds on  (s.idSentence = ds.idSentence)
+join lu on (a.idLU = lu.idLU)
+join frame f on (lu.idFrame = f.idFrame)
+join entry e on (f.idEntity = e.idEntity)
+        WHERE (ds.idDocument = {$idDocument})
+          AND(l.layerTypeEntry = 'lty_target')
+            AND (l.idLanguage = {$idLanguage} )
+        AND (e.idLanguage = {$idLanguage})
+        ORDER BY l.idSentence,l.startChar
+
+HERE;
+        return $this->query($cmd);
+    }
+
 
     /*
     public function listByLU($idLU, $sortable = NULL)
@@ -94,7 +115,7 @@ HERE;
             }
         }
         $cmd = <<<HERE
-SELECT sentence.idSentence,sentence.text, if(count(annotationset.idAnnotationSet) = 0, 5, 6) as idAnnotationStatus 
+SELECT sentence.idSentence,sentence.text, if(count(annotationset.idAnnotationSet) = 0, 5, 6) as idAnnotationStatus
 FROM sentence
 JOIN document_sentence on (sentence.idSentence = document_sentence.idSentence)
 LEFT JOIN annotationset ON (sentence.idSentence=annotationset.idSentence)
@@ -151,7 +172,7 @@ HERE;
         $cmd = <<<HERE
 SELECT *
 FROM view_labelfecetarget vl
-JOIN view_annotationset a on (vl.idAnnotationSet = a.idAnnotationSet)    
+JOIN view_annotationset a on (vl.idAnnotationSet = a.idAnnotationSet)
 JOIN lu on (lu.idEntity = a.idEntityLU)
 WHERE (lu.idLU ={$idLU})
 AND (idLanguage = {$idLanguage} )
@@ -332,9 +353,9 @@ HERE;
 
         $cmd = <<<HERE
 select s.idSentence, sentenceMM.idSentenceMM, sentenceMM.startTimestamp, sentenceMM.endTimestamp, s.text
-from view_sentence s 
+from view_sentence s
 join sentenceMM on (sentenceMM.idSentence = s.idSentence)
-join documentMM on (documentMM.idDocument = s.idDocument)    
+join documentMM on (documentMM.idDocument = s.idDocument)
 where (documentMM.idDocumentMM = {$idDocumentMM})
 HERE;
         $as = $this->getDb()->getQueryCommand($cmd)->getResult();

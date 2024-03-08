@@ -10,6 +10,7 @@ use App\Repositories\Document;
 use App\Repositories\DocumentMM;
 use App\Repositories\DynamicBBoxMM;
 use App\Repositories\DynamicObjectMM;
+use App\Repositories\Frame;
 use App\Services\AnnotationDynamicService;
 use Collective\Annotations\Routing\Attributes\Attributes\Delete;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
@@ -33,6 +34,15 @@ class DynamicModeController extends Controller
         data('search', SearchDynamicModeData::from(data('search')));
         session(['searchDynamicMode' => $this->data->search]);
         return $this->render("grid");
+    }
+
+    #[Get(path: '/annotation/dynamicMode/objectFE/{idFrame}')]
+    public function objectFE($idFrame)
+    {
+        $frame = new Frame($idFrame);
+        data('idFrame', $idFrame);
+        data('frameName', $frame->name ?? '');
+        return $this->render("Annotation.DynamicMode.Annotation.objectFEPane");
     }
 
     #[Post(path: '/annotation/dynamicMode/listForTree')]
@@ -96,6 +106,7 @@ class DynamicModeController extends Controller
         $documentMM->getByIdDocument($idDocument);
         data('documentMM', $documentMM);
         data("objects", []);
+        data('fragment', 'fe');
         return $this->render("annotation");
     }
 
@@ -113,6 +124,7 @@ class DynamicModeController extends Controller
     #[Post(path: '/annotation/dynamicMode/updateObject')]
     public function updateObject()
     {
+        debug($this->data);
         try {
             $dynamicObjectMM = new DynamicObjectMM();
             $dynamicObjectMM->updateObject($this->data);

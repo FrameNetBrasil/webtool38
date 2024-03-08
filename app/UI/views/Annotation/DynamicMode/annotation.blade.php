@@ -16,6 +16,9 @@
     <x-slot:grid>
         @include("Annotation.DynamicMode.Annotation.gridPane")
     </x-slot:grid>
+    <x-slot:form>
+        @include("Annotation.DynamicMode.Annotation.objectPane")
+    </x-slot:form>
     <x-slot:script>
         <script type="text/javascript" src="/scripts/vatic/dist/compatibility.js"></script>
         <script type="text/javascript" src="/scripts/vatic/dist/jszip.js"></script>
@@ -44,6 +47,7 @@
             @include("Annotation.DynamicMode.Scripts.objects")
             @include("Annotation.DynamicMode.Scripts.gridObjects")
             @include("Annotation.DynamicMode.Scripts.gridSentences")
+            @include("Annotation.DynamicMode.Scripts.formObject")
             @include("Annotation.DynamicMode.Scripts.store")
 
 

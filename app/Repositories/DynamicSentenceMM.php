@@ -23,10 +23,19 @@ class DynamicSentenceMM extends Repository
 
     public function listByDocument($idDocument): array
     {
-        $criteria = $this->getCriteria()
-            ->where("sentence.documents.idDocument","=", $idDocument)
-            ->select(['idDynamicSentenceMM','startTime','endTime','idSentence','sentence.text']);
-        debug($criteria->get()->all());
-        return $criteria->getResult();
+        $cmd = <<<HERE
+select `dynamicsentencemm`.`idDynamicSentenceMM`,
+       `dynamicsentencemm`.`startTime`,
+       `dynamicsentencemm`.`endTime`,
+       `dynamicsentencemm`.`idSentence`,
+       `sentence_1`.`text`
+from `dynamicsentencemm`
+         inner join `sentence` as `sentence_1` on `dynamicsentencemm`.`idSentence` = `sentence_1`.`idSentence`
+         inner join `document_sentence` as `a3` on `sentence_1`.`idSentence` = `a3`.`idSentence`
+         inner join `document` as `documents_2` on `a3`.`idDocument` = `documents_2`.`idDocument`
+where `documents_2`.`idDocument` = {$idDocument}
+
+HERE;
+        return $this->query($cmd);
     }
 }
