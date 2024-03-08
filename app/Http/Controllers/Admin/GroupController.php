@@ -15,7 +15,7 @@ use Collective\Annotations\Routing\Attributes\Attributes\Put;
 class GroupController extends Controller
 {
 
-    #[Get(path: '/group')]
+    #[Get(path: '/group')]  
     public function browse()
     {
         $this->data->search ??= (object)[];

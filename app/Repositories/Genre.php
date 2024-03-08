@@ -1,29 +1,24 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
+
 
 namespace App\Repositories;
 
-class Genre extends Repository {
+use App\Models\GenreModel;
+use Maestro\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'entry' => array('notnull'),
-            ),
-            'converters' => array()
-        );
+class Genre extends Repository {
+    public ?int $idGenre;
+    public ?string $entry;
+    public ?int $idGenreType;
+    public ?int $idEntity;
+
+     public function __construct(int $id = null)
+    {
+        debug("allo2");
+        parent::__construct(GenreModel::class, $id);
+        debug("allo3");
     }
+
     
     public function getDescription(){
         return $this->getEntry();

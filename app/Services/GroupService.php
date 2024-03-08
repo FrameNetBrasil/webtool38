@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\Group;
 use App\Repositories\Qualia;
 use Orkester\Manager;
-
+use App\Models\GroupModel;
 
 class GroupService
 {
