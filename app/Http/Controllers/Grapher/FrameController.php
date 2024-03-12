@@ -22,15 +22,16 @@ class FrameController extends Controller
         $relations = $relationType->listByFilter((object)[
             'group' => 'rgp_frame_relations'
         ])->getResult();
-        $this->data->relations = [];
+        $dataRelations = [];
         $config = config('webtool.relations');
         foreach($relations as $relation) {
-            $this->data->relations[] = [
+            $dataRelations[] = [
                 'value' => $relation['idRelationType'],
                 'entry' => $relation['entry'],
                 'name' => $config[$relation['entry']]['direct'],
             ];
         }
+        data('relations', $dataRelations);
         return $this->render('frame');
     }
 
@@ -38,12 +39,13 @@ class FrameController extends Controller
     public function frameGraph(int $idEntity = null)
     {
         $nodes = session("graphNodes") ?? [];
-        if (isset($this->data->idFrame)) {
-            $frame = new Frame($this->data->idFrame);
+        $idFrame = data('idFrame') ?? null;
+        if (!is_null($idFrame)) {
+            $frame = new Frame($idFrame);
             $nodes = [$frame->idEntity];
         }
-        if (isset($this->data->idRelationType)) {
-            $idRelationType = (array)$this->data->idRelationType;
+        if (data('idRelationType')) {
+            $idRelationType = (array)data('idRelationType');
         } else {
             $idRelationType = session('idRelationType') ?? [];
         }
@@ -58,7 +60,7 @@ class FrameController extends Controller
             "graphNodes" => $nodes,
             "idRelationType" => $idRelationType
         ]);
-        $this->data->graph = RelationService::listFrameRelationsForGraph($nodes, $idRelationType);
+        data('graph', RelationService::listFrameRelationsForGraph($nodes, $idRelationType));
         return $this->render('frameGraph');
     }
 
@@ -67,16 +69,17 @@ class FrameController extends Controller
     {
         $nodes = session("graphNodes") ?? [];
         $idRelationType = session('idRelationType');
-        $this->data->graph = RelationService::listFrameRelationsForGraph($nodes, $idRelationType);
+        $graph = RelationService::listFrameRelationsForGraph($nodes, $idRelationType);
         $feGraph = RelationService::listFrameFERelationsForGraph($idEntityRelation);
         foreach($feGraph['nodes'] as $idNode => $node) {
-            $this->data->graph['nodes'][$idNode] = $node;
+            $graph['nodes'][$idNode] = $node;
         }
         foreach($feGraph['links'] as $idSource => $links) {
             foreach($links as $idTarget => $link) {
-                $this->data->graph['links'][$idSource][$idTarget] = $link;
+                $graph['links'][$idSource][$idTarget] = $link;
             }
         }
+        data('graph', $graph);
         return $this->render('frameGraph');
     }
 

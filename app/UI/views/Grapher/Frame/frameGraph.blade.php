@@ -2,8 +2,8 @@
     $(function () {
 
         var grapher = new Grapher({
-            nodes: {{ Js::from($data->graph['nodes']) }},
-            links: {{ Js::from($data->graph['links']) }},
+            nodes: {{ Js::from($graph['nodes']) }},
+            links: {{ Js::from($graph['links']) }},
             buildGraph: function () {
                 var elements = [];
                 var links = [];
