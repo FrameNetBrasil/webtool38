@@ -14,6 +14,9 @@
                         <div class="col-4">
                             <x-text-field id="endFrame" label="EndFrame" value=""></x-text-field>
                         </div>
+                        <div class="col-4">
+                            <wt-test id="idLUTest" label="LUTest" value="" hx-get-button="/"></wt-test>
+                        </div>
                     </div>
                     <div class="grid">
                         <div class="col-4">
@@ -29,7 +32,9 @@
                     </div>
                 </div>
                 <div class="form-buttons">
-                    <x-submit label="Save" hx-post="/frame"></x-submit>
+                    <x-button label="Save" @click="updateObject({
+                        idLU: $('#idLUTest').attr('value')
+                    })"></x-button>
                 </div>
             </form>
         </div>

@@ -125,6 +125,9 @@ document.addEventListener('alpine:init', () => {
             }
             annotation.objects.drawFrameBoxes(this.currentFrame)
         },
+        updateObject(data) {
+            console.log(data);
+        }
     })
 
     Alpine.effect(() => {

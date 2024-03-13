@@ -42,6 +42,7 @@
 -->
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
+    <script type="text/javascript" src="/scripts/maestro/components.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
     <script type="text/javascript" src="/scripts/video-js-8.11.5/video.min.js"></script>

@@ -2,7 +2,8 @@
     <label for="{{$id}}">{{$label}}</label>
     <input {{$attributes}} id="{{$id}}" name="{{$id}}">
 </div>
-@push('onload')
+<script>
+$(function () {
     $('#{{$id}}').combobox({
         valueField: 'idLU',
         textField: 'name',
@@ -18,4 +19,5 @@
         @endif
         url: "/lu/listForSelect",
     });
-@endpush
+});
+</script>
