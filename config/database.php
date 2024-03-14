@@ -44,8 +44,8 @@ return [
         ],
 
         'webtool' => [
-            'driver' => 'mysql',
-            'platform' => 'pdo_mysql',
+            'driver' => 'mariadb',
+            //'platform' => 'pdo_mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'x'),
             'port' => env('DB_PORT', ''),

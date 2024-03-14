@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AuthUserService;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
-use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\View;
-use Mauricius\LaravelHtmx\Http\HtmxRequest;
-use Mauricius\LaravelHtmx\Http\HtmxResponse;
-use Mauricius\LaravelHtmx\Http\HtmxResponseClientRedirect;
 use Orkester\Manager;
 
 class Controller extends BaseController
@@ -24,11 +18,11 @@ class Controller extends BaseController
     protected string $hx_trigger;
 
     public function __construct(
-        protected readonly HtmxRequest $request
+        protected readonly Request $request
     )
     {
         $this->data = Manager::getData();
-        $this->data->currentUrl = $request->getCurrentUrl() ?? '/' . $request->path();
+        //$this->data->currentUrl = $request->getCurrentUrl() ?? '/' . $request->path();
         $this->notify = '';
         $this->hx_trigger = '';
     }
@@ -70,7 +64,11 @@ class Controller extends BaseController
 
     public function clientRedirect(string $url)
     {
-        return new HtmxResponseClientRedirect($url);
+        $response = response();
+        return   response('')
+            ->withHeaders([
+                'HX-Redirect' => $url
+            ]);
     }
 
     public function notify($type, $message): string
