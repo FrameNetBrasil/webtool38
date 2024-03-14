@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Maestro\Manager;
+use Orkester\Manager;
 use Monolog\Logger;
 use Orkester\GraphQL\GraphQLConfiguration;
 use Orkester\Persistence\DatabaseConfiguration;

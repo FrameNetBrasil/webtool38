@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\DocumentMMModel;
 use App\Models\ObjectSentenceMMModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class DocumentMM extends Repository
 {

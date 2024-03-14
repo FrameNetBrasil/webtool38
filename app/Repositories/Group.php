@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\GroupModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Group extends Repository
 {

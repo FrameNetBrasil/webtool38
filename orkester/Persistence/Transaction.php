@@ -1,6 +1,6 @@
 <?php
 
-namespace Maestro\Persistence;
+namespace Orkester\Persistence;
 
 use Orkester\Persistence\PersistenceManager;
 

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\DynamicSentenceMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class DynamicSentenceMM extends Repository
 {

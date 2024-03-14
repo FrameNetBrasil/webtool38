@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\LabelModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Label extends Repository
 {
@@ -35,7 +35,7 @@ class Label extends Repository
         $idInstantiationType = $ti->getIdInstantiationTypeByEntry($entry);
         parent::setIdInstantiationType($idInstantiationType);
     }
-    
+
     public function setIdLabelTypeFromEntry($entry)
     {
         $cmd = <<<HERE
@@ -56,7 +56,7 @@ class Label extends Repository
         FROM ConstructionElement
         WHERE (ConstructionElement.entry like '{
     $entry}%')
-            
+
 HERE;
         $idLabelType = $this->getDb()->getQueryCommand($cmd)->getResult()[0][0];
         parent::setIdLabelType($idLabelType);

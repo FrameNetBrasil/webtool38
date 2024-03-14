@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\GenreModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Genre extends Repository {
     public ?int $idGenre;
@@ -19,7 +19,7 @@ class Genre extends Repository {
         debug("allo3");
     }
 
-    
+
     public function getDescription(){
         return $this->getEntry();
     }
@@ -45,7 +45,7 @@ class Genre extends Repository {
         Base::entryLanguage($criteria);
         return $criteria;
     }
-    
+
     public function save($data)
     {
         $this->setData($data);
@@ -69,5 +69,5 @@ class Genre extends Repository {
         }
     }
 
-    
+
 }

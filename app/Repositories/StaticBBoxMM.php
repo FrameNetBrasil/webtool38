@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\StaticBBoxMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class StaticBBoxMM extends Repository
 {

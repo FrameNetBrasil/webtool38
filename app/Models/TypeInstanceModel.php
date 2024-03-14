@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class TypeInstanceModel extends Model
 {
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('typeinstance');
         self::attribute('idTypeInstance', key: Key::PRIMARY);
         self::attribute('entry');

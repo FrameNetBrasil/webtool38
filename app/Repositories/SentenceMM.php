@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\SentenceMMModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class SentenceMM extends Repository
 {
@@ -68,7 +68,7 @@ class SentenceMM extends Repository
     public function getSentenceObjects()
     {
         $criteria = $this->getCriteria();
-        $criteria->select("objectsentencemm.idObjectSentenceMM, 
+        $criteria->select("objectsentencemm.idObjectSentenceMM,
         objectsentencemm.name, objectsentencemm.startChar as startWord, objectsentencemm.endChar as endWord");
         $criteria->where("objectsentencemm.idSentenceMM = {$this->getId()}");
         $criteria->orderBy('objectsentencemm.startChar');
@@ -81,7 +81,7 @@ class SentenceMM extends Repository
         $idLanguage = \Manager::getSession()->idLanguage;
         $viewFrameElement = new ViewFrameElement();
         $criteria = $this->getCriteria();
-        $criteria->select("objectsentencemm.idObjectSentenceMM,objectsentencemm.objectmm.idObjectMM, objectsentencemm.objectmm.name,  
+        $criteria->select("objectsentencemm.idObjectSentenceMM,objectsentencemm.objectmm.idObjectMM, objectsentencemm.objectmm.name,
         objectsentencemm.objectmm.status, objectsentencemm.objectmm.origin, objectsentencemm.objectmm.idFlickr30k,
         objectsentencemm.objectmm.idFrameElement, '' as idFrame, '' as frame, '' as idFE, '' as fe, '' as color");
         $criteria->where("objectsentencemm.idSentenceMM = {$this->getId()}");

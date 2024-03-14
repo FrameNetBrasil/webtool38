@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Core\App;
 use App\Services\AppService;
 use Orkester\Persistence\Criteria\Criteria;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;

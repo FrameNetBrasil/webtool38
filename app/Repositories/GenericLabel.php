@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\GenericLabelModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class GenericLabel extends Repository
 {

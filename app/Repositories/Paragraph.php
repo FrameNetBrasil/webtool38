@@ -1,20 +1,20 @@
 <?php
 /**
- * 
+ *
  *
  * @category   Maestro
  * @package    UFJF
  *  @subpackage fnbr
  * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
  * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
+ * @version
+ * @since
  */
 
 namespace App\Repositories;
 
 use App\Models\ParagraphModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Paragraph extends Repository {
 

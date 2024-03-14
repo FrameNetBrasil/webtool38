@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ViewAnnotationSetModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ViewAnnotationSet extends Repository
 {

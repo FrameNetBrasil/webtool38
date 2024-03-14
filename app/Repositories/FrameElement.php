@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\FrameElementModel;
 use App\Models\RelationModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class FrameElement extends Repository
 {

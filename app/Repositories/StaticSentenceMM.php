@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\StaticSentenceMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class StaticSentenceMM extends Repository
 {
@@ -102,7 +102,7 @@ HERE;
 
     public function getSentenceObjects() {
         $criteria = $this->getCriteria();
-        $criteria->select("objectsentencemm.idObjectSentenceMM, 
+        $criteria->select("objectsentencemm.idObjectSentenceMM,
         objectsentencemm.name, objectsentencemm.startChar as startWord, objectsentencemm.endChar as endWord");
         $criteria->where("objectsentencemm.idSentenceMM = {$this->getId()}");
         $criteria->orderBy('objectsentencemm.startChar');
@@ -114,7 +114,7 @@ HERE;
         $idLanguage = \Manager::getSession()->idLanguage;
         $viewFrameElement = new ViewFrameElement();
         $criteria = $this->getCriteria();
-        $criteria->select("objectsentencemm.idObjectSentenceMM,objectsentencemm.objectmm.idObjectMM, objectsentencemm.objectmm.name,  
+        $criteria->select("objectsentencemm.idObjectSentenceMM,objectsentencemm.objectmm.idObjectMM, objectsentencemm.objectmm.name,
         objectsentencemm.objectmm.status, objectsentencemm.objectmm.origin, objectsentencemm.objectmm.idFlickr30k,
         objectsentencemm.objectmm.idFrameElement, '' as idFrame, '' as frame, '' as idFE, '' as fe, '' as color");
         $criteria->where("objectsentencemm.idSentenceMM = {$this->getId()}");
@@ -156,7 +156,7 @@ HERE;
         $viewFrameElement = new ViewFrameElement();
         $lu = new LU();
         $criteria = $this->getCriteria();
-        $criteria->select("objectsentencemm.idObjectSentenceMM, objectsentencemm.idObjectMM, objectsentencemm.name,  
+        $criteria->select("objectsentencemm.idObjectSentenceMM, objectsentencemm.idObjectMM, objectsentencemm.name,
         objectsentencemm.objectmm.status, objectsentencemm.objectmm.origin, objectsentencemm.objectmm.idFlickr30k,
         objectsentencemm.idFrameElement, '' as idFrame, '' as frame, '' as idFE, '' as fe, '' as color,objectsentencemm.idLU, '' as lu");
         $criteria->where("objectsentencemm.idSentenceMM = {$this->getId()}");

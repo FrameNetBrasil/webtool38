@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class SentenceMMModel extends Model
@@ -12,7 +12,7 @@ class SentenceMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('sentencemm');
         self::attribute('idSentenceMM', key: Key::PRIMARY);
         self::attribute('startTimestamp');

@@ -4,13 +4,13 @@ namespace App\Repositories;
 
 use App\Models\ViewFrameModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ViewFrame extends Repository
 {
-    public function __construct(int $id = null) {
-        parent::__construct(ViewFrameModel::class, $id);
-    }
+//    public function __construct(int $id = null) {
+//        parent::__construct(ViewFrameModel::class, $id);
+//    }
 
     public function listByFilter($filter)
     {
@@ -82,7 +82,7 @@ class ViewFrame extends Repository
 //        if ($listBy == 'domain') {
 //            $criteria->where('toRelations.relationType', '=', "'rel_framal_domain'");
 //        }
-        debug($criteria->asQuery()->getResult());
+        debug($criteria->getResult());
         return $criteria;
     }
 

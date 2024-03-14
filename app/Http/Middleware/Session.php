@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Services\AppService;
 use Closure;
 use Illuminate\Http\Request;
-use Maestro\Security\MAuth;
+use Orkester\Security\MAuth;
 use Orkester\Manager;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Data\CreateRelationTypeData;
 use App\Models\RelationTypeModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class RelationType extends Repository
 {

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class ConstraintTypeModel extends Model

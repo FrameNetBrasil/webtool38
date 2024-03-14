@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\StaticObjectSentenceMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class StaticObjectSentenceMM extends Repository
 {

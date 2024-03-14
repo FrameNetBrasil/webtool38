@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\LanguageModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Language extends Repository {
 

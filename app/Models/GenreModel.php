@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class GenreModel extends Model
 {
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('genre');
         self::attribute('idGenre', key: Key::PRIMARY);
         self::attribute('entry');

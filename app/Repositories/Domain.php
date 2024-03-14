@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\DomainModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Domain extends Repository
 {

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\LexemeEntryModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class LexemeEntry extends Repository
 {

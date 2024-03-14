@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 use App\Models\TypeModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Type extends Repository
 {

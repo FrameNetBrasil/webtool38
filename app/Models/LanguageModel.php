@@ -3,7 +3,7 @@
 namespace App\Models;
 use App\Services\AppService;
 use Carbon\Traits\ToStringFormat;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 use Orkester\Persistence\Enum\Key;
 
@@ -36,8 +36,8 @@ class LanguageModel extends Model
                 $languages[] = $value;
             }
         }
-        
-        unset($languages[0]);        
+
+        unset($languages[0]);
         $languages = array_values($languages);
 
         return $languages;

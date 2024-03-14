@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Data\CreateDocumentData;
 use App\Models\DocumentModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Document extends Repository
 {

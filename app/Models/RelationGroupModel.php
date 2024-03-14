@@ -5,7 +5,7 @@ namespace App\Models;
 use App\App;
 use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class RelationGroupModel extends Model

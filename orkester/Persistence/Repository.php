@@ -1,14 +1,9 @@
 <?php
 
-namespace Maestro\Persistence;
+namespace Orkester\Persistence;
 
-use Illuminate\Support\Facades\DB;
-use Orkester\Manager;
+use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Enum\Association;
-use Orkester\Persistence\Enum\Key;
-use Orkester\Persistence\Enum\Type;
-use Orkester\Persistence\PersistenceManager;
-use ReflectionClass;
 
 class Repository
 {
@@ -17,7 +12,20 @@ class Repository
 
     public function __construct(string $modelClass, int $id = null)
     {
-        $this->model = new $modelClass();
+//        $this->model = new $modelClass();
+//        $this->initProperties();
+//        if (!is_null($id)) {
+//            $this->getById($id);
+//        }
+//    }
+
+//    public function __construct(int $id = null)
+//    {
+        //$this->model = new $modelClass();
+        $class = get_called_class();
+        $className = str_replace("App\\Repositories\\", "", $class);
+        debug("className", $className);
+
         $this->initProperties();
         if (!is_null($id)) {
             $this->getById($id);

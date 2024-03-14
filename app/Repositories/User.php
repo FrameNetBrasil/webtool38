@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\UserModel;
 use App\Services\AppService;
 use Carbon\Carbon;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 use Orkester\Persistence\PersistenceManager;
 
 class User extends Repository

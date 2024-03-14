@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class StatusMMModel extends Model
@@ -12,7 +12,7 @@ class StatusMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('statusmm');
         self::attribute('idStatusMM', key: Key::PRIMARY);
         self::attribute('file');

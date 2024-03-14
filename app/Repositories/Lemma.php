@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Data\CreateLemmaData;
 use App\Data\UpdateLemmaData;
 use App\Models\LemmaModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 //use Maestro\Types\MFile;
 

@@ -15,7 +15,7 @@ namespace App\Repositories;
 
 use App\Models\RelationGroupModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class RelationGroup extends Repository
 {

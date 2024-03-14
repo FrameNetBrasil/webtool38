@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Map\ClassMap;
 

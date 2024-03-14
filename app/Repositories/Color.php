@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ColorModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Color extends Repository
 {

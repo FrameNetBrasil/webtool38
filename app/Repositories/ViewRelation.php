@@ -17,7 +17,7 @@ use App\Models\RelationModel;
 use App\Models\SemanticTypeModel;
 use App\Models\ViewRelationModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 use Orkester\Persistence\Enum\Join;
 
 class ViewRelation extends Repository
@@ -114,7 +114,7 @@ class ViewRelation extends Repository
             $cmd = <<<HERE
 DELETE FROM entityrelation
 WHERE idEntityRelation = {$idEntityRelation}
-            
+
 HERE;
             $this->getDb()->executeCommand($cmd);
             $transaction->commit();

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ViewLUModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ViewLU extends Repository
 {

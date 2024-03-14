@@ -23,6 +23,8 @@ class FrameController extends Controller
     #[Get(path: '/frame')]
     public function browse()
     {
+        debug('aaaa');
+
         data('search', session('searchFrame') ?? SearchFrameData::from());
         return $this->render('browse');
     }

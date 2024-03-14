@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ImageMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ImageMM extends Repository
 {
@@ -24,7 +24,7 @@ class ImageMM extends Repository
         $idLanguage = \Manager::getSession()->idLanguage;
         $viewFrameElement = new ViewFrameElement();
         $criteria = $this->getCriteria();
-        $criteria->select("objectmm.idObjectMM, objectmm.name,  
+        $criteria->select("objectmm.idObjectMM, objectmm.name,
         objectmm.status, objectmm.origin, objectmm.idFlickr30k,
         objectmm.idFrameElement, '' as idFrame, '' as frame, '' as idFE, '' as fe, '' as color");
         $criteria->where("objectmm.idImageMM = {$this->getId()}");

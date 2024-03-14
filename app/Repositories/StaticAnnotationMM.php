@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\StaticAnnotationMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class StaticAnnotationMM extends Repository
 {

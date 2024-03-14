@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Services\AppService;
 use Carbon\Carbon;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;

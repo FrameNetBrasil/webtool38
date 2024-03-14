@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\AuthenticateException;
 use Illuminate\Http\Request;
-use Maestro\Security\MAuth;
+use Orkester\Security\MAuth;
 use Symfony\Component\HttpFoundation\Response;
 use Closure;
 

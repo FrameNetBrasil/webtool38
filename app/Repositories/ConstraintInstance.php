@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 
 use App\Models\ConstraintInstanceModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ConstraintInstance extends Repository
 {

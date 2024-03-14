@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\POSModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class POS extends Repository
 {

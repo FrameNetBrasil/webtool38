@@ -6,7 +6,7 @@ use App\Data\UpdateFrameClassificationData;
 use App\Models\FrameModel;
 use App\Services\AppService;
 use App\Services\RelationService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Frame extends Repository
 {

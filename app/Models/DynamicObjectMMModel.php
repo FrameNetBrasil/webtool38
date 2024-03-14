@@ -6,7 +6,7 @@ use App\Services\AppService;
 use Orkester\Persistence\Enum\Join;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class DynamicObjectMMModel extends Model
@@ -14,7 +14,7 @@ class DynamicObjectMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('dynamicobjectmm');
         self::attribute('idDynamicObjectMM', key: Key::PRIMARY);
         self::attribute('name');

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ObjectSentenceMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 use Orkester\Persistence\PersistenceManager;
 
 class ObjectSentenceMM extends Repository

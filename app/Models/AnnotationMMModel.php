@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class AnnotationMMModel extends Model
@@ -12,7 +12,7 @@ class AnnotationMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('annotationmm');
         self::attribute('idAnnotationMM', key: Key::PRIMARY);
         self::attribute('idObjectSentenceMM', key: Key::FOREIGN);

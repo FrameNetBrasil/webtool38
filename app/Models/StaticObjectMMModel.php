@@ -6,7 +6,7 @@ use App\Services\AppService;
 use Orkester\Persistence\Enum\Join;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class StaticObjectMMModel extends Model
@@ -14,7 +14,7 @@ class StaticObjectMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('staticobjectmm');
         self::attribute('idStaticObjectMM', key: Key::PRIMARY);
         self::attribute('scene');

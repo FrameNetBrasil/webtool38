@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 use Orkester\Persistence\Enum\Join;
 use Orkester\Persistence\Enum\Key;
@@ -12,7 +12,7 @@ class FormRelationModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('formrelation');
         self::attribute('idFormRelation', key: Key::PRIMARY);
         self::attribute('idRelationType', key: Key::FOREIGN);

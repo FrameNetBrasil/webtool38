@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\ConstraintTypeModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ConstraintType extends Repository
 {

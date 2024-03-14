@@ -1,6 +1,6 @@
 <?php
 
-namespace Maestro\Security;
+namespace Orkester\Security;
 
 //use Maestro\Persistence\Repository;
 

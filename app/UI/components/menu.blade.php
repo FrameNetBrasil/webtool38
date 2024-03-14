@@ -1,5 +1,5 @@
 @php
-    use Maestro\Security\MAuth;
+    use Orkester\Security\MAuth;
     use App\Data\MenuData;
 
     $actions = config('webtool.actions');
@@ -20,11 +20,11 @@
     @endphp
     @if (MAuth::checkAccess($menuData->group))
         <x-menu-button
-            id="menu{{$menuData->id}}"
-            label="{!! $menuData->label !!}"
-            icon="menu-{{$menuData->id}}"
-            menu="#menu{{$menuData->id}}Items"
-            class="{!! ($menuData->id != 'report') ? 'desktop-only' : '' !!}"
+                id="menu{{$menuData->id}}"
+                label="{!! $menuData->label !!}"
+                icon="menu-{{$menuData->id}}"
+                menu="#menu{{$menuData->id}}Items"
+                class="{!! ($menuData->id != 'report') ? 'desktop-only' : '' !!}"
         ></x-menu-button>
         <div id="menu{{$menuData->id}}Items">
             @foreach($menuData->items as $idItem => $item)
@@ -38,8 +38,8 @@
                     ]);
                 @endphp
                 <div
-                    id="menu{{$menuData->id}}Item{{$itemData->id}}"
-                    data-options="href:'{{$itemData->href}}'"
+                        id="menu{{$menuData->id}}Item{{$itemData->id}}"
+                        data-options="href:'{{$itemData->href}}'"
                 >
                     {{$itemData->label}}
                 </div>

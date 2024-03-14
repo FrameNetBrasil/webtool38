@@ -11,7 +11,7 @@ use App\Repositories\StaticObjectSentenceMM;
 use App\Repositories\StaticSentenceMM;
 use App\Repositories\UserAnnotation;
 use App\Repositories\Timeline;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 use Orkester\Manager;
 
 

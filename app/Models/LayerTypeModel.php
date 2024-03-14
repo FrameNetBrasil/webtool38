@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class LayerTypeModel extends Model
@@ -11,7 +11,7 @@ class LayerTypeModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('layertype');
         self::attribute('idLayerType', key: Key::PRIMARY);
         self::attribute('entry');

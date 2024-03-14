@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\AnnotationMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class AnnotationMM extends Repository
 {

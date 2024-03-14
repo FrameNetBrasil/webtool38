@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\TypeInstanceModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class TypeInstance extends Repository
 {

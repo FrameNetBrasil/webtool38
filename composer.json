@@ -26,10 +26,6 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/FrameNetBrasil/orkester.git"
-        },
-        {
-            "type": "git",
             "url": "https://github.com/elymatos/laravelcollective-annotations.git"
         }
     ],
@@ -38,7 +34,6 @@
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "auth0/auth0-php": "^8.0",
-        "elymatos/orkester": "dev-main",
         "guzzlehttp/guzzle": "^7.2",
         "rdx/laravelcollective-annotations": "dev-main",
         "spatie/laravel-data": "*",
@@ -52,7 +47,9 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^10.5",
-        "spatie/laravel-ignition": "^2.4"
+        "spatie/laravel-ignition": "^2.4",
+        "phpfastcache/phpfastcache": "^9",
+        "greenlion/php-sql-parser": "^4.5"
     },
     "autoload": {
         "files": [
@@ -60,7 +57,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Maestro\\": "maestro/",
+            "Orkester\\": "orkester/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

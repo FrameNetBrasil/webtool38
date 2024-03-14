@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class CorpusModel extends Model
 {
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('corpus');
         self::attribute('idCorpus', key: Key::PRIMARY);
         self::attribute('entry');

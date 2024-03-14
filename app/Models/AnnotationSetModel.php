@@ -6,14 +6,14 @@ use App\Services\AppService;
 use Orkester\Manager;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class AnnotationSetModel extends Model
 {
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('annotationset');
         self::attribute('idAnnotationSet', key: Key::PRIMARY);
         self::attribute('idSentence', key: Key::FOREIGN);
@@ -77,7 +77,7 @@ from
 where (annotationset.idSentence = {$idSentence})
 and (layertype.entry = 'lty_target')
 and (entry.idLanguage = {$idLanguage})
-order by label.startChar, annotationset.idAnnotationSet 
+order by label.startChar, annotationset.idAnnotationSet
 
 HERE;
         mdump($cmd);
@@ -107,7 +107,7 @@ select annotationset.idAnnotationSet AS idAnnotationSet,
        ifnull(color_ce.rgbBg, ifnull(color_fe.rgbBg, color_gl.rgbBg)) as rgbBg,
        typeinstance.idTypeInstance as idInstantiationType,
        entry_it.name as instantiationType
-from 
+from
     annotationset
         join layer on (annotationset.idAnnotationSet = layer.idAnnotationSet)
         join layertype on (layer.idLayerType = layertype.idLayerType)

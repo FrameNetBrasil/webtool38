@@ -15,7 +15,7 @@ namespace App\Repositories;
 
 use App\Models\ViewFrameElementModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ViewFrameElement extends Repository
 {

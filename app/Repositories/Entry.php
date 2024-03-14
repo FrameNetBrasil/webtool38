@@ -2,7 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\EntryModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Entry extends Repository {
 
@@ -17,7 +17,7 @@ class Entry extends Repository {
     public function __construct(int $id = null) {
         parent::__construct(EntryModel::class, $id);
     }
-    
+
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*, language.language')->orderBy('entry');
         if (isset($filter->idEntry)){
@@ -53,7 +53,7 @@ class Entry extends Repository {
         $criteria->where("entry = '{$entry}'");
         return $criteria;
     }
-    
+
     public function listForUpdate($filter){
         $criteria = $this->getCriteria()->select("idEntry, entry, name, concat(substr(description,1,50),'...') as shortDescription, language.language");
         if ($filter->entry){
@@ -62,17 +62,17 @@ class Entry extends Repository {
         $criteria->orderBy("language.language");
         return $criteria;
     }
-    
+
     public function getUndefinedLanguages($entry) {
         $criteria = $this->getCriteria()->select("idLanguage");
         $criteria->where("entry = '{$entry}'");
         $language = new Language();
         $languages = $language->getCriteria()->select("idLanguage, language")
                 ->where('idLanguage','not in', $criteria)
-                ->asQuery()->chunkResult('idLanguage', 'language');        
+                ->asQuery()->chunkResult('idLanguage', 'language');
         return $languages;
     }
-    
+
     public function newEntry($entry, $idEntity, $name = null){
         $languages = Base::languages();
         foreach($languages as $idLanguage=>$language) {
@@ -123,7 +123,7 @@ class Entry extends Repository {
             $criteria->update($newEntry);
         }
     }
-    
+
     public function deleteEntry($entry){
         $criteria = $this->getDeleteCriteria();
         $criteria->addColumnAttribute('entry');
@@ -185,8 +185,8 @@ class Entry extends Repository {
             $this->save();
             Timeline::addTimeline("entry",$this->getId(),"S");
         }
-    }    
-    
+    }
+
     public function addLanguage($entry, $idLanguage){
         $this->setPersistent(false);
         $this->setEntry($entry);
@@ -212,7 +212,7 @@ class Entry extends Repository {
         $this->save();
         Timeline::addTimeline("entry",$this->getId(),"S");
     }
-    
-    
+
+
 }
 

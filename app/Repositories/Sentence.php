@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SentenceModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Sentence extends Repository
 {

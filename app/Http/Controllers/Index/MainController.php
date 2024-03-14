@@ -14,7 +14,7 @@ use Auth0\SDK\Exception\StateException;
 use Collective\Annotations\Routing\Attributes\Attributes\Get;
 use Collective\Annotations\Routing\Attributes\Attributes\Middleware;
 use Collective\Annotations\Routing\Attributes\Attributes\Post;
-use Maestro\Security\MAuth;
+use Orkester\Security\MAuth;
 
 #[Middleware(name: 'web')]
 class MainController extends Controller

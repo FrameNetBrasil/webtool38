@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Repositories\Group;
 use App\Services\AppService;
-use Maestro\Manager;
-use Maestro\Security\MAuth;
+use Orkester\Manager;
+use Orkester\Security\MAuth;
 
 /**
  * Base class to host "criteria pieces" and methods shared by most of Models.

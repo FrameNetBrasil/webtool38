@@ -2,7 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\ObjectMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ObjectMM extends Repository {
 
@@ -157,6 +157,6 @@ class ObjectMM extends Repository {
         $criteria->where("idFlickr30k",'=', $idFlickr30k);
         $this->retrieveFromCriteria($criteria);
     }
-    
-    
+
+
 }

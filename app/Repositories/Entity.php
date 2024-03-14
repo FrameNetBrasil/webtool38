@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\EntityModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Entity extends Repository
 {
@@ -116,7 +116,7 @@ HERE;
         FROM Entity entity1
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -131,7 +131,7 @@ HERE;
 		   UNION select entry, idEntity, 'conceptstr' as type from Concept where idTypeInstance = 109
 		   UNION select entry, idEntity, 'conceptinf' as type from Concept where idTypeInstance = 110
 		) model on (entity2.idEntity = model.idEntity)
-            INNER JOIN Entry 
+            INNER JOIN Entry
                 ON (model.entry = entry.entry)
         WHERE (entity1.idEntity = {$this->getId()})
             AND (RelationType.entry in (
@@ -148,11 +148,11 @@ HERE;
 		        'rel_hassemtype',
 	            'rel_elementof',
                 'rel_subtypeof',
-                'rel_hasconcept'                       
+                'rel_hasconcept'
 		))
            AND (entry.idLanguage = {$idLanguage}  )
         ORDER BY RelationType.entry, entry.name
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,type');
         return $result;
@@ -166,7 +166,7 @@ HERE;
         FROM Entity entity2
             INNER JOIN EntityRelation
                 ON (entity2.idEntity = EntityRelation.idEntity2)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity1
                 ON (EntityRelation.idEntity1 = entity1.idEntity)
@@ -178,7 +178,7 @@ HERE;
 		   UNION select entry, idEntity, 'st' as type from SemanticType
 		   UNION select entry, idEntity, 'concept' as type from Concept
 		) model on (entity1.idEntity = model.idEntity)
-            INNER JOIN Entry 
+            INNER JOIN Entry
                 ON (model.entry = entry.entry)
         WHERE (entity2.idEntity = {$this->getId()})
             AND (RelationType.entry in (
@@ -197,7 +197,7 @@ HERE;
 		))
            AND (entry.idLanguage = {$idLanguage}  )
         ORDER BY RelationType.entry, entry.name
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,type');
         return $result;
@@ -211,7 +211,7 @@ HERE;
         FROM Entity entity2
             INNER JOIN EntityRelation
                 ON (entity2.idEntity = EntityRelation.idEntity2)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity1
                 ON (EntityRelation.idEntity1 = entity1.idEntity)
@@ -219,13 +219,13 @@ HERE;
 		   select entry, idEntity, 'fe' as type from FrameElement
 		   UNION select entry, idEntity, 'ce' as type from ConstructionElement
 		) model on (entity1.idEntity = model.idEntity)
-            INNER JOIN Entry 
+            INNER JOIN Entry
                 ON (model.entry = entry.entry)
         WHERE (entity2.idEntity = {$this->getId()})
             AND (RelationType.entry = 'rel_elementof')
             AND (entry.idLanguage = {$idLanguage}  )
         ORDER BY RelationType.entry, entry.name
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,type');
         return $result;
@@ -242,7 +242,7 @@ HERE;
         FROM EntityRelation er
             INNER JOIN Entity e1
                 ON (er.idEntity1 = e1.idEntity)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (er.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity e2
                 ON (er.idEntity2 = e2.idEntity)
@@ -264,7 +264,7 @@ HERE;
             AND (entry1.idLanguage = {$idLanguage}  )
             AND (entry2.idLanguage = {$idLanguage}  )
         ORDER BY er.idEntity1, er.idEntity2
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->getResult();
         return $result;
@@ -416,13 +416,13 @@ HERE;
         FROM Entity entity1
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
             INNER JOIN (
-                select lu.name, lu.idEntity, 'lu' as type, entry.name frame  
-                from LU 
+                select lu.name, lu.idEntity, 'lu' as type, entry.name frame
+                from LU
                     join Frame on (Lu.idFrame = Frame.idFrame)
                     join entry on (frame.entry = entry.entry)
                     where (entry.idLanguage = {$idLanguage})
@@ -431,7 +431,7 @@ HERE;
         WHERE (entity1.idEntity = {$this->getId()})
             AND (RelationType.entry in ({$relationType}))
         ORDER BY RelationType.entry, model.name
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,type');
         return $result;
@@ -446,13 +446,13 @@ HERE;
         FROM Entity entity1
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
             INNER JOIN (
-                select lu.name, lu.idEntity, 'lu' as type, entry.name frame  
-                from LU 
+                select lu.name, lu.idEntity, 'lu' as type, entry.name frame
+                from LU
                     join Frame on (Lu.idFrame = Frame.idFrame)
                     join entry on (frame.entry = entry.entry)
                     where (entry.idLanguage = {$idLanguage})
@@ -461,7 +461,7 @@ HERE;
         WHERE (entity2.idEntity = {$this->getId()})
             AND (RelationType.entry in ({$relationType}))
         ORDER BY RelationType.entry, model.name
-                
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,type');
         return $result;

@@ -5,14 +5,14 @@ namespace App\Models;
 use App\Services\AppService;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class SemanticTypeModel extends Model
 {
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('semantictype');
         self::attribute('idSemanticType', key: Key::PRIMARY);
         self::attribute('entry');

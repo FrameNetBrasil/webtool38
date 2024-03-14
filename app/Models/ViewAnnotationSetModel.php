@@ -4,14 +4,14 @@ namespace App\Models;
 use App\Models\ViewEntryLanguage;
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class ViewAnnotationSetModel extends Model {
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('view_annotationset');
         self::attribute('idAnnotationSet', key: Key::PRIMARY);
         self::attribute('idSentence', key: Key::FOREIGN);

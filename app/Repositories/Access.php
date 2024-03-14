@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\AccessModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Access extends Repository {
 

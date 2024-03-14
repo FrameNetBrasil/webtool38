@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\RelationModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class EntityRelation extends Repository
 {

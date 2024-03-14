@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\DynamicBBoxMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class DynamicBBoxMM extends Repository
 {

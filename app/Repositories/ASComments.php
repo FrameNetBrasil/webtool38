@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ASCommentsModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ASComments extends Repository
 {

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UserAnnotationModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class UserAnnotation extends Repository
 {

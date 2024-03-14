@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Services\AppService;
 use Orkester\Persistence\Enum\Key;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class WordFormModel extends Model

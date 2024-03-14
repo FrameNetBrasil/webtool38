@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\WordFormModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class WordForm extends Repository
 {

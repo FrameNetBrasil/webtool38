@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Orkester\Persistence\Enum\Key;
 use Orkester\Persistence\Enum\Type;
-use Maestro\Persistence\Model;
+use Orkester\Persistence\Model;
 use Orkester\Persistence\Map\ClassMap;
 
 class StaticSentenceMMModel extends Model
@@ -12,7 +12,7 @@ class StaticSentenceMMModel extends Model
 
     public static function map(ClassMap $classMap): void
     {
-        
+
         self::table('staticsentencemm');
         self::attribute('idStaticSentenceMM', key: Key::PRIMARY);
         self::attribute('idFlickr30k', type: Type::INTEGER);

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ObjectFrameMMModel;
 use App\Models\ObjectMMModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class ObjectFrameMM extends Repository
 {

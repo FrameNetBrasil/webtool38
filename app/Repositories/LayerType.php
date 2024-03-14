@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\LayerTypeModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class LayerType extends Repository
 {

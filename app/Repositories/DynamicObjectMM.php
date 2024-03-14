@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\DynamicObjectMMModel;
 use App\Services\AppService;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 use Orkester\Persistence\Enum\Join;
 
 class DynamicObjectMM extends Repository

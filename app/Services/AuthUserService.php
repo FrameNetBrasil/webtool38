@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\User;
-use Maestro\Security\MAuth;
-use Maestro\Security\MLogin;
+use Orkester\Security\MAuth;
+use Orkester\Security\MLogin;
 
 class AuthUserService
 {

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\LexemeModel;
-use Maestro\Persistence\Repository;
+use Orkester\Persistence\Repository;
 
 class Lexeme extends Repository {
 
