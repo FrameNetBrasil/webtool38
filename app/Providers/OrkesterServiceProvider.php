@@ -2,19 +2,12 @@
 
 namespace App\Providers;
 
-use DI\ContainerBuilder;
-use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Blade;
+use App\Repositories\Mapping;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Orkester\Manager;
-use Monolog\Logger;
-use Orkester\GraphQL\GraphQLConfiguration;
-use Orkester\Persistence\DatabaseConfiguration;
 use Orkester\Persistence\PersistenceManager;
-use PDO;
 
 class OrkesterServiceProvider extends ServiceProvider
 {
@@ -29,7 +22,8 @@ class OrkesterServiceProvider extends ServiceProvider
 
         PersistenceManager::init(
             $this->app->get('db'),
-            Log::channel(env('LOG_DB_CHANNEL'))
+            Log::channel(env('LOG_DB_CHANNEL')),
+            Mapping::class
         );
 
         DB::enableQueryLog();

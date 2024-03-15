@@ -10,8 +10,8 @@ class Repository
     protected Model $model;
     protected Transaction $transaction;
 
-    public function __construct(string $modelClass, int $id = null)
-    {
+//    public function __construct(string $modelClass, int $id = null)
+//    {
 //        $this->model = new $modelClass();
 //        $this->initProperties();
 //        if (!is_null($id)) {
@@ -19,13 +19,13 @@ class Repository
 //        }
 //    }
 
-//    public function __construct(int $id = null)
-//    {
+    public function __construct(int $id = null)
+    {
         //$this->model = new $modelClass();
         $class = get_called_class();
         $className = str_replace("App\\Repositories\\", "", $class);
         debug("className", $className);
-
+        $this->model = new Model($className);
         $this->initProperties();
         if (!is_null($id)) {
             $this->getById($id);
@@ -43,7 +43,7 @@ class Repository
 
     public function getCriteria(): Criteria
     {
-        return $this->model::getCriteria();
+        return $this->model->getCriteria();
     }
 
     public function beginTransaction()

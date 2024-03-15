@@ -4,35 +4,32 @@ namespace Orkester\Persistence;
 
 use Illuminate\Support\Arr;
 use Orkester\Persistence\Criteria\Criteria;
+use Orkester\Persistence\Enum\Join;
+use Orkester\Persistence\Enum\Key;
+use Orkester\Persistence\Enum\Type;
 use Orkester\Persistence\Map\AssociationMap;
 use Orkester\Persistence\Map\ClassMap;
 
-class Model
+abstract class Model_old
 {
-    protected string $className;
 //    public static abstract function map(ClassMap $classMap);
 
-//    public function __construct(PersistenceManager $pm = null)
-//    {
-//    }
-
-    public function __construct(string $className = '')
+    public function __construct(PersistenceManager $pm = null)
     {
-        $this->className = $className;
     }
 
-    public function getCriteria(string $databaseName = null): Criteria {
-        $classMap = PersistenceManager::getClassMap($this->className);
+    public static function getCriteria(string $databaseName = null): Criteria {
+        $classMap = PersistenceManager::getClassMap(static::class);
         $connection = PersistenceManager::getConnection($databaseName);
         $criteria = new Criteria($connection);
         return $criteria->setClassMap($classMap);
     }
-//    public function getCriteria(string $databaseName = null): Criteria
+//    public static function getCriteria(string $databaseName = null): Criteria
 //    {
-//        return PersistenceManager::getCriteria($databaseName, $this->className);
+//        return PersistenceManager::getCriteria($databaseName, static::class);
 //    }
 
-    public function list(object|array|null $filter = null, array $select = [], array|string $order = ''): array
+    public static function list(object|array|null $filter = null, array $select = [], array|string $order = ''): array
     {
         //$criteria = static::filter($filter);
         $criteria = static::getCriteria();
@@ -44,7 +41,7 @@ class Model
         return $criteria->get()->toArray();
     }
 
-    public function filter(array|null $filters, Criteria|null $criteria = null): Criteria
+    public static function filter(array|null $filters, Criteria|null $criteria = null): Criteria
     {
         $criteria = $criteria ?? static::getCriteria();
         if (!empty($filters)) {
@@ -56,7 +53,7 @@ class Model
         return $criteria;
     }
 
-    public function one($conditions, array $select = []): array|null
+    public static function one($conditions, array $select = []): array|null
     {
         $criteria = static::getCriteria()->range(1, 1);
         if (!empty($select)) {
@@ -66,23 +63,23 @@ class Model
         return empty($result) ? null : $result[0];
     }
 
-    public function find(int $id, array $columns = null): ?array
+    public static function find(int $id, array $columns = null): ?array
     {
         $columns ??= static::getClassMap()->getAttributesNames();
         return static::getCriteria()->find($id, $columns);
     }
 
-    public function getClassMap(): ClassMap
+    public static function getClassMap(): ClassMap
     {
-        return PersistenceManager::getClassMap($this->className);
+        return PersistenceManager::getClassMap(static::class);
     }
 
-    public function getKeyAttributeName(): string
+    public static function getKeyAttributeName(): string
     {
         return static::getClassMap()->keyAttributeName;
     }
 
-    public function getAssociation(string $associationChain, int $id): array
+    public static function getAssociation(string $associationChain, int $id): array
     {
         return static::getCriteria()
             ->select($associationChain . '.*')
@@ -91,7 +88,7 @@ class Model
             ->toArray();
     }
 
-    public function deleteAssociation(string $associationChain, int $id)
+    public static function deleteAssociation(string $associationChain, int $id)
     {
         return static::getCriteria()
             ->select($associationChain . '.*')
@@ -99,7 +96,7 @@ class Model
             ->delete();
     }
 
-    public function save(array $data): ?int
+    public static function save(array $data): ?int
     {
         $fields = static::prepareWrite($data);
         $key = static::getKeyAttributeName();
@@ -112,14 +109,14 @@ class Model
         }
     }
 
-    protected function prepareWrite(array $data): array
+    protected static function prepareWrite(array $data): array
     {
-        $classMap = PersistenceManager::getClassMap($this->className);
+        $classMap = PersistenceManager::getClassMap(static::class);
         $validAttributes = array_keys($classMap->insertAttributeMaps);
         return Arr::only($data, $validAttributes);
     }
 
-    public function insert(array $data): int|string
+    public static function insert(array $data): int|string
     {
         $row = static::prepareWrite($data);
         $criteria = static::getCriteria();
@@ -127,7 +124,7 @@ class Model
         return $criteria->getConnection()->getPdo()->lastInsertId() ?? 0;
     }
 
-    public function update(array $data): bool
+    public static function update(array $data): bool
     {
         $row = static::prepareWrite($data);
         return static::getCriteria()
@@ -135,23 +132,23 @@ class Model
             ->update($row);
     }
 
-    public function upsert(array $data, array $uniqueBy, $updateColumns = null): ?int
+    public static function upsert(array $data, array $uniqueBy, $updateColumns = null): ?int
     {
         $row = static::prepareWrite($data);
         $criteria = static::getCriteria();
         return $criteria->upsert($row, $uniqueBy, $updateColumns);
     }
 
-    public function delete($id)
+    public static function delete($id)
     {
         return static::getCriteria()
             ->where(static::getKeyAttributeName(), '=', $id)
             ->delete();
     }
 
-    public function insertUsingCriteria(array $fields, Criteria $usingCriteria): ?int
+    public static function insertUsingCriteria(array $fields, Criteria $usingCriteria): ?int
     {
-        $classMap = PersistenceManager::getClassMap($this->className);
+        $classMap = PersistenceManager::getClassMap(static::class);
         $usingCriteria->applyBeforeQueryCallbacks();
         $criteria = static::getCriteria();
         $criteria->insertUsing($fields, $usingCriteria);
@@ -159,14 +156,14 @@ class Model
         return $lastInsertId;
     }
 
-    public function getName(): string
+    public static function getName(): string
     {
-        $parts = explode('\\', $this->className);
+        $parts = explode('\\', static::class);
         $className = $parts[count($parts) - 1];
         return substr($className, 0, strlen($className) - 5);
     }
 
-    public function criteriaByFilter(object|null $params, array $select = []): Criteria
+    public static function criteriaByFilter(object|null $params, array $select = []): Criteria
     {
         $criteria = static::getCriteria();
         if (!empty($select)) {
@@ -189,7 +186,7 @@ class Model
         return static::filter($params->filter, $criteria);
     }
 
-    public function exists(array $conditions): bool
+    public static function exists(array $conditions): bool
     {
         return !is_null(static::one($conditions));
     }
@@ -207,7 +204,7 @@ class Model
         return $association;
     }
 
-    public function appendManyToMany(string $associationName, mixed $id, array $associatedIds): int
+    public static function appendManyToMany(string $associationName, mixed $id, array $associatedIds): int
     {
         $association = static::getManyToManyAssociation($associationName);
         $columns = array_map(fn($aId) => [
@@ -222,7 +219,7 @@ class Model
             ->upsert($columns, [$association->toKey, $association->fromKey]);
     }
 
-    public function deleteManyToMany(string $associationName, mixed $id, ?array $associatedIds): void
+    public static function deleteManyToMany(string $associationName, mixed $id, ?array $associatedIds): void
     {
         $association = static::getManyToManyAssociation($associationName);
         $criteria = static::getCriteria();
@@ -235,7 +232,7 @@ class Model
         $criteria->delete();
     }
 
-    public function replaceManyToMany(string $associationName, mixed $id, array $associatedIds): void
+    public static function replaceManyToMany(string $associationName, mixed $id, array $associatedIds): void
     {
         PersistenceManager::beginTransaction();
         self::deleteManyToMany($associationName, $id, null);
@@ -243,32 +240,30 @@ class Model
         PersistenceManager::commit();
     }
 
-    public function getAssociationMap(string $name): ?AssociationMap
+    public static function getAssociationMap(string $name): ?AssociationMap
     {
         return static::getClassMap()->getAssociationMap($name);
     }
 
-    /*
-    public function table(string $name)
+    public static function table(string $name)
     {
         static::getClassMap()->table($name);
     }
 
-    public function attribute(
-        string $name,
-        string $field = '',
-        Type   $type = Type::STRING,
-        Key    $key = Key::NONE,
-        string $reference = '',
-        string $alias = '',
-        string $default = null,
-        bool   $nullable = true,
-        bool   $virtual = false)
+    public static function attribute(string              $name,
+                                     string              $field = '',
+                                     Type                $type = Type::STRING,
+                                     Key                 $key = Key::NONE,
+                                     string              $reference = '',
+                                     string              $alias = '',
+                                     string              $default = null,
+                                     bool                $nullable = true,
+                                     bool                $virtual = false)
     {
         static::getClassMap()->attribute($name, $field, $type, $key, $reference, $alias, $default, $nullable, $virtual);
     }
 
-    public function associationMany(string $name,
+    public static function associationMany(string $name,
                                            string $model,
                                            string $keys = '',
                                            Join   $join = Join::INNER,
@@ -278,7 +273,7 @@ class Model
         static::getClassMap()->associationMany($name, $model, $keys, $join, $associativeTable, $order);
     }
 
-    public function associationOne(
+    public static function associationOne(
         string $name,
         string $model = '',
         string $key = '',
@@ -288,5 +283,4 @@ class Model
     ) {
         static::getClassMap()->associationOne($name, $model, $key, $base, $conditions, $join);
     }
-    */
 }

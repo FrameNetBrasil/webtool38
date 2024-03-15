@@ -7,6 +7,7 @@ use App\Exceptions\UserNewException;
 use App\Exceptions\UserPendingException;
 use App\Http\Controllers\Controller;
 use App\Repositories\Base;
+use App\Repositories\ViewFrame;
 use App\Services\AppService;
 use App\Services\AuthUserService;
 use Auth0\SDK\Auth0;
@@ -23,6 +24,10 @@ class MainController extends Controller
     public function main()
     {
         if (MAuth::isLogged()) {
+
+            $f = new ViewFrame();
+            $r = $f->listByFilter(null);
+
             return $this->render('formMain');
         } else {
             if (config('webtool.login.handler') == 'auth0') {

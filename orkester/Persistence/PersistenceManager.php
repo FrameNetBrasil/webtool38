@@ -26,10 +26,11 @@ class PersistenceManager
     protected static bool $initialized = false;
     protected static LoggerInterface $logger;
     protected static string $defaultDb;
+    protected static string $mappingClassName;
 
-    public function __construct(DatabaseManager $manager, LoggerInterface $logger)
+    public function __construct(DatabaseManager $manager, LoggerInterface $logger, string $mappingClassName)
     {
-        static::init($manager, $logger);
+        static::init($manager, $logger,$mappingClassName);
     }
 
     public static function buildDatabaseManager(DatabaseConfiguration $configuration): DatabaseManager
@@ -55,13 +56,14 @@ class PersistenceManager
         return $manager;
     }
 
-    public static function init(DatabaseManager $manager, LoggerInterface $logger): void
+    public static function init(DatabaseManager $manager, LoggerInterface $logger, string $mappingClassName): void
     {
         if (self::$initialized) return;
         static::$initialized = true;
         static::$logger = $logger;
         static::$capsule = $manager;
         static::$cachedClassMaps = new Psr16Adapter('apcu');
+        static::$mappingClassName = $mappingClassName;
     }
 
     public static function getCriteria(string $databaseName = null, string|Model $model = null): Criteria
@@ -103,7 +105,7 @@ class PersistenceManager
                 self::$classMaps[$className] = self::$cachedClassMaps->get($key);
             } else {
                 self::$classMaps[$className] = new ClassMap($className);
-                $className::map(self::$classMaps[$className]);
+                self::$mappingClassName::map($className, self::$classMaps[$className]);
                 self::$cachedClassMaps->set($key, self::$classMaps[$className], 300);
             }
         }

@@ -34,7 +34,9 @@ class ViewFrame extends Repository
 //            $criteria->setAssociationType('toRelations.toSemanticType.entries', 'left');
 //            $criteria->where("(toRelations.toSemanticType.entries.idLanguage = {$filter->idLanguage}) or (toRelations.toSemanticType.entries.idLanguage is null)");
 //        }
-        Base::entryLanguage($criteria);
+        $idLanguage = AppService::getCurrentIdLanguage();
+        $criteria->where("idLanguage", "=", $idLanguage);
+
         if (isset($filter->idFrame)) {
             $criteria->where("idFrame = {$filter->idFrame}");
         }
@@ -82,7 +84,7 @@ class ViewFrame extends Repository
 //        if ($listBy == 'domain') {
 //            $criteria->where('toRelations.relationType', '=', "'rel_framal_domain'");
 //        }
-        debug($criteria->getResult());
+        debug($criteria->getResult()[0]);
         return $criteria;
     }
 
