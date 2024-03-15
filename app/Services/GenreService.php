@@ -9,9 +9,8 @@ class GenreService
 {
     public static function listGenres()
     {
-        debug("allo");
         $genre = new Genre();
-        debug($genre->listAll()->getResult());
-        return $genre->listAll()->getResult();
+        debug($genre->listAllGenres()->getResult());
+        return $genre->listAllGenres()->getResult();
     }
 }
