@@ -18,9 +18,8 @@ class GenreController extends Controller
     #[Get(path: '/genre')]
     public function browse()
     {
-        $this->data->search ??= (object)[];
-        $this->data->search->_token = csrf_token();
-        return $this->render('browse');
+        data('search', session('searchG'));
+        return $this->render('Admin.Genre.browse');
     }
 
     #[Post(path: '/genre/grid')]

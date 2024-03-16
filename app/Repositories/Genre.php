@@ -12,21 +12,19 @@ class Genre extends Repository {
     public ?int $idGenreType;
     public ?int $idEntity;
 
-     public function __construct(int $id = null)
+    public function __construct(int $id = null)
     {
-        debug("allo2");
         parent::__construct(GenreModel::class, $id);
-        debug("allo3");
     }
 
 
     public function getDescription(){
-        return $this->getEntry();
+        return $this->entry;
     }
 
-    public function listAll()
+    public function listAllGenres()
     {
-        $criteria = $this->getCriteria()->select('idGenre, entries.name as name')->orderBy('entries.name');
+        $criteria = $this->getCriteria()->select('idGenre, entries.name')->orderBy('entries.name');
         Base::entryLanguage($criteria);
         return $criteria;
     }
@@ -45,7 +43,7 @@ class Genre extends Repository {
         Base::entryLanguage($criteria);
         return $criteria;
     }
-
+/*
     public function save($data)
     {
         $this->setData($data);
@@ -68,6 +66,6 @@ class Genre extends Repository {
             throw new \Exception($e->getMessage());
         }
     }
-
+*/
 
 }
