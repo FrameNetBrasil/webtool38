@@ -22,9 +22,12 @@ class Base
 
     static public function languagesDescription()
     {
-        $language = new Language();
-        $languages = $language->getCriteria()->select("idLanguage, language, description")->asQuery()->treeResult('idLanguage', 'language,description');
-        return $languages;
+        //$language = new Language();
+        //$languages = $language->getCriteria()->select("idLanguage, language, description")->asQuery()->treeResult('idLanguage', 'language,description');
+        //return $languages;
+        return Language::getCriteria()
+            ->select(['idLanguage','language','description'])
+            ->treeResult('idLanguage');
     }
 
     static public function languagesAsJson()

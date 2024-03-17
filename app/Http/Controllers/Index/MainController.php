@@ -25,8 +25,7 @@ class MainController extends Controller
     {
         if (MAuth::isLogged()) {
 
-            $f = new ViewFrame();
-            $r = $f->listByFilter(null);
+            $r = ViewFrame::listByFilter(null);
 
             return $this->render('formMain');
         } else {

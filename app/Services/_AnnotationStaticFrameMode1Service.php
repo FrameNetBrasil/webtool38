@@ -11,10 +11,11 @@ use App\Repositories\StaticObjectSentenceMM;
 use App\Repositories\StaticSentenceMM;
 use App\Repositories\UserAnnotation;
 use App\Repositories\Timeline;
-use Orkester\Persistence\Repository;
+use Orkester\Persistence\Model;
 use Orkester\Manager;
 
-class AnnotationStaticFrameMode2Service
+
+class AnnotationStaticFrameMode1Service
 {
     public static function listForTree()
     {
@@ -27,7 +28,7 @@ class AnnotationStaticFrameMode2Service
                 $document = new Document();
                 $filter = $data;
                 $filter->idCorpus = $idCorpus;
-                $filter->flickr30k = 4;
+                $filter->flickr30k = 3;
                 $documents = $document->listByFilter($filter)->asQuery()->getResult();
                 foreach ($documents as $document) {
                     $node = [];
@@ -76,7 +77,7 @@ class AnnotationStaticFrameMode2Service
         } else {
             $filter = $data;
             $corpus = new Corpus();
-            $filter->flickr30k = 4;
+            $filter->flickr30k = 3;
             $corpora = $corpus->listByFilter($filter)->asQuery()->getResult();
             foreach ($corpora as $row) {
                 $node = [];
@@ -104,7 +105,7 @@ from StaticSentenceMM sm
 where (idStaticSentenceMM < {$idStaticSentenceMM})
 and (idDocument = (select idDocument from StaticSentenceMM where idStaticSentenceMM = {$idStaticSentenceMM}))
         ";
-        return Repository::select($cmd)[0]['i'];
+        return Model::select($cmd)[0]['i'];
     }
 
     public static function getNext(int $idStaticSentenceMM)
@@ -115,7 +116,7 @@ from StaticSentenceMM sm
 where (idStaticSentenceMM > {$idStaticSentenceMM})
 and (idDocument = (select idDocument from StaticSentenceMM where idStaticSentenceMM = {$idStaticSentenceMM}))
         ";
-        return Repository::select($cmd)[0]['i'];
+        return Model::select($cmd)[0]['i'];
     }
 
     public static function getObjectsForAnnotationImage(int $idStaticSentenceMM): array
@@ -124,6 +125,7 @@ and (idDocument = (select idDocument from StaticSentenceMM where idStaticSentenc
         $staticObjectSentenceMM = new StaticObjectSentenceMM();
         $criteria = $staticObjectSentenceMM->getCriteria()
             ->where("idStaticSentenceMM", "=", $idStaticSentenceMM)
+            ->where("idStaticObjectMM","<>", -1)
             ->select([
                 "idStaticObjectSentenceMM",
                 "idStaticObjectMM",

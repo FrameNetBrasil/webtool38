@@ -11,25 +11,25 @@ use Orkester\Persistence\PersistenceManager;
 class User extends Repository
 {
 
-    public ?int $idUser;
-    public ?string $login;
-    public ?string $passMD5;
-    public ?string $config;
-    public ?string $name;
-    public ?string $email;
-    public ?string $status;
-    public ?int $active;
-    public ?string $auth0IdUser;
-    public ?string $auth0CreatedAt;
-    public ?string $lastLogin;
-    public ?int $idLanguage;
-    public ?array $groups;
-    public ?array $memberOf;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(UserModel::class, $id);
-    }
+//    public ?int $idUser;
+//    public ?string $login;
+//    public ?string $passMD5;
+//    public ?string $config;
+//    public ?string $name;
+//    public ?string $email;
+//    public ?string $status;
+//    public ?int $active;
+//    public ?string $auth0IdUser;
+//    public ?string $auth0CreatedAt;
+//    public ?string $lastLogin;
+//    public ?int $idLanguage;
+//    public ?array $groups;
+//    public ?array $memberOf;
+//
+//    public function __construct(int $id = null)
+//    {
+//        parent::__construct(UserModel::class, $id);
+//    }
 
     public function getById(int $id): void
     {
@@ -41,20 +41,15 @@ class User extends Repository
         }
     }
 
-    public function getDescription()
-    {
-        return $this->login;
-    }
+//    public function delete()
+//    {
+//        $this->deleteAssociation('groups');
+//        parent::delete();
+//    }
 
-    public function delete()
+    public static function listByFilter($filter)
     {
-        $this->deleteAssociation('groups');
-        parent::delete();
-    }
-
-    public function listByFilter($filter)
-    {
-        $criteria = $this->getCriteria()
+        $criteria = static::getCriteria()
             ->select('*')
             ->orderBy('login');
         if ($filter->idUser ?? false) {
@@ -78,29 +73,28 @@ class User extends Repository
         return $criteria;
     }
 
-//    public function listForGrid($filter)
-//    {
-//        $levels = array_keys(Base::userLevel());
-//        $constraintsLU = _M("Constraints_LU");
-//        $preferences = _M("Preferences");
-//        $criteria = $this->getCriteria()->select("*, idUser as resetPassword, name, email, groups.name as level, " .
-//            "IF((groups.name = 'BEGINNER') or (groups.name = 'JUNIOR') or (groups.name = 'SENIOR'), '{$constraintsLU}','') as constraints, '{$preferences}' as preferences")->orderBy('login');
-//        if ($filter->idUser) {
-//            $criteria->where("idUser = {$filter->idUser}");
-//        }
-//        if ($filter->login) {
-//            $criteria->where("login LIKE '{$filter->login}%'");
-//        }
-//        if ($filter->name) {
-//            $criteria->where("name LIKE '{$filter->name}%'");
-//        }
-//        if ($filter->level) {
-//            $criteria->where("upper(groups.name) LIKE upper('{$filter->level}%')");
-//        }
-//        $criteria->where('upper(groups.name)', 'IN', $levels);
-//        return $criteria;
-//    }
+    public function create(object $data)
+    {
+        PersistenceManager::beginTransaction();
+        try {
+            $user = new Model($data);
+            $user->login = $user->email;
+            $user->active = 1;
+            $user->status = '0';
+            $user->idLanguage = AppService::getCurrentIdLanguage();
+            $group = Group::getByName('BEGINNER');
+            //$this->setData($userData);
+            $this->registerLogin();
+            //$this->groups = [$group];
+            $this->saveAssociation('groups');
+            PersistenceManager::commit();
+        } catch (\Exception $e) {
+            PersistenceManager::rollback();
+        }
+    }
 
+
+    /*
     public function getArrayGroups()
     {
         $aGroups = array();
@@ -266,27 +260,6 @@ class User extends Repository
         return NULL;
     }
 
-    public function createUser($userData)
-    {
-        PersistenceManager::beginTransaction();
-        try {
-            //$this->setIdPerson(null);
-            $this->login = $userData->email;
-            $this->active = 1;
-            $this->status = '0';
-            $this->idLanguage = AppService::getCurrentIdLanguage();
-            $group = new Group();
-            $group->getByName('BEGINNER');
-            $this->setData($userData);
-            $this->registerLogin();
-            $this->groups = [$group];
-            $this->saveAssociation('groups');
-            PersistenceManager::commit();
-        } catch (\Exception $e) {
-            ddump($e->getMessage());
-            PersistenceManager::rollback();
-        }
-    }
 
     public function registerLogin()
     {
@@ -323,6 +296,6 @@ class User extends Repository
         unset($this->groups[$idGroup]);
         $this->saveAssociation('groups');
     }
-
+*/
 
 }

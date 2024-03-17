@@ -16,7 +16,7 @@ class Submit extends Component
         public string $color = 'primary',
     )
     {
-        //
+        $this->color = ucFirst($color);
     }
 
     /**

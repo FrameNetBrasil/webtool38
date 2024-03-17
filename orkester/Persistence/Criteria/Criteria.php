@@ -296,26 +296,10 @@ class Criteria extends Builder
         return $this->get();
     }
 
-    public function treeResult(string $group, string $node)
+    public function treeResult(string $groupBy)
     {
-        $tree = [];
-        $rs = $this->getResult();
-        if (!empty($rs)) {
-            $node = explode(',', $node);
-            $group = explode(',', $group);
-            foreach ($rs as $row) {
-                $aNode = [];
-                foreach ($node as $n) {
-                    $aNode[$n] = $row[$n];
-                }
-                $s = '';
-                foreach ($group as $g) {
-                    $s .= '[$row[\'' . $g . '\']]';
-                }
-                eval("\$tree{$s}" . "[] = \$aNode;");
-            }
-        }
-        return $tree;
+        return $this->getResult()
+        ->groupBy($groupBy);
     }
 
     public function plainSQL(string $command, array $params = [])

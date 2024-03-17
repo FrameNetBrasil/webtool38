@@ -18,7 +18,7 @@ class Button extends Component
         public string $icon = ''
     )
     {
-        //
+        $this->color = ucfirst($color);
     }
 
     /**

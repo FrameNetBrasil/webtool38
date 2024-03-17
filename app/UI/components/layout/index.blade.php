@@ -46,7 +46,13 @@
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
     <script type="text/javascript" src="/scripts/video-js-8.11.5/video.min.js"></script>
-    <link href="/scripts/video-js-8.11.5/video-js.css" rel="stylesheet" />
+    <link href="/scripts/video-js-8.11.5/video-js.css" rel="stylesheet"/>
+
+    <!--
+    <link rel="stylesheet" href="/scripts/helix-ui/helix-ui.css" />
+    -->
+    <link rel="stylesheet" href="/scripts/helix-ui/docs.css"/>
+    <script src="/scripts/helix-ui/webcomponents-loader.js"></script>
 
     <!--
     <script type="text/javascript" src="/scripts/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
@@ -87,9 +93,45 @@
     @vite(['resources/js/app.js'])
 </head>
 <body
-    class="prose wt-layout-index"
+    class="hxVertical"
     hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
+    id="top"
 >
+
+<a href="#content">Skip to main content</a>
+
+
+<nav id="hxTopNav">
+    <div>
+        <div class="hxTopNavApp">
+            <hx-disclosure>
+                <a href="#">
+                    <p>{!! config('webtool.headerTitle') !!}</p>
+                </a>
+            </hx-disclosure>
+        </div>
+        @include('components.menu')
+        @include('components.userdata')
+    </div>
+</nav>
+
+<div id="app">
+    <div id="stage">
+        <main role="main" id="content" class="component-content">
+            {{$slot}}
+        </main>
+    </div>
+</div>
+
+<footer id="foot">
+    &copy; 2014-2024 FrameNet Brasil Lab, UFJF.
+    <nav>
+    </nav>
+</footer>
+
+<!-- App Scripts Go Here -->
+
+<a id="bottom"></a>
 
 <script src="/scripts/lodash/lodash.js"></script>
 <script src="/scripts/backbone/backbone.js"></script>
@@ -97,40 +139,52 @@
 <script src="/scripts/dagre/dist/dagre.js"></script>
 <script src="/scripts/utils/md5.min.js"></script>
 
+<script nomodule src="/scripts/helix-ui/helix-ui.js"></script>
+<script nomodule>
+    HelixUI.initialize();
+</script>
+
+<script type="module">
+    import HelixUI from '/scripts/helix-ui/helix-ui.module.js';
+    HelixUI.initialize();
+</script>
+
+<!--
+
 <header class="flex flex-column">
     <section class="headerPane grid grid-nogutter">
         <section class="title md:col-6 sm:col-12">
             {!! config("webtool.mainTitle") !!}
-        </section>
-        <nav class="md:col-6 sm:col-12 text-right">
-            @include('components.userdata')
-        </nav>
-    </section>
+</section>
+<nav class="md:col-6 sm:col-12 text-right">
+@include('components.userdata')
+</nav>
+</section>
 
-    <nav class="menuPane">
-        @include('components.menu')
-    </nav>
+<nav class="menuPane">
+@include('components.menu')
+</nav>
 </header>
 
 <main class="centerPane">
-    <section id="contentPane">
-        <div data-options="region:'center',border:false">
-            {{ $slot }}
-        </div>
-    </section>
+<section id="contentPane">
+    <div data-options="region:'center',border:false">
+{{ $slot }}
+</div>
+</section>
 </main>
 <script>
-    document.body.addEventListener("notify", function (evt) {
-        manager.messager(evt.detail.type, evt.detail.message);
-    })
-    $(function () {
+document.body.addEventListener("notify", function (evt) {
+manager.messager(evt.detail.type, evt.detail.message);
+})
+$(function () {
 
-        $('#contentPane').layout({
-            fit: true
-        })
-        @stack('onload')
-    })
+$('#contentPane').layout({
+    fit: true
+})
+@stack('onload')
+})
 </script>
-
+-->
 </body>
 </html>

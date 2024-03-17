@@ -1,1 +1,3 @@
-<button type="submit" class="btn btn-{{$color}}" {{$attributes}}>{{$label}}</button>
+<button type="submit" class="hxBtn hx{{$color}}" {{$attributes}}>
+    {{$label}}
+</button>

@@ -7,12 +7,12 @@ use Orkester\Persistence\Repository;
 
 class Language extends Repository {
 
-    public ?int $idLanguage;
-    public ?string $language;
-    public ?string $description;
-    public function __construct(int $id = null) {
-        parent::__construct(LanguageModel::class, $id);
-    }
+//    public ?int $idLanguage;
+//    public ?string $language;
+//    public ?string $description;
+//    public function __construct(int $id = null) {
+//        parent::__construct(LanguageModel::class, $id);
+//    }
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*')->orderBy('idLanguage');

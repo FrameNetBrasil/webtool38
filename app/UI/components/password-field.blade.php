@@ -1,7 +1,14 @@
 <div class="form-field">
-    <label for="{{$id}}">{{$label}}</label>
-    <input type="text" {{$attributes}} id="{{$id}}" name="{{$id}}">
+    <hx-password-control>
+        <input
+            id="{{$id}}"
+            name="{{$id}}"
+            type="password"
+        />
+        <label
+            for="{{$id}}">
+            {{$label}}
+        </label>
+    </hx-password-control>
+
 </div>
-@push('onload')
-    $('#{{$id}}').passwordbox({});
-@endpush

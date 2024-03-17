@@ -19,6 +19,7 @@ import 'primeflex/primeflex.css';
 // import '/node_modules/@shoelace-style/shoelace/dist/themes/light.css';
 import '../css/root.scss';
 import '../css/easyui.scss';
+import '../css/helix-ui/index.scss';
 import '../css/app.scss';
 
 // window.Alpine = Alpine;

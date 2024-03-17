@@ -49,11 +49,9 @@ class AuthUserService
             'login' => $userInfo->login,
             'passMD5' => $userInfo->password,
         ];
-        debug($userData);
-        $user = new User();
-        $result = $user->listByFilter($userData)->asQuery()->getResult();
+        $result = User::listByFilter($userData)->getResult();
         if (count($result) == 0) {
-            $user->createUser($userData);
+            User::createUser($userData);
             return 'new';
         } else {
             $user->getById($result[0]['idUser']);

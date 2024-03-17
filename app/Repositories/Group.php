@@ -8,25 +8,26 @@ use Orkester\Persistence\Repository;
 class Group extends Repository
 {
 
-    public ?int $idGroup;
-    public ?string $name;
-    public ?string $description;
+//    public ?int $idGroup;
+//    public ?string $name;
+//    public ?string $description;
+//
+//    public function __construct(int $id = null)
+//    {
+//        parent::__construct(GroupModel::class, $id);
+//    }
+//
+//    public function getDescription()
+//    {
+//        return $this->name;
+//    }
 
-    public function __construct(int $id = null)
+    public static function getByName($name)
     {
-        parent::__construct(GroupModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->name;
-    }
-
-    public function getByName($name)
-    {
-        $criteria = $this->getCriteria()->select('*');
+        $criteria = static::getCriteria()
+            ->select('*');
         $criteria->where("upper(name)", "=", strtoupper($name));
-        $this->retrieveFromCriteria($criteria);
+        return static::retrieveFromCriteria($criteria);
     }
 
     public function listByFilter($filter = '')

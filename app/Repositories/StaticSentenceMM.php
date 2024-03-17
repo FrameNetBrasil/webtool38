@@ -50,7 +50,7 @@ group by smm.idStaticSentenceMM, imm.name, smm.idSentence
 order by 1
 
 HERE;
-        $result = Repository::select($cmd);
+        $result = Model::select($cmd);
         foreach ($result as $i => $row) {
             $result[$i]['text'] = $sentences[$row['idSentence']]['text'];
             if ($result[$i]['i'] == 0) {

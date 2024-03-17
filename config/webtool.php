@@ -8,6 +8,7 @@ return [
     'defaultPassword' => 'default',
     'pageTitle' => 'Webtool 3.8 - htmx',
     'mainTitle' => 'FrameNet Brasil Webtool 3.8',
+    'headerTitle' => 'FNBr Webtool',
     'login' => [
         'handler' => env('APP_AUTH'),
         'AUTH0_CLIENT_ID' => env('AUTH0_CLIENT_ID'),

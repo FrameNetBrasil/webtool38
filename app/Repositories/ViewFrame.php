@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ViewFrameModel;
 use App\Services\AppService;
+use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Repository;
 
 class ViewFrame extends Repository
@@ -12,7 +13,7 @@ class ViewFrame extends Repository
 //        parent::__construct(ViewFrameModel::class, $id);
 //    }
 
-    public function listByFilter($filter)
+    public static function listByFilter($filter): Criteria
     {
         $listBy = $filter->listBy ?? '';
         $select = ['idFrame','entry','active','idEntity','name','description'];
@@ -25,7 +26,7 @@ class ViewFrame extends Repository
         if ($listBy == 'domain') {
             $listBySelect = ',toRelations.toSemanticType.entries.name as domain';
         }
-        $criteria = $this->getCriteria()
+        $criteria = static::getCriteria()
             ->select($select)
             ->orderBy('entries.name');
 //        if ($listBySelect != '') {

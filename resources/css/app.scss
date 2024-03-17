@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+@import "sass/icons/_icons";
+@import "sass/icons/_icons_menus";
+
+@import "sass/components/_form";
+/*
 @import "./sass/_variables";
 @import "./sass/_wt_vars";
 @import "./sass/_layout";
@@ -11,13 +16,11 @@
 @import "./sass/_controls_form";
 @import "./sass/_controls_messager";
 @import "./sass/_controls_tag";
-@import "./sass/_icons";
 @import "./sass/_icons_actions";
 @import "./sass/_icons_buttons";
 @import "./sass/_icons_controls";
 @import "./sass/_icons_entity";
 @import "./sass/_icons_fe";
-@import "./sass/_icons_menus";
 @import "./sass/_icons_status";
 @import "./sass/_grapher";
 @import "./sass/_colors";
@@ -27,7 +30,8 @@
 @import "./sass/_annotation";
 @import "./sass/_annotation_dynamic";
 @import "./sass/_custom";
-
 @import "./sass/_lang";
+
+ */
 
 
