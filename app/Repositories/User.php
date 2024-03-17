@@ -86,6 +86,7 @@ class User extends Repository
             //$this->setData($userData);
             $this->registerLogin();
             //$this->groups = [$group];
+            // ffff
             $this->saveAssociation('groups');
             PersistenceManager::commit();
         } catch (\Exception $e) {
