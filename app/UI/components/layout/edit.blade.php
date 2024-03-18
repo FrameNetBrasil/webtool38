@@ -1,23 +1,17 @@
-<div class="flex-none">
-    <div class="edit">
-        {{$edit}}
-    </div>
+<div class="edit">
+    {{$edit}}
 </div>
-<div class="flex-none">
-    <div class="nav">
-        {{$nav}}
-    </div>
+<div class="nav">
+    {{$nav}}
 </div>
-<section class="flex-grow-1">
-    <div id="layoutEditMain" class="main">
-        {{$main}}
-    </div>
-</section>
+<div id="layoutEditMain" class="main">
+    {{$main}}
+</div>
 <script>
     $(function () {
         $('#layoutEditMain').panel({
             fit: true,
-            border:false,
+            border: false,
         })
     })
 </script>

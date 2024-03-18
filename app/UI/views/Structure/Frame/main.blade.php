@@ -1,6 +1,6 @@
 <x-layout.main>
     <x-slot:title>
-        Frame
+        Frames
     </x-slot:title>
     <x-slot:actions>
         <x-button label="List" color="primary" href="/frame"></x-button>

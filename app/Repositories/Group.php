@@ -2,11 +2,21 @@
 
 namespace App\Repositories;
 
+use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Repository;
 
 class Group extends Repository
 {
 
+    public static function listByFilter(?object $filter = null): Criteria
+    {
+        $criteria = static::getCriteria()
+            ->select('*')
+            ->orderBy('idGroup');
+        return self::filter([
+            ['idGroup','=',$filter?->idGroup ?? null],
+        ], $criteria);
+    }
     public static function getByName($name)
     {
         $criteria = static::getCriteria()
@@ -15,14 +25,6 @@ class Group extends Repository
         return static::retrieveFromCriteria($criteria);
     }
 
-    public function listByFilter($filter = '')
-    {
-        $criteria = $this->getCriteria()->select('*')->orderBy('idGroup');
-        if (isset($filter->idGroup)) {
-            $criteria->where("idGroup LIKE '{$filter->idGroup}%'");
-        }
-        return $criteria;
-    }
 
     public function listForSelect()
     {

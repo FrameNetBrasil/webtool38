@@ -26,28 +26,24 @@
         </hx-menu>
     </div>
     @if($isLogged)
-        <div>
-            <hx-icon type="bell"></hx-icon>
-            <p>{!! $userLevel !!}</p>
-        </div>
         <div class="hxSpacer"></div>
         <div class="hxTopNavMenu">
-            <hx-disclosure aria-controls="demo-user-menu" aria-expanded="true">
+            <hx-disclosure aria-controls="demo-user-menu" aria-expanded="false">
                 <hx-icon class="hxNavUser" type="user"></hx-icon>
-                <span>Jane User</span>
+                <span>{{$user->email}}</span>
                 <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
             </hx-disclosure>
             <hx-menu id="demo-user-menu" position="bottom-end">
                 <section>
                     <header>
-                        <hx-menuitem class="hxMenuKey">Account Number:</hx-menuitem>
-                        <hx-menuitem class="hxMenuValue">12345678</hx-menuitem>
+                        <hx-menuitem class="hxMenuKey">Level:</hx-menuitem>
+                        <hx-menuitem class="hxMenuValue">{{$userLevel}}</hx-menuitem>
                     </header>
                     <hr class="hxDivider">
-                    <hx-menuitem class="hxMenuValue">My Profile & Settings</hx-menuitem>
+                    <hx-menuitem class="hxMenuValue">My Profile</hx-menuitem>
                     <hr class="hxDivider">
                     <footer>
-                        <button class="hxBtn">Log Out</button>
+                        <button class="hxBtn" hx-get="/logout">Log Out</button>
                     </footer>
                 </section>
             </hx-menu>

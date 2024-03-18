@@ -7,6 +7,7 @@ use Orkester\Persistence\Repository;
 
 class SemanticType extends Repository
 {
+    /*
     public function getById(int $id): void
     {
         $criteria = $this->getCriteria()
@@ -367,6 +368,6 @@ HERE;
         $criteria->delete();
         $transaction->commit();
     }
-
+*/
 }
 

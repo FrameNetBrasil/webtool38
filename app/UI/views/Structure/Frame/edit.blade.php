@@ -4,7 +4,7 @@
         <x-slot:edit>
             <div class="grid grid-nogutter editHeader">
                 <div class="col-8 title">
-                    <span class="color_frame">{{$frame?->name}}</span>
+                    <h2 class="color_frame">{{$frame?->name}}</h2>
                 </div>
                 <div class="col-4 text-right description">
                     @foreach ($classification as $name => $values)

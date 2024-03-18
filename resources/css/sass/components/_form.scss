@@ -67,3 +67,20 @@
         }
     }
 }
+
+.wt-form-search {
+    .form-field {
+        margin-bottom: 8px;
+        margin-right: 8px;
+    }
+
+    button {
+        margin-bottom: 8px;
+        margin-right: 8px;
+    }
+
+    hx-search-control button {
+        padding:0px;
+    }
+
+}

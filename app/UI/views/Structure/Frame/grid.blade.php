@@ -2,6 +2,7 @@
 </table>
 <script>
     $(function () {
+        console.log('grid');
         $('#mainGridTable').treegrid({
             fit: true,
             url: "/frame/listForTree",

@@ -2,16 +2,24 @@
 
 namespace App\Services;
 
+use App\Repositories\Language;
 use App\Repositories\Base;
+use App\Repositories\Group;
 
 class AppService
 {
+    static public function languagesDescription()
+    {
+        return Language::getCriteria()
+            ->select(['idLanguage','language','description'])
+            ->treeResult('idLanguage');
+    }
     public static function getCurrentLanguage() {
         return session('currentLanguage');
     }
 
     public static function setCurrentLanguage(int $idLanguage) {
-        $languages = Base::languagesDescription();
+        $languages = self::languagesDescription();
         $data = $languages[$idLanguage][0];
         $data['idLanguage'] = $idLanguage;
         session(['currentLanguage' => $data]);
@@ -32,5 +40,11 @@ class AppService
         }
         return $data;
     }
+
+    static public function userLevel(): array
+    {
+        return Group::listByFilter()->chunkResult('idGroup', 'name');
+    }
+
 
 }

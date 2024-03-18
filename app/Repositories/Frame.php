@@ -5,17 +5,21 @@ namespace App\Repositories;
 use App\Services\AppService;
 use App\Services\RelationService;
 use Orkester\Persistence\Repository;
+use App\Models\Frame as FrameModel;
 
 class Frame extends Repository
 {
-    public function getById(int $id): void
+    public static function getById(int $id): FrameModel
     {
-        $criteria = $this->getCriteria()
-            ->where('idFrame', '=', $id)
-            ->where('idLanguage', '=', AppService::getCurrentIdLanguage());
-        $this->retrieveFromCriteria($criteria);
+        $frame = new FrameModel;
+        $frame->setData((object)self::first([
+            ['idFrame', '=', $id],
+            ['idLanguage', '=', AppService::getCurrentIdLanguage()]
+        ]));
+        return $frame;
     }
 
+    /*
     public function getByName(string $name): void
     {
         $criteria = $this->getCriteria()
@@ -425,53 +429,24 @@ HERE;
         parent::save();
         Timeline::addTimeline("frame", $this->getId(), "S");
     }
+    */
 
-    public function getClassification(): array
+    public static function getClassification(int $idFrame): array
     {
         $idLanguage = AppService::getCurrentIdLanguage();
-        $cmd = <<<HERE
-
-        SELECT RelationType.entry, entry_semanticType.name
-        FROM Frame
-            INNER JOIN Entity entity1
-                ON (Frame.idEntity = entity1.idEntity)
-            INNER JOIN EntityRelation
-                ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType
-                ON (EntityRelation.idRelationType = RelationType.idRelationType)
-            INNER JOIN Entity entity2
-                ON (EntityRelation.idEntity2 = entity2.idEntity)
-            INNER JOIN SemanticType
-                ON (entity2.idEntity = semanticType.idEntity)
-            INNER JOIN Entry entry_semanticType
-                ON (semanticType.idEntity = entry_semanticType.idEntity)
-        WHERE (Frame.idFrame = {$this->getId()})
-            AND (RelationType.entry in (
+        $criteria = static::getCriteria()
+            ->select(['relations.entry','relations.semanticType2.name'])
+            ->where('idFrame','=', $idFrame)
+            ->where('relations.semanticType2.idLanguage', '=', $idLanguage)
+            ->where('relations.entry', 'IN',[
                 'rel_framal_type',
                 'rel_framal_domain',
-                'rel_framal_cluster'))
-           AND (entry_semanticType.idLanguage = {$idLanguage} )
-        ORDER BY RelationType.entry, entry_semanticType.name
-
-HERE;
-//        $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name');
-        $result = collect($this->query($cmd))->groupBy('entry')->all();
-        return $result;
+                'rel_framal_cluster'])
+            ->orderBy('relations.semanticType2.name');
+        return $criteria->get()->groupBy('entry')->all();
     }
 
-    public function getClassificationLabels()
-    {
-        $classification = [];
-        $result = $this->getClassification();
-        foreach ($result as $framal => $values) {
-            foreach ($values as $row) {
-                $classification[$framal][] = $row['name'];
-            }
-        }
-        $classification['id'][] = "#" . $this->idFrame;
-        return $classification;
-    }
-
+/*
     public function listFEDirectRelations(int $idEntityRelationBase)
     {
         $idLanguage = AppService::getCurrentIdLanguage();

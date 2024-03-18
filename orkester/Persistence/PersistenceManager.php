@@ -30,7 +30,7 @@ class PersistenceManager
 
     public function __construct(DatabaseManager $manager, LoggerInterface $logger, string $mappingClassName)
     {
-        static::init($manager, $logger,$mappingClassName);
+        static::init($manager, $logger, $mappingClassName);
     }
 
     public static function buildDatabaseManager(DatabaseConfiguration $configuration): DatabaseManager
@@ -127,7 +127,7 @@ class PersistenceManager
         $connection->enableQueryLog();
 
         if (static::$connectionCache && !static::$connectionCache->contains($connection)) {
-            $connection->listen(function(QueryExecuted $event) use($connection) {
+            $connection->listen(function (QueryExecuted $event) use ($connection) {
                 $rawSql = $connection->getQueryGrammar()->substituteBindingsIntoRawSql(
                     $event->sql,
                     $event->bindings

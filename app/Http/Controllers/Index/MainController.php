@@ -24,9 +24,6 @@ class MainController extends Controller
     public function main()
     {
         if (MAuth::isLogged()) {
-
-            $r = ViewFrame::listByFilter(null);
-
             return $this->render('formMain');
         } else {
             if (config('webtool.login.handler') == 'auth0') {

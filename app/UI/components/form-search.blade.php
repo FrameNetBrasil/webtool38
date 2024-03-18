@@ -1,3 +1,3 @@
-<form class="wt-form-search" id="{{$id}}" name="{{$id}}" {{$attributes}}>
-            {{ $slot }}
+<form class="wt-form-search flex flex-row flex-wrap" id="{{$id}}" name="{{$id}}" >
+    {{ $slot }}
 </form>

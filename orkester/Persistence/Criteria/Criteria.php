@@ -277,23 +277,17 @@ class Criteria extends Builder
 
     public function chunkResult(string $fieldKey = '', string $fieldValue = '')
     {
-        $newResult = [];
-        if (($fieldKey != '') && ($fieldValue != '')) {
-            $rs = $this->getResult();
-            if (!empty($rs)) {
-                foreach ($rs as $row) {
-                    $sKey = trim($row[$fieldKey]);
-                    $sValue = $row[$fieldValue];
-                    $newResult[$sKey] = $sValue;
-                }
-            }
-        }
-        return $newResult;
+        return $this->get()->pluck($fieldValue,$fieldKey)->all();
     }
 
     public function getResult()
     {
         return $this->get();
+    }
+
+    public function all()
+    {
+        return $this->get()->all();
     }
 
     public function treeResult(string $groupBy)

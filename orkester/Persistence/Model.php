@@ -2,32 +2,50 @@
 
 namespace Orkester\Persistence;
 
-use Orkester\Persistence\Criteria\Criteria;
-use Orkester\Persistence\Enum\Association;
+use Orkester\Persistence\Map\ClassMap;
 
 class Model
 {
-    private object $data;
+    protected static string $className;
 
-    public function __construct(object|null $data)
+    public static function from(object $data)
     {
-        if (!isnull($data)) {
-            foreach ($data as $name => $value) {
-                $this->data->$name = $value;
-            }
+        $className = get_called_class();
+        debug("model::from", $className);
+        $model = new $className;
+        foreach ($data as $name => $value) {
+            $model->$name = $value;
+        }
+        return $model;
+    }
+
+    protected static function getClassName(): string
+    {
+        if (!isset(static::$className)) {
+            $class = get_called_class();
+            $className = str_replace("App\\Repositories\\", "", $class);
+            debug("className", $className);
+            static::$className = $className;
+        }
+        return static::$className;
+    }
+
+    public function getClassMap(): ClassMap {
+        $className = str_replace("App\\Models\\", "", get_called_class());
+        return PersistenceManager::getClassMap($className);
+    }
+
+    public function getId(): int {
+        $key = $this->getClassMap()->keyAttributeName;
+        return $this->$key;
+    }
+
+    public function setData($data): void
+    {
+        foreach ($data as $attribute => $value) {
+            $this->$attribute = $value;
         }
     }
-
-    public function __get(string $name)
-    {
-        return $this->data->$name;
-    }
-
-    public function __set(string $name, mixed $value)
-    {
-        $this->data->$name = $value;
-    }
-
 
 //    protected static Model $model;
 //    protected static Transaction $transaction;
@@ -120,12 +138,7 @@ class Model
             return $this->$key;
         }
 
-        public function setData($data)
-        {
-            foreach ($data as $attribute => $value) {
-                $this->$attribute = $value;
-            }
-        }
+
 
         public function getData()
         {

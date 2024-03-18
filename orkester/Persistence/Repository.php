@@ -4,6 +4,7 @@ namespace Orkester\Persistence;
 
 use Illuminate\Support\Arr;
 use Orkester\Persistence\Criteria\Criteria;
+use Orkester\Persistence\Enum\Association;
 use Orkester\Persistence\Map\AssociationMap;
 use Orkester\Persistence\Map\ClassMap;
 
@@ -32,6 +33,11 @@ class Repository
         return static::$className[$class];
     }
 
+    public static function getClassMap(): ClassMap
+    {
+        return PersistenceManager::getClassMap(self::getClassName());
+    }
+
     public static function getCriteria(string $databaseName = null): Criteria
     {
         $classMap = PersistenceManager::getClassMap(self::getClassName());
@@ -39,6 +45,13 @@ class Repository
         $criteria = new Criteria($connection);
         return $criteria->setClassMap($classMap);
     }
+
+    public static function getModelById(Model $model, int $id)
+    {
+        $data = (object)static::find($id);
+        $model->setData($data);
+    }
+
 //    public static function getCriteria(string $databaseName = null): Criteria
 //    {
 //        return PersistenceManager::getCriteria($databaseName, $this->className);
@@ -62,13 +75,15 @@ class Repository
         if (!empty($filters)) {
             $filters = is_string($filters[0]) ? [$filters] : $filters;
             foreach ($filters as [$field, $op, $value]) {
-                $criteria->where($field, $op, $value);
+                if (!is_null($value)) {
+                    $criteria->where($field, $op, $value);
+                }
             }
         }
         return $criteria;
     }
 
-    public static function one($conditions, array $select = []): array|null
+    public static function first($conditions, array $select = []): array|null
     {
         $criteria = static::getCriteria()->range(1, 1);
         if (!empty($select)) {
@@ -111,17 +126,14 @@ class Repository
             ->delete();
     }
 
-    public static function save(Model $obj): ?int
+    public static function save(Model $model): ?int
     {
-        $data = get_object_vars($this);
-        $key = $this->model::getKeyAttributeName();
+        $data = get_object_vars($model);
+        $key = static::getKeyAttributeName();
         if (is_null($data[$key])) {
             unset($data[$key]);
         }
-        $this->$key = $this->model::save($data);
-
         $fields = static::prepareWrite($data);
-        $key = static::getKeyAttributeName();
         $criteria = self::getCriteria();
         $criteria->upsert([$fields], [$key], array_keys($fields));
         if (isset($data[$key])) {
@@ -131,9 +143,9 @@ class Repository
         }
     }
 
-    protected function prepareWrite(array $data): array
+    protected static function prepareWrite(array $data): array
     {
-        $classMap = PersistenceManager::getClassMap($this->className);
+        $classMap = static::getClassMap();
         $validAttributes = array_keys($classMap->insertAttributeMaps);
         return Arr::only($data, $validAttributes);
     }
@@ -265,6 +277,61 @@ class Repository
     public static function getAssociationMap(string $name): ?AssociationMap
     {
         return static::getClassMap()->getAssociationMap($name);
+    }
+
+    public static function saveAssociation(Model $model, string $associationName): void
+    {
+        $id = $model->getId();
+        $associationMap = static::getAssociationMap($associationName);
+        $cardinality = $associationMap->cardinality;
+        if ($cardinality == Association::ONE) {
+            $key = $associationMap->fromKey;
+            $model->$key = $model->$associationName->getId();
+        } else {
+            $associatedIds = array_keys($model->$associationName);
+            static::replaceManyToMany($associationName, $id, $associatedIds);
+        }
+    }
+
+    public static function getAssociationById(string $associationChain, int $id, string $toClassName, int|null $idLanguage = null): array
+    {
+        $toClassMap = PersistenceManager::getClassMap($toClassName);
+        $columns = array_values(array_map(fn($x) => $associationChain . '.' . $x, $toClassMap->getAttributesNames()));
+        $criteria = static::getCriteria()
+            ->select($columns)
+            ->where('id', '=', $id);
+        if (!is_null($idLanguage)) {
+            $criteria->where($associationChain . '.idLanguage', '=', $idLanguage);
+        }
+        return $criteria
+            ->get()
+            ->toArray();
+    }
+
+    public static function retrieveAssociation(Model $model, string $associationName, int|null $idLanguage = null): null|array|Model
+    {
+        $id = $model->getId();
+        $associationMap = static::getAssociationMap($associationName);
+        $data = static::getAssociationById($associationName, $id, $associationMap->toClassName, $idLanguage);
+        $toClassName = "App\\Models\\{$associationMap->toClassName}";
+        $cardinality = $associationMap->cardinality;
+        if (count($data) == 0) {
+            return (($cardinality == Association::ONE) ? null : []);
+        } else {
+            if ($cardinality == Association::ONE) {
+                $association = new $toClassName;
+                $association->setData($data[0]);
+                return $association;
+            } else {
+                $associations = [];
+                foreach ($data as $row) {
+                    $association = new $toClassName;
+                    $association->setData($row);
+                    $associations[$association->getId()] = $association;
+                }
+                return $associations;
+            }
+        }
     }
 
     /*

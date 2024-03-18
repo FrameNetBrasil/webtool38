@@ -4,20 +4,24 @@ namespace App\Repositories;
 
 use App\Services\AppService;
 use Carbon\Carbon;
+use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Repository;
 use Orkester\Persistence\PersistenceManager;
+use App\Models\User as UserModel;
 
 class User extends Repository
 {
 
-    public function getById(int $id): void
+    public static function getById(int $id): UserModel
     {
-        parent::getById($id);
-        $this->retrieveAssociation('groups');
-        foreach ($this->groups as $group) {
+        $user = new UserModel;
+        parent::getModelById($user, $id);
+        $user->groups = static::retrieveAssociation($user, 'groups');
+        foreach ($user->groups as $group) {
             $g = $group->name;
-            $this->memberOf[$g] = $g;
+            $user->memberOf[$g] = $g;
         }
+        return $user;
     }
 
 //    public function delete()
@@ -26,58 +30,41 @@ class User extends Repository
 //        parent::delete();
 //    }
 
-    public static function listByFilter($filter)
+    public static function listByFilter(object $filter): Criteria
     {
         $criteria = static::getCriteria()
             ->select('*')
             ->orderBy('login');
-        if ($filter->idUser ?? false) {
-            $criteria->where("idUser = {$filter->idUser}");
-        }
-        if ($filter->login ?? false) {
-            $criteria->where("login LIKE '{$filter->login}%'");
-        }
-        if ($filter->passMD5 ?? false) {
-            $criteria->where("passMD5 = '{$filter->passMD5}'");
-        }
-        if ($filter->name ?? false) {
-            $criteria->where("name LIKE '{$filter->name}%'");
-        }
-        if (($filter->email ?? '') != '') {
-            $criteria->where("email LIKE '{$filter->email}%'");
-        }
-        if (($filter->status ?? '') != '') {
-            $criteria->where("status = '{$filter->status}'");
-        }
-        return $criteria;
+        return self::filter([
+            ['idUser','=',$filter?->idUser ?? null],
+            ['login','startswith',$filter?->login ?? null],
+            ['passMD5','=',$filter?->passMD5 ?? null],
+            ['name','startswith',$filter?->name ?? null],
+            ['email','startswith',$filter?->email ?? null],
+            ['status','=',$filter?->status ?? null],
+        ], $criteria);
     }
 
-    public static function create(object $data)
+    public static function create(UserModel $user): ?int
     {
         PersistenceManager::beginTransaction();
         try {
-            $user = new Model($data);
-            $user->login = $user->email;
-            $user->active = 1;
-            $user->status = '0';
-            $user->idLanguage = AppService::getCurrentIdLanguage();
-            $group = Group::getByName('BEGINNER');
-            //$this->setData($userData);
-            self::registerLogin();
-            //$this->groups = [$group];
-            // ffff
-            $this->saveAssociation('groups');
+            $user->registerLogin();
+            $idUser = $user->idUser = static::save($user);
+            static::saveAssociation($user, 'groups');
             PersistenceManager::commit();
+            return $idUser;
         } catch (\Exception $e) {
             PersistenceManager::rollback();
+            return null;
         }
     }
 
-    public static function registerLogin()
-    {
-        $this->lastLogin = Carbon::now();
-        $this->save();
-    }
+//    public static function registerLogin()
+//    {
+//        $this->lastLogin = Carbon::now();
+//        $this->save();
+//    }
 
 
     /*
@@ -177,18 +164,7 @@ class User extends Repository
         parent::save();
     }
 
-    public function getUserLevel()
-    {
-        $userLevel = '';
-        $levels = Base::userLevel();
-        $groups = $this->getArrayGroups();
-        foreach ($levels as $level => $levelName) {
-            if (isset($groups[$level])) {
-                $userLevel = $level;
-            }
-        }
-        return $userLevel;
-    }
+
 
     public function getAvaiableLevels()
     {

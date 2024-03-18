@@ -1,11 +1,19 @@
 @CHARSET "UTF-8";
 
+@import "sass/_quasar";
+@import "sass/_variables";
 @import "sass/icons/_icons";
+@import "sass/icons/_icons_controls";
 @import "sass/icons/_icons_menus";
+@import "sass/icons/_icons_entity";
 
 @import "sass/components/_form";
+@import "sass/layouts/_reset";
+@import "sass/layouts/_index";
+@import "sass/layouts/_main";
+@import "sass/_helix";
 /*
-@import "./sass/_variables";
+
 @import "./sass/_wt_vars";
 @import "./sass/_layout";
 @import "./sass/_controls_button";

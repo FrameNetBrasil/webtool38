@@ -42,7 +42,6 @@
 -->
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
-    <script type="text/javascript" src="/scripts/maestro/components.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
     <script type="text/javascript" src="/scripts/video-js-8.11.5/video.min.js"></script>
@@ -50,8 +49,8 @@
 
     <!--
     <link rel="stylesheet" href="/scripts/helix-ui/helix-ui.css" />
-    -->
     <link rel="stylesheet" href="/scripts/helix-ui/docs.css"/>
+    -->
     <script src="/scripts/helix-ui/webcomponents-loader.js"></script>
 
     <!--
@@ -93,7 +92,7 @@
     @vite(['resources/js/app.js'])
 </head>
 <body
-    class="hxVertical"
+    class="wt-layout-index hxVertical"
     hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
     id="top"
 >
@@ -105,7 +104,7 @@
     <div>
         <div class="hxTopNavApp">
             <hx-disclosure>
-                <a href="#">
+                <a href="/">
                     <p>{!! config('webtool.headerTitle') !!}</p>
                 </a>
             </hx-disclosure>

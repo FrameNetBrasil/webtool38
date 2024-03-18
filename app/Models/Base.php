@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Group;
 use App\Services\AppService;
-use Orkester\Manager;
 use Orkester\Security\MAuth;
 
 /**
@@ -20,15 +18,15 @@ class Base
         return $languages;
     }
 
-    static public function languagesDescription()
-    {
-        //$language = new Language();
-        //$languages = $language->getCriteria()->select("idLanguage, language, description")->asQuery()->treeResult('idLanguage', 'language,description');
-        //return $languages;
-        return Language::getCriteria()
-            ->select(['idLanguage','language','description'])
-            ->treeResult('idLanguage');
-    }
+//    static public function languagesDescription()
+//    {
+//        //$language = new Language();
+//        //$languages = $language->getCriteria()->select("idLanguage, language, description")->asQuery()->treeResult('idLanguage', 'language,description');
+//        //return $languages;
+//        return Language::getCriteria()
+//            ->select(['idLanguage','language','description'])
+//            ->treeResult('idLanguage');
+//    }
 
     static public function languagesAsJson()
     {
@@ -246,13 +244,10 @@ class Base
         return $entry;
     }
 
-    static public function userLevel()
-    {
-        $group = new Group();
-        $list = $group->listByFilter()->asQuery()->chunkResult('name', 'description');
-        return $list;
-        //return ['READER' => 'Reader', 'BEGINNER' => 'Beginner', 'JUNIOR' => 'Junior', 'SENIOR' => 'Senior', 'MASTER' => 'Master', 'ADMIN' => 'Admin'];
-    }
+//    static public function userLevel(): array
+//    {
+//        return Group::listByFilter()->chunkResult('name', 'description');
+//    }
 
     static public function getCurrentUser()
     {

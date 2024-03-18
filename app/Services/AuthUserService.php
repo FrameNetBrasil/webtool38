@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\User;
-use Orkester\Security\MAuth;
-use Orkester\Security\MLogin;
+use App\Models\User as UserModel;
 
 class AuthUserService
 {
@@ -18,13 +17,14 @@ class AuthUserService
             'nick' => $userInfo['nickname']
         ];
         debug($userData);
-        $user = new User();
-        $result = $user->listByFilter($userData)->asQuery()->getResult();
+        $result = User::listByFilter($userData)->asQuery()->getResult();
         if (count($result) == 0) {
-            $user->createUser($userData);
+            $user = UserModel::from($userData);
+            User::create($user);
+            $user->registerLogin();
             return 'new';
         } else {
-            $user->getById($result[0]['idUser']);
+            $user = User::getById($result[0]['idUser']);
             if ($user->status == '0') {
                 return 'pending';
             } else {
@@ -51,18 +51,19 @@ class AuthUserService
         ];
         $result = User::listByFilter($userData)->getResult();
         if (count($result) == 0) {
-            User::createUser($userData);
+            $user = UserModel::from($userData);
+            User::create($user);
+            $user->registerLogin();
             return 'new';
         } else {
-            $user->getById($result[0]['idUser']);
+            $user = User::getById($result[0]['idUser']);
             if ($user->status == '0') {
                 return 'pending';
             } else {
                 $user->registerLogin();
-                $idLanguage = $user->getConfigData('fnbrIdLanguage');
+                $idLanguage = $user->idLanguage;
                 if ($idLanguage == '') {
-                    $idLanguage = 1;
-                    $user->setConfigData('fnbrIdLanguage', $idLanguage);
+                    $idLanguage = config('webtool.defaultIdLanguage');
                 }
                 session(['sessionLogin' => $user]);
                 session(['idLanguage' => $idLanguage]);

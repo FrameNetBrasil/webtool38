@@ -1,15 +1,17 @@
 <x-layout.index>
-    <div class="wt-layout-main card flex flex-column sm:col-11 md:col-11 lg:col-11 xl:col-8 mx-auto p-0 h-full">
-        <header class="flex-none">
-            <div class="grid grid-nogutter header">
-                <div class="col-8 title">
+    <header class="main-header">
+        <div class="hxRow hxGutterless">
+            <div class="hxCol hxSpan-8">
+                <h1>
                     {{$title}}
-                </div>
-                <div class="col-4 text-right">
-                    {{$actions}}
-                </div>
+                </h1>
             </div>
-        </header>
+            <div class="hxCol hxSpan-4 actions">
+                {{$actions}}
+            </div>
+        </div>
+    </header>
+    <div class="flex flex-column sm:col-11 md:col-11 lg:col-11 xl:col-11 mx-auto p-0 wt-layout-main">
         {{$slot}}
     </div>
 </x-layout.index>

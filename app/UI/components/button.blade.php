@@ -3,7 +3,7 @@
         {{$label}}
     </button>
 @else
-    <a href="{{$href}}" class="hxBtn hx{{$color}}">>
+    <a href="{{$href}}" class="hxBtn hx{{$color}}">
         {{$label}}
     </a>
 @endif

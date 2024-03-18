@@ -23,8 +23,6 @@ class FrameController extends Controller
     #[Get(path: '/frame')]
     public function browse()
     {
-        debug('aaaa');
-
         data('search', session('searchFrame') ?? SearchFrameData::from());
         return $this->render('browse');
     }
@@ -129,7 +127,7 @@ class FrameController extends Controller
     #[Get(path: '/frame/{id}/main')]
     public function edit(string $id)
     {
-        $frame = new Frame($id);
+        $frame = Frame::getById($id);
         data('frame', $frame);
         data('classification', $frame->getClassificationLabels());
         return $this->render("edit");
