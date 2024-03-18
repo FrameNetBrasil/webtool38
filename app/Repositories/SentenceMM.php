@@ -2,33 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\SentenceMMModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class SentenceMM extends Repository
 {
-
-    public ?int $idSentenceMM;
-    public ?int $startTimestamp;
-    public ?int $endTimestamp;
-    public ?int $startTime;
-    public ?int $endTime;
-    public ?int $origin;
-    public ?int $idDocumentMM;
-    public ?int $idSentence;
-    public ?int $idOriginMM;
-    public ?int $idImageMM;
-    public ?object $sentence;
-    public ?object $imageMM;
-    public ?object $documentMM;
-    public ?array $objectSentenceMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(SentenceMMModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idSentenceMM');

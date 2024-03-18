@@ -4,31 +4,10 @@ namespace App\Repositories;
 
 use App\Data\CreateLemmaData;
 use App\Data\UpdateLemmaData;
-use App\Models\LemmaModel;
 use Orkester\Persistence\Repository;
-
-//use Maestro\Types\MFile;
 
 class Lemma extends Repository
 {
-    public ?int $idLemma;
-    public ?string $name;
-    public ?string $version;
-    public ?int $idLanguage;
-    public ?int $idEntity;
-    public ?object $entity;
-    public ?object $pos;
-    public ?object $udpos;
-    public ?object $language;
-    public ?array $lexemes;
-    public ?array $lexemeEntries;
-    public ?array $lus;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LemmaModel::class, $id);
-    }
-
     public function getIdEntity()
     {
         $idEntity = parent::getIdEntity();

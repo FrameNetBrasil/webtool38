@@ -2,16 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\ViewConstraintModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class ViewConstraint extends Repository
 {
-    public function __construct(int $id = null) {
-        parent::__construct(ViewConstraintModel::class, $id);
-    }
-
     public function listByIdConstrained(int $idConstrained)
     {
 

@@ -2,23 +2,9 @@
 
 namespace App\Repositories;
 
-class Log extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'ts' => array('notnull'),
-                'operation' => array('notnull'),
-                'idUser' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getIdLog();
-    }
+class Log extends Repository {
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*')->orderBy('idLog');

@@ -1,33 +1,10 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 namespace App\Repositories;
 
-class LayerGroup extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'name' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getIdLayerGroup();
-    }
+class LayerGroup extends Repository {
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*')->orderBy('idLayerGroup');
@@ -40,5 +17,5 @@ class LayerGroup extends Repository {
     public function listAll(){
         $criteria = $this->getCriteria()->select('idLayerGroup, name')->orderBy('name');
         return $criteria;
-    }    
+    }
 }

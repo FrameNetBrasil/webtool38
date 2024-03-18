@@ -1,35 +1,9 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
-
 namespace App\Repositories;
 
-class Translation extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'resource' => array('notnull'),
-                'text' => array('notnull'),
-                'idLanguage' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getIdTranslation();
-    }
+class Translation extends Repository {
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*, language.language')->orderBy('resource');
@@ -50,7 +24,7 @@ class Translation extends Repository {
         $criteria->orderBy("language.language");
         return $criteria;
     }
-    
+
     public function newResource($resource){
         $languages = Base::languages();
         foreach($languages as $idLanguage=>$language) {
@@ -61,7 +35,7 @@ class Translation extends Repository {
             $this->save();
         }
     }
-    
+
     public function updateResource($oldResource, $newResource){
         $criteria = $this->getUpdateCriteria();
         $criteria->addColumnAttribute('resource');

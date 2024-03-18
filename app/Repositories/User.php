@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\UserModel;
 use App\Services\AppService;
 use Carbon\Carbon;
 use Orkester\Persistence\Repository;
@@ -10,26 +9,6 @@ use Orkester\Persistence\PersistenceManager;
 
 class User extends Repository
 {
-
-//    public ?int $idUser;
-//    public ?string $login;
-//    public ?string $passMD5;
-//    public ?string $config;
-//    public ?string $name;
-//    public ?string $email;
-//    public ?string $status;
-//    public ?int $active;
-//    public ?string $auth0IdUser;
-//    public ?string $auth0CreatedAt;
-//    public ?string $lastLogin;
-//    public ?int $idLanguage;
-//    public ?array $groups;
-//    public ?array $memberOf;
-//
-//    public function __construct(int $id = null)
-//    {
-//        parent::__construct(UserModel::class, $id);
-//    }
 
     public function getById(int $id): void
     {
@@ -73,7 +52,7 @@ class User extends Repository
         return $criteria;
     }
 
-    public function create(object $data)
+    public static function create(object $data)
     {
         PersistenceManager::beginTransaction();
         try {
@@ -84,7 +63,7 @@ class User extends Repository
             $user->idLanguage = AppService::getCurrentIdLanguage();
             $group = Group::getByName('BEGINNER');
             //$this->setData($userData);
-            $this->registerLogin();
+            self::registerLogin();
             //$this->groups = [$group];
             // ffff
             $this->saveAssociation('groups');
@@ -92,6 +71,12 @@ class User extends Repository
         } catch (\Exception $e) {
             PersistenceManager::rollback();
         }
+    }
+
+    public static function registerLogin()
+    {
+        $this->lastLogin = Carbon::now();
+        $this->save();
     }
 
 
@@ -262,11 +247,6 @@ class User extends Repository
     }
 
 
-    public function registerLogin()
-    {
-        $this->lastLogin = Carbon::now();
-        $this->save();
-    }
 
     public function isAdmin()
     {

@@ -2,28 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\WordFormModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class WordForm extends Repository
 {
-    public ?int $idWordForm;
-    public ?string $form;
-    public ?string $md5;
-    public ?object $entity;
-    public ?object $lexeme;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(WordFormModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdWordForm();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idWordForm');

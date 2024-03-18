@@ -3,31 +3,11 @@
 namespace App\Repositories;
 
 use App\Data\CreateDocumentData;
-use App\Models\DocumentModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class Document extends Repository
 {
-    public ?int $idDocument;
-    public ?string $entry;
-    public ?int $active;
-    public ?int $idEntity;
-    public ?int $idCorpus;
-    public ?string $author;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?array $entries;
-    public ?object $corpus;
-    public ?array $paragraphs;
-    public ?array $sentences;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(DocumentModel::class, $id);
-    }
-
     public function getById(int $id): void
     {
         $criteria = $this->getCriteria()

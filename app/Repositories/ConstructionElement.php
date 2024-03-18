@@ -1,36 +1,9 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
-
 namespace App\Repositories;
 
+use Orkester\Persistence\Repository;
+
 class ConstructionElement extends Repository {
-
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'entry' => array('notnull'),
-                'active' => array('notnull'),
-                'idEntity' => array('notnull'),
-                'idColor' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-
-    public function getDescription(){
-        return $this->getIdConstructionElement();
-    }
 
     public function getData()
     {
@@ -71,7 +44,7 @@ class ConstructionElement extends Repository {
         if ($filter->idConstruction) {
             //Base::relation($criteria, 'ConstructionElement', 'Construction', 'rel_elementof');
             $criteria->where("idConstruction = {$filter->idConstruction}");
-        }          
+        }
         return $criteria;
     }
 
@@ -93,13 +66,13 @@ class ConstructionElement extends Repository {
                 ON (parent.idEntity = EntityRelation.idEntity1)
             INNER JOIN ConstructionElement ceParent
                 ON (ceParent.idConstruction = parent.idConstruction)
-            INNER JOIN Entry 
+            INNER JOIN Entry
                 ON (Entry.entry = base.entry)
-            INNER JOIN Entry e1 
+            INNER JOIN Entry e1
                 ON (e1.entry = parent.entry)
             INNER JOIN Entry  e2
                 ON (e2.entry = ceParent.entry)
-            INNER JOIN language  
+            INNER JOIN language
                 ON (Entry.idLanguage = language.idLanguage)
         WHERE (ceBase.idConstructionElement = {$idConstructionElement})
             AND (RelationType.entry in ('rel_inheritance_cxn'))
@@ -111,7 +84,7 @@ HERE;
         $result = $this->getDb()->getQueryCommand($cmd);
         return $result;
     }
-    
+
     public function listForEditor($idEntityCxn)
     {
         $criteria = $this->getCriteria()->select('idEntity,entries.name as name')->orderBy('entries.name');
@@ -153,7 +126,7 @@ HERE;
                 ON (ConstructionElement.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -166,7 +139,7 @@ HERE;
                 'rel_inheritance_cxn', 'rel_inhibits'))
            AND (entry_relatedCE.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_relatedCE.name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idConstructionElement,ceEntry');
         return $result;
@@ -178,16 +151,16 @@ HERE;
         $idLanguage = \Manager::getSession()->idLanguage;
         $cmd = <<<HERE
 
-        
+
 SELECT entry, name, nick, idEntity, idConcept, conceptEntry,idEntityRelation
-FROM (        
+FROM (
         SELECT RelationType.entry, entry_relatedConcept.name, entry_relatedConcept.nick, relatedConcept.idEntity, relatedConcept.idConcept idConcept, relatedConcept.entry as conceptEntry, EntityRelation.idEntityRelation
         FROM ConstructionElement
             INNER JOIN Entity entity1
                 ON (ConstructionElement.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -228,7 +201,7 @@ FROM (
            AND (entry_relatedFrame.idLanguage = {$idLanguage} )
 ) evokesFE
 ORDER BY entry, name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idConcept,conceptEntry,idEntityRelation');
         return $result;
@@ -240,7 +213,7 @@ HERE;
         $idLanguage = \Manager::getSession()->idLanguage;
         $cmd = <<<HERE
 
-        
+
 SELECT entry, name, nick, idEntity, idCE, ceEntry, idEntityRelation
 FROM (
         SELECT RelationType.entry,concat(entry_relatedCXN.name, '.', entry_relatedCE.name) name, entry_relatedCE.nick, ce1.idEntity, ce1.idConstructionElement idCE, ce1.entry as ceEntry, EntityRelation.idEntityRelation
@@ -262,9 +235,9 @@ FROM (
                 'rel_inheritance_cxn'))
            AND (entry_relatedCE.idLanguage = {$idLanguage} )
            AND (entry_relatedCXN.idLanguage = {$idLanguage} )
-) inheritance           
+) inheritance
 ORDER BY entry, name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idCE,ceEntry,idEntityRelation');
         return $result;
@@ -343,7 +316,7 @@ HERE;
             throw new \Exception($e->getMessage());
         }
     }
-    
+
     public function saveModel(){
         parent::save();
         Timeline::addTimeline("constructionelement",$this->getId(),"S");

@@ -2,36 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\ViewLUModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class ViewLU extends Repository
 {
-
-    public ?int $idLU;
-    public ?string $name;
-    public ?string $senseDescription;
-    public ?int $active;
-    public ?int $importNum;
-    public ?int $incorporatedFE;
-    public ?int $idEntity;
-    public ?int $idLemma;
-    public ?int $idFrame;
-    public ?string $frameEntry;
-    public ?string $lemmaName;
-    public ?int $idLanguage;
-    public ?int $idPOS;
-    public ?object $lemma;
-    public ?object $frame;
-    public ?object $language;
-    public ?array $annotationSets;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ViewLUModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $idLanguage = AppService::getCurrentIdLanguage();

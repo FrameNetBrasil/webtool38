@@ -2,23 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\ImageMMModel;
 use Orkester\Persistence\Repository;
 
 class ImageMM extends Repository
 {
-    public ?int $idImageMM;
-    public ?string $name;
-    public ?int $width;
-    public ?int $height;
-    public ?int $depth;
-    public ?object $imagePath;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ImageMMModel::class, $id);
-    }
-
     public function getObjects()
     {
         $idLanguage = \Manager::getSession()->idLanguage;

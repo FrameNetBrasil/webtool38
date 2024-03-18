@@ -2,27 +2,10 @@
 
 namespace App\Repositories;
 
+use Orkester\Persistence\Repository;
+
 class UDPOS extends Repository
 {
-
-    public static function config()
-    {
-        return array(
-            'log' => array(),
-            'validators' => array(
-                'POS' => array('notnull'),
-                'entry' => array('notnull'),
-                'idEntity' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-
-    public function getDescription()
-    {
-        return $this->getPOS();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('POS');
@@ -38,7 +21,7 @@ class UDPOS extends Repository
         $cmd = <<<HERE
         SELECT u.idUDPOS, u.POS
         FROM UDPOS u
-        {$whereType} 
+        {$whereType}
         ORDER BY u.POS
 
 HERE;
@@ -52,7 +35,7 @@ HERE;
         $cmd = <<<HERE
         SELECT u.idUDPOS, u.POS, u.idEntity
         FROM UDPOS u
-        {$whereType} 
+        {$whereType}
         ORDER BY u.POS
 
 HERE;

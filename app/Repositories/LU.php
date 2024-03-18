@@ -2,30 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\LUModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class LU extends Repository
 {
-    //private $idFrame;
-    public ?int $idLU;
-    public ?string $name;
-    public ?string $senseDescription;
-    public ?int $active;
-    public ?int $importNum;
-    public ?int $idEntity;
-    public ?int $idFrame;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?object $lemma;
-    public ?object $frame;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LUModel::class, $id);
-    }
-
     public function getIdFrame()
     {
         return $this->idFrame;

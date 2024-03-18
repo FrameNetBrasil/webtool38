@@ -2,25 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\GroupModel;
 use Orkester\Persistence\Repository;
 
 class Group extends Repository
 {
-
-//    public ?int $idGroup;
-//    public ?string $name;
-//    public ?string $description;
-//
-//    public function __construct(int $id = null)
-//    {
-//        parent::__construct(GroupModel::class, $id);
-//    }
-//
-//    public function getDescription()
-//    {
-//        return $this->name;
-//    }
 
     public static function getByName($name)
     {

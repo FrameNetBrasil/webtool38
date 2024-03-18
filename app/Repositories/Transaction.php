@@ -2,25 +2,10 @@
 
 namespace App\Repositories;
 
+use Orkester\Persistence\Repository;
+
 class Transaction extends Repository
 {
-
-    public static function config()
-    {
-        return array(
-            'log' => array(),
-            'validators' => array(
-                'name' => array('notnull'),
-                'description' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdTransaction();
-    }
 
     public function listByFilter($filter)
     {

@@ -2,30 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\LayerModel;
 use Orkester\Persistence\Repository;
-
 class Layer extends Repository
 {
-
-    public ?int $idLayer;
-    public ?int $rank;
-    public ?int $idLayerType;
-    public ?int $idAnnotationSet;
-    public ?object $layerType;
-    public ?object $annotationSet;
-    public ?array $labels;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LayerModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdLayer();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idLayer');

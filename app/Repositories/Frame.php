@@ -2,34 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Data\UpdateFrameClassificationData;
-use App\Models\FrameModel;
 use App\Services\AppService;
 use App\Services\RelationService;
 use Orkester\Persistence\Repository;
 
 class Frame extends Repository
 {
-
-    public ?int $idFrame;
-    public ?string $entry;
-    public ?int $active;
-    public ?int $idEntity;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?array $lus;
-    public ?array $fes;
-    public ?array $entries;
-    public ?array $relations;
-    public ?array $inverseRelations;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(FrameModel::class, $id);
-    }
-
     public function getById(int $id): void
     {
         $criteria = $this->getCriteria()

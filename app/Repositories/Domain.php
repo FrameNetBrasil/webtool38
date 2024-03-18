@@ -2,21 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\DomainModel;
 use Orkester\Persistence\Repository;
 
 class Domain extends Repository
 {
-
-    public function __construct(int $id = null) {
-        parent::__construct(DomainModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('entry');

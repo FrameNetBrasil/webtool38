@@ -1,24 +1,10 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 namespace App\Repositories;
 
-class ViewSubCorpusCxn extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config()
-    {
-        return [];
-    }
+class ViewSubCorpusCxn extends Repository {
 
     public function listByCxn($idConstruction, $idLanguage = '')
     {

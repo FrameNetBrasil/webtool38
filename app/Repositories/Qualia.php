@@ -2,39 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\QualiaModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class Qualia extends Repository
 {
-
-    public ?int $idQualia;
-    public ?string $entry;
-    public ?string $info;
-    public ?string $infoInverse;
-    public ?int $idTypeInstance;
-    public ?int $idEntity;
-    public ?int $idFrame;
-    public ?int $idFrameElement1;
-    public ?int $idFrameElement2;
-    public ?object $entity;
-    public ?object $typeInstance;
-    public ?array $entries;
-    public ?object $frame;
-    public ?array $frameElement1;
-    public ?array $frameElement2;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(QualiaModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getInfo();
-    }
-
     public function getName()
     {
         $criteria = $this->getCriteria()->select('entries.name as name');

@@ -3,25 +3,9 @@
 
 namespace App\Repositories;
 
-use App\Models\GenreModel;
 use Orkester\Persistence\Repository;
 
 class Genre extends Repository {
-    public ?int $idGenre;
-    public ?string $entry;
-    public ?int $idGenreType;
-    public ?int $idEntity;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(GenreModel::class, $id);
-    }
-
-
-    public function getDescription(){
-        return $this->entry;
-    }
-
     public function listAllGenres()
     {
         $criteria = $this->getCriteria()->select('idGenre, entries.name')->orderBy('entries.name');

@@ -2,29 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\RelationModel;
 use Orkester\Persistence\Repository;
 
 class EntityRelation extends Repository
 {
-
-    public ?int $idEntityRelation;
-    public ?int $idRelationType;
-    public ?string $entry;
-    public ?string $entity1Type;
-    public ?string $entity2Type;
-    public ?string $entity3Type;
-    public ?int $idEntity1;
-    public ?int $idEntity2;
-    public ?int $idEntity3;
-    public ?int $idRelation;
-    public ?object $relationType;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(RelationModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idEntityRelation');

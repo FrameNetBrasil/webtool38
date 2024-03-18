@@ -1,47 +1,12 @@
 <?php
-/**
- *
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
 
 namespace App\Repositories;
 
-use App\Models\ViewFrameElementModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class ViewFrameElement extends Repository
 {
-
-    public ?int $idFrameElement;
-    public ?string $entry;
-    public ?string $typeEntry;
-    public ?string $frameEntry;
-    public ?int $frameIdEntity;
-    public ?int $active;
-    public ?int $idEntity;
-    public ?int $idFrame;
-    public ?int $idColor;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?array $entries;
-    public ?object $frame;
-    public ?object $color;
-    public ?array $labels;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ViewFrameElementModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $idLanguage = AppService::getCurrentIdLanguage();

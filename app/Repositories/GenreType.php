@@ -1,38 +1,11 @@
 <?php
 
-/**
- *
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
-
 namespace App\Repositories;
+
+use Orkester\Persistence\Repository;
 
 class GenreType extends Repository
 {
-
-    public static function config()
-    {
-        return array(
-            'log' => array(),
-            'validators' => array(
-                'entry' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function getEntryObject()
     {
         $criteria = $this->getCriteria()->select('entries.name, entries.description, entries.nick');

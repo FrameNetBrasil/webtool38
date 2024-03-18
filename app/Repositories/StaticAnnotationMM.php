@@ -2,28 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\StaticAnnotationMMModel;
 use Orkester\Persistence\Repository;
 
 class StaticAnnotationMM extends Repository
 {
-    public ?int $idStaticAnnotationMM;
-    public ?int $idFrameElement;
-    public ?int $idLU;
-    public ?int $idLemma;
-    public ?int $idFrame;
-    public ?int $idStaticObjectSentenceMM;
-    public ?object $staticObjectSentenceMM;
-    public ?object $frameElement;
-    public ?object $lu;
-    public ?object $lemma;
-    public ?object $frame;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(StaticAnnotationMMModel::class, $id);
-    }
-
     public function getAnnotation($idSentenceMM)
     {
         $criteria = $this->getCriteria();

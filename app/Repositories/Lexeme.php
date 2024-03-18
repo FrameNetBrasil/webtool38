@@ -2,26 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\LexemeModel;
 use Orkester\Persistence\Repository;
 
 class Lexeme extends Repository {
-
-    public ?int $idLexeme;
-    public ?string $name;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?object $pos;
-    public ?object $udpos;
-    public ?object $language;
-    public ?array $lemmas;
-    public ?array $lexemeEntries;
-    public ?array $wordforms;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LexemeModel::class, $id);
-    }
 
     public function getIdEntity()
     {

@@ -2,36 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\LayerTypeModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class LayerType extends Repository
 {
-    public ?int $idLayerType;
-    public ?string $entry;
-    public ?int $allowsApositional;
-    public ?int $isAnnotation;
-    public ?int $layerOrder;
-    public ?int $idLayerGroup;
-    public ?int $idEntity;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?array $entries;
-    public ?object $entity;
-    public ?object $layerGroup;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LayerTypeModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function getName()
     {
         $criteria = $this->getCriteria()->select('entries.name as name');

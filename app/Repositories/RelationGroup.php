@@ -1,39 +1,11 @@
 <?php
-/**
- *
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
-
 namespace App\Repositories;
 
-use App\Models\RelationGroupModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class RelationGroup extends Repository
 {
-
-    public ?int $idRelationGroup;
-    public ?string $entry;
-    public ?int $idEntity;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?array $entries;
-    public ?object $entity;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(RelationGroupModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idRelationGroup');

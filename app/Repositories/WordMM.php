@@ -2,16 +2,9 @@
 
 namespace App\Repositories;
 
-class WordMM extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-            ),
-            'converters' => array()
-        );
-    }
+class WordMM extends Repository {
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*')->orderBy('idWordMM');

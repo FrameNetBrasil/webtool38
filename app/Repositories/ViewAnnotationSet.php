@@ -2,32 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\ViewAnnotationSetModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class ViewAnnotationSet extends Repository
 {
-
-    public ?int $idAnnotationSet;
-    public ?int $idSentence;
-    public ?string $entry;
-    public ?int $idAnnotationStatus;
-    public ?int $idLU;
-    public ?int $idEntityLU;
-    public ?int $idConstruction;
-    public ?int $idEntityCxn;
-    public ?array $lu;
-    public ?array $cxn;
-    public ?object $entries;
-    public ?object $sentence;
-    public ?object $annotationStatusType;
-    public ?array $layers;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ViewAnnotationSetModel::class, $id);
-    }
 
     public function listTargetBySentence(int $idSentence)
     {

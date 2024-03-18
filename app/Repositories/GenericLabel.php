@@ -2,34 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\GenericLabelModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class GenericLabel extends Repository
 {
-
-    public ?int $idGenericLabel;
-    public ?int $name;
-    public ?int $definition;
-    public ?int $example;
-    public ?int $idEntity;
-    public ?int $idColor;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?object $color;
-    public ?object $language;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(GenericLabelModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdGenericLabel();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idGenericLabel');

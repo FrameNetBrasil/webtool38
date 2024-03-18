@@ -2,26 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\StaticSentenceMMModel;
 use Orkester\Persistence\Repository;
 
 class StaticSentenceMM extends Repository
 {
-    public ?int $idStaticSentenceMM;
-    public ?int $idFlickr30k;
-    public ?int $idDocument;
-    public ?int $idSentence;
-    public ?int $idImageMM;
-    public ?object $sentence;
-    public ?object $imageMM;
-    public ?object $document;
-    public ?array $staticObjectSentenceMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(StaticSentenceMMModel::class, $id);
-    }
-
     public function listByDocument($idDocument)
     {
         $document = new Document();

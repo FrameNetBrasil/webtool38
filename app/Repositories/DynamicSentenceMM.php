@@ -2,25 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\DynamicSentenceMMModel;
 use Orkester\Persistence\Repository;
 
 class DynamicSentenceMM extends Repository
 {
-    public ?int $idDynamicSentenceMM;
-    public ?int $startTime;
-    public ?int $endTime;
-    public ?int $origin;
-    public ?int $idSentence;
-    public ?int $idOriginMM;
-    public ?object $sentence;
-    public ?object $originMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(DynamicSentenceMMModel::class, $id);
-    }
-
     public function listByDocument($idDocument): array
     {
         $cmd = <<<HERE

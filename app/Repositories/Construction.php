@@ -1,39 +1,10 @@
 <?php
-/**
- *
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
-
 namespace App\Repositories;
+
+use Orkester\Persistence\Repository;
 
 class Construction extends Repository
 {
-
-    public static function config()
-    {
-        return array(
-            'log' => array(),
-            'validators' => array(
-                'entry' => array('notnull'),
-                'active' => array('notnull'),
-                'idEntity' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function getData()
     {
         $data = parent::getData();
@@ -156,13 +127,13 @@ class Construction extends Repository
         $idLanguage = \Manager::getSession()->idLanguage;
         $cmd = <<<HERE
 SELECT ce.idEntity,  ceentries.name as name
-    FROM View_ConstructionElement ce 
+    FROM View_ConstructionElement ce
     JOIN entry ceentries on (ce.entry = ceentries.entry)
     WHERE ceentries.idLanguage = {$idLanguage}
     AND ce.idConstruction = {$this->getId()}
 UNION
 SELECT cn2.idConstraint, concat(ce1entries.name,'.',ce2entries.name) name
-    FROM View_ConstructionElement ce1 
+    FROM View_ConstructionElement ce1
     JOIN View_Constraint cn1 on (ce1.idEntity = cn1.idConstrained)
     JOIN View_Constraint cn2 on (cn1.idConstraint = cn2.idConstrained)
     JOIN View_ConstructionElement ce2 on (cn2.idConstrainedBy = ce2.idEntity)
@@ -192,7 +163,7 @@ SELECT cn4.idConstraint, concat(ce1entries.name,'.',ce2entries.name,'.',ce3entri
     AND (ce1entries.idLanguage = {$idLanguage})
     AND (ce2entries.idLanguage = {$idLanguage})
     AND (ce3entries.idLanguage = {$idLanguage})
-    AND (ce1.idConstruction = {$this->getId()})        
+    AND (ce1.idConstruction = {$this->getId()})
 
 HERE;
 
@@ -211,7 +182,7 @@ HERE;
                 ON (Construction.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -224,7 +195,7 @@ HERE;
                 'rel_inheritance_cxn', 'rel_inhibits'))
            AND (entry_relatedCxn.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_relatedCxn.name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idConstruction,cxnEntry');
         return $result;
@@ -242,7 +213,7 @@ HERE;
                 ON (Construction.idEntity = entity2.idEntity)
             INNER JOIN EntityRelation
                 ON (entity2.idEntity = EntityRelation.idEntity2)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity1
                 ON (EntityRelation.idEntity1 = entity1.idEntity)
@@ -255,7 +226,7 @@ HERE;
                 'rel_inheritance_cxn' ))
            AND (entry_relatedCxn.idLanguage = {$idLanguage} )
         ORDER BY RelationType.entry, entry_relatedCxn.name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idConstruction,cxnEntry');
         return $result;
@@ -297,16 +268,16 @@ HERE;
         $idLanguage = \Manager::getSession()->idLanguage;
         $cmd = <<<HERE
 
-        
+
 SELECT entry, name, nick, idEntity, idFrame, frameEntry, type,idEntityRelation
-FROM (        
+FROM (
         SELECT RelationType.entry, entry_relatedFrame.name, entry_relatedFrame.nick, relatedFrame.idEntity, relatedFrame.idFrame, relatedFrame.entry as frameEntry, entity2.type, EntityRelation.idEntityRelation
         FROM Construction
             INNER JOIN Entity entity1
                 ON (Construction.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -325,7 +296,7 @@ FROM (
                 ON (Construction.idEntity = entity1.idEntity)
             INNER JOIN EntityRelation
                 ON (entity1.idEntity = EntityRelation.idEntity1)
-            INNER JOIN RelationType 
+            INNER JOIN RelationType
                 ON (EntityRelation.idRelationType = RelationType.idRelationType)
             INNER JOIN Entity entity2
                 ON (EntityRelation.idEntity2 = entity2.idEntity)
@@ -337,9 +308,9 @@ FROM (
             AND (RelationType.entry in (
                 'rel_hasconcept'))
            AND (entry_relatedConcept.idLanguage = {$idLanguage} )
-) evokes           
+) evokes
 ORDER BY entry, name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->treeResult('entry', 'name,idEntity,idFrame,frameEntry,idEntityRelation');
         return $result;
@@ -370,7 +341,7 @@ FROM Construction cx1
            'rel_daughter_of'))
         AND (entry_relatedCxn.idLanguage = {$idLanguage} )
 ORDER BY RelationType.entry, entry_relatedCxn.name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->getResult();
         return $result;
@@ -401,7 +372,7 @@ FROM Construction cx1
            'rel_inheritance_cxn'))
         AND (entry_relatedCxn.idLanguage = {$idLanguage} )
 ORDER BY RelationType.entry, entry_relatedCxn.name
-            
+
 HERE;
         $result = $this->getDb()->getQueryCommand($cmd)->getResult();
         if (count($result) > 0) {

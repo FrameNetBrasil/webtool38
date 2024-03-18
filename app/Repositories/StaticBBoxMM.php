@@ -2,25 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\StaticBBoxMMModel;
 use Orkester\Persistence\Repository;
 
 class StaticBBoxMM extends Repository
 {
-    public ?int $idStaticBBoxMM;
-    public ?int $x;
-    public ?int $y;
-    public ?int $width;
-    public ?int $height;
-    public ?int $idStaticObjectMM;
-    public ?object $staticObjectMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(StaticBBoxMMModel::class, $id);
-    }
-
-
     public function listByObjectMM($idStaticObjectMM)
     {
         $criteria = $this->getCriteria()

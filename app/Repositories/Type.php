@@ -3,32 +3,11 @@
 
 namespace App\Repositories;
 
-use App\Models\TypeModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class Type extends Repository
 {
-
-    public ?int $idType;
-    public ?string $entry;
-    public ?int $idEntity;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?array $entries;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(TypeModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idType');

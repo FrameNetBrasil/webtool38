@@ -2,27 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\DynamicBBoxMMModel;
 use Orkester\Persistence\Repository;
 
 class DynamicBBoxMM extends Repository
 {
-    public ?int $idDynamicBBoxMM;
-    public ?int $frameNumber;
-    public ?float $frameTime;
-    public ?int $x;
-    public ?int $y;
-    public ?int $width;
-    public ?int $height;
-    public ?int $blocked;
-    public ?int $idDynamicObjectMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(DynamicBBoxMMModel::class, $id);
-    }
-
-
     public function listByObjectMM($idDynamicObjectMM)
     {
         $criteria = $this->getCriteria()

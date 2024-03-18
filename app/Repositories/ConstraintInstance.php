@@ -2,28 +2,10 @@
 
 namespace App\Repositories;
 
-
-use App\Models\ConstraintInstanceModel;
 use Orkester\Persistence\Repository;
 
 class ConstraintInstance extends Repository
 {
-
-    public ?int $idConstraintInstance;
-    public ?int $idConstraintType;
-    public ?int $idConstraint;
-    public ?int $idConstrained;
-    public ?int $idConstrainedBy;
-    public ?object $entityConstraint;
-    public ?object $entityConstrained;
-    public ?object $entityConstrainedBy;
-    public ?object $constrainedFE;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ConstraintInstanceModel::class, $id);
-    }
-
     /*
     public function listByFilter($filter)
     {

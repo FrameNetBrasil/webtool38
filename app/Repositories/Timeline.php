@@ -2,33 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\TimelineModel;
 use Carbon\Carbon;
-use Orkester\Manager;
 use Orkester\Persistence\Repository;
 use Orkester\Security\MAuth;
 
 class Timeline extends Repository
 {
-
-    public ?int $idTimeline;
-    public ?string $tlDateTime;
-    public ?string $author;
-    public ?string $operation;
-    public ?string $tableName;
-    public ?int $idTable;
-    public ?int $idUser;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(TimelineModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return '';//$this->getTimeline();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idTimeline');

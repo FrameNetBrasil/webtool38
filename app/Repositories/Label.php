@@ -2,33 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\LabelModel;
 use Orkester\Persistence\Repository;
 
 class Label extends Repository
 {
-
-    public ?int $idLabel;
-    public ?int $startChar;
-    public ?int $endChar;
-    public ?int $multi;
-    public ?int $idLabelType;
-    public ?int $idLayer;
-    public ?int $idInstantiationType;
-    public ?object $genericLabel;
-    public ?object $frameElement;
-    public ?object $constructionElement;
-    public ?object $layer;
-    public ?object $instantiationType;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(LabelModel::class, $id);
-    }
-    public function getDescription(){
-        return $this->getIdLabel();
-    }
-
     public function setIdInstantiationTypeFromEntry($entry)
     {
         $ti = new TypeInstance();

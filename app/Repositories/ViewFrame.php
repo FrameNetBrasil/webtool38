@@ -2,17 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\ViewFrameModel;
 use App\Services\AppService;
 use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Repository;
 
 class ViewFrame extends Repository
 {
-//    public function __construct(int $id = null) {
-//        parent::__construct(ViewFrameModel::class, $id);
-//    }
-
     public static function listByFilter($filter): Criteria
     {
         $listBy = $filter->listBy ?? '';

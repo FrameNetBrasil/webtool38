@@ -1,22 +1,9 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\EntryModel;
 use Orkester\Persistence\Repository;
 
 class Entry extends Repository {
-
-    public ?int $idEntry;
-    public ?string $entry;
-    public ?string $name;
-    public ?string $description;
-    public ?string $nick;
-    public ?int $idEntity;
-    public ?object $language;
-    public ?object $entity;
-    public function __construct(int $id = null) {
-        parent::__construct(EntryModel::class, $id);
-    }
 
     public function listByFilter($filter){
         $criteria = $this->getCriteria()->select('*, language.language')->orderBy('entry');

@@ -2,35 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\DocumentMMModel;
-use App\Models\ObjectSentenceMMModel;
-use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class DocumentMM extends Repository
 {
-
-    public ?int $idDocumentMM;
-    public ?string $name;
-    public ?string $title;
-    public ?string $originalFile;
-    public ?string $sha1Name;
-    public ?string $audioPath;
-    public ?string $videoPath;
-    public ?int $videoWidth;
-    public ?int $videoHeight;
-    public ?string $alignPath;
-    public ?int $flickr30k;
-    public ?string $url;
-    public ?int $idDocument;
-    public ?int $idLanguage;
-    public ?object $document;
-    public ?array $sentenceMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(DocumentMMModel::class, $id);
-    }
 
     public function getByIdDocument(int $idDocument): void
     {

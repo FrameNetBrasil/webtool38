@@ -2,29 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\AnnotationSetModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class AnnotationSet extends Repository
 {
-    public ?int $idAnnotationSet;
-    public ?int $idSentence;
-    public ?int $idAnnotationStatus;
-    public ?int $idEntityRelated;
-    public ?int $idEntityLU;
-    public ?int $idEntityCxn;
-    public ?array $lu;
-    public ?array $cxn;
-    public ?object $sentence;
-    public ?object $annotationStatus;
-    public ?array $layers;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(AnnotationSetModel::class, $id);
-    }
-
     public function allowManyAnnotationSet()
     {
         return true;

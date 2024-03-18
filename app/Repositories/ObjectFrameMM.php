@@ -2,29 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\ObjectFrameMMModel;
-use App\Models\ObjectMMModel;
 use Orkester\Persistence\Repository;
 
 class ObjectFrameMM extends Repository
 {
-
-    public ?int $idObjectFrameMM;
-    public ?int $frameNumber;
-    public ?int $frameTime;
-    public ?int $x;
-    public ?int $y;
-    public ?int $width;
-    public ?int $height;
-    public ?int $blocked;
-    public ?int $idObjectMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ObjectFrameMMModel::class, $id);
-    }
-
-
     public function listByObjectMM($idObjectMM)
     {
         $criteria = $this->getCriteria()

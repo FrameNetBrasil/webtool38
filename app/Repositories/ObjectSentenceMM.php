@@ -2,29 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\ObjectSentenceMMModel;
 use Orkester\Persistence\Repository;
-use Orkester\Persistence\PersistenceManager;
 
 class ObjectSentenceMM extends Repository
 {
-    public ?string $name;
-    public ?int $idObjectSentenceMM;
-    public ?int $startWord;
-    public ?int $endWord;
-    public ?int $idFrameElement;
-    public ?int $idLU;
-    public ?int $idLemma;
-    public ?int $idSentenceMM;
-    public ?int $idObjectMM;
-    public ?object $sentenceMM;
-    public ?object $objectMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ObjectSentenceMMModel::class, $id);
-    }
-
     public function getAnnotation($idSentenceMM)
     {
         $criteria = $this->getCriteria();

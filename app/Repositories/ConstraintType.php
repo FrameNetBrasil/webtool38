@@ -3,23 +3,10 @@
 
 namespace App\Repositories;
 
-use App\Models\ConstraintTypeModel;
 use Orkester\Persistence\Repository;
 
 class ConstraintType extends Repository
 {
-
-    public ?int $idConstraintType;
-    public ?string $entry;
-    public ?string $prefix;
-    public ?int $idTypeInstance;
-    public ?int $idRelationGroup;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(ConstraintTypeModel::class, $id);
-    }
-
     public function getByEntry(string $entry)
     {
         $criteria = $this->getCriteria()

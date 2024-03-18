@@ -21,16 +21,16 @@ class Repository
 //        $this->className = $className;
 //    }
 
-//    protected static function getClassName(): string
-//    {
-//        $class = get_called_class();
-//        if (!isset(static::$className[$class])) {
-//            $className = str_replace("App\\Repositories\\", "", $class);
-//            debug("className", $className);
-//            static::$className[$class] = $className;
-//        }
-//        return static::$className[$class];
-//    }
+    protected static function getClassName(): string
+    {
+        $class = get_called_class();
+        if (!isset(static::$className[$class])) {
+            $className = str_replace("App\\Repositories\\", "", $class);
+            debug("className", $className);
+            static::$className[$class] = $className;
+        }
+        return static::$className[$class];
+    }
 
     public static function getCriteria(string $databaseName = null): Criteria
     {

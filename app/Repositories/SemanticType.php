@@ -2,30 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\SemanticTypeModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class SemanticType extends Repository
 {
-
-    public ?int $idSemanticType;
-    public ?string $entry;
-    public ?int $idEntity;
-    public ?int $idDomain;
-    public ?string $name;
-    public ?string $description;
-    public ?string $idLanguage;
-    public ?object $entity;
-    public ?array $entries;
-    public ?array $relations;
-    public ?array $inverseRelations;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(SemanticTypeModel::class, $id);
-    }
-
     public function getById(int $id): void
     {
         $criteria = $this->getCriteria()

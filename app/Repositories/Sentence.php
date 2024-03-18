@@ -2,35 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\SentenceModel;
 use Orkester\Persistence\Repository;
 
 class Sentence extends Repository
 {
-
-
-    public ?int $idSentence;
-    public ?string $text;
-    public ?int $paragraphOrder;
-    public ?int $idParagraph;
-    public ?int $idLanguage;
-    public ?int $idDocument;
-    public ?object $paragraph;
-    public ?object $document;
-    public ?object $language;
-    public ?array $sentenceMM;
-    public ?array $documents;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(SentenceModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdSentence();
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idSentence');

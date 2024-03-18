@@ -2,27 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\CorpusModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class Corpus extends Repository
 {
-
-    public ?int $idCorpus;
-    public ?string $entry;
-    public ?int $active;
-    public ?int $idEntity;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?array $entries;
-    public ?array $documents;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(CorpusModel::class, $id);
-    }
 
     public function getById(int $id): void
     {
@@ -31,11 +15,6 @@ class Corpus extends Repository
             ->where('idLanguage', '=', AppService::getCurrentIdLanguage());
         $this->retrieveFromCriteria($criteria);
     }
-    public function getDescription()
-    {
-        return $this->getEntry();
-    }
-
     public function getEntryObject()
     {
         $criteria = $this->getCriteria()->select('entries.name, entries.description, entries.nick');

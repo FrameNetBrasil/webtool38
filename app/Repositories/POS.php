@@ -2,36 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\POSModel;
-use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class POS extends Repository
 {
-
-    public ?int $idPOS;
-    public ?string $POS;
-    public ?string $entry;
-    public ?int $idEntity;
-    public ?object $entity;
-    public ?array $entries;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(POSModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdPOS();
-    }
-
-//    public function listAll()
-//    {
-//        $criteria = $this->getCriteria()->select('idPOS, POS, entry, idEntity')->orderBy('idPOS');
-//        return $criteria;
-//    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idPOS');

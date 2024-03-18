@@ -2,36 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\TypeInstanceModel;
 use Orkester\Persistence\Repository;
 
 class TypeInstance extends Repository
 {
-
-    public ?int $idTypeInstance;
-    public ?string $entry;
-    public ?string $info;
-    public ?int $flag;
-    public ?int $idType;
-    public ?int $idEntity;
-    public ?int $idColor;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?object $color;
-    public ?object $type;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(TypeInstanceModel::class, $id);
-    }
-
-    public function getDescription()
-    {
-        return $this->getIdTypeInstance();
-    }
-
     public function getByEntry($entry)
     {
         $criteria = $this->getCriteria()

@@ -2,23 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\StaticObjectMMModel;
 use Orkester\Persistence\Repository;
 
 class StaticObjectMM extends Repository
 {
-
-    public ?int $idStaticObjectMM;
-    public ?int $scene;
-    public ?int $nobdnbox;
-    public ?int $idFlickr30kEntitiesChain;
-    public ?array $staticBBoxMM;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(StaticObjectMMModel::class, $id);
-    }
-
     public function listByFilter($filter)
     {
         $criteria = $this->getCriteria()->select('*')->orderBy('idObjectMM');

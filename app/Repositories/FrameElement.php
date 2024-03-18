@@ -2,34 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\FrameElementModel;
-use App\Models\RelationModel;
 use App\Services\AppService;
 use Orkester\Persistence\Repository;
 
 class FrameElement extends Repository
 {
-
-    public ?int $idFrameElement;
-    public ?string $entry;
-    public ?string $coreType;
-    public ?int $active;
-    public ?int $idEntity;
-    public ?int $idFrame;
-    public ?int $idColor;
-    public ?string $name;
-    public ?string $description;
-    public ?int $idLanguage;
-    public ?object $entity;
-    public ?object $frame;
-    public ?object $color;
-    public ?array $entries;
-    public ?array $relations;
-
-    public function __construct(int $id = null)
-    {
-        parent::__construct(FrameElementModel::class, $id);
-    }
 
     public function getById(int $id): void
     {

@@ -1,35 +1,10 @@
 <?php
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- *  @subpackage fnbr
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 namespace App\Repositories;
 
-class Template extends Repository {
+use Orkester\Persistence\Repository;
 
-    public static function config() {
-        return array(
-            'log' => array(  ),
-            'validators' => array(
-                'entry' => array('notnull'),
-                'active' => array('notnull'),
-                'idEntity' => array('notnull'),
-            ),
-            'converters' => array()
-        );
-    }
-    
-    public function getDescription(){
-        return $this->getEntry();
-    }
+class Template extends Repository {
 
     public function getEntryObject() {
         $criteria = $this->getCriteria()->select('entries.name, entries.description, entries.nick');
@@ -37,7 +12,7 @@ class Template extends Repository {
         Base::entryLanguage($criteria);
         return $criteria->asQuery()->asObjectArray()[0];
     }
-    
+
     public function getName() {
         $criteria = $this->getCriteria()->select('entries.name as name');
         $criteria->where("idTemplate = {$this->getId()}");
@@ -70,7 +45,7 @@ class Template extends Repository {
         //$criteria2->asQuery()->getResult();
         $criteria2->setAlias('relations');
         $criteria->joinCriteria($criteria2, "relations.idTemplate = template.idTemplate", "LEFT");
-        
+
         return $criteria;
     }
 
@@ -111,7 +86,7 @@ class Template extends Repository {
         Base::entryLanguage($criteria);
         return $criteria;
     }
-    
+
     public function listForLookup()
     {
         $criteria = $this->getCriteria()->select('idTemplate,entries.name as name')->orderBy('entries.name');
@@ -128,7 +103,7 @@ class Template extends Repository {
         Base::entryLanguage($criteria);
         return $criteria;
     }
-    
+
     public function listTemplatedFEs($idFETemplate)
     {
         $frameElement = new FrameElement();
@@ -141,7 +116,7 @@ class Template extends Repository {
 
     public function getBaseFrame()
     {
-        // if template was created from a frame, this frame  is the "base frame" 
+        // if template was created from a frame, this frame  is the "base frame"
         $frame = new Frame();
         $criteria = $frame->getCriteria()->select('idFrame, entries.name as name, entries.description as description')->orderBy('entries.name');
         Base::relation($criteria, 'Template', 'Frame', 'rel_createdfrom');
@@ -149,7 +124,7 @@ class Template extends Repository {
         Base::entryLanguage($criteria);
         return $criteria;
     }
-    
+
     public function createFromFrame($idFrame) {
         $transaction = $this->beginTransaction();
         try {
@@ -253,6 +228,6 @@ class Template extends Repository {
         }
     }
 
-    
+
 }
 
