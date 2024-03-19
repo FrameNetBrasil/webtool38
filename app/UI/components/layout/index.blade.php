@@ -97,11 +97,12 @@
     id="top"
 >
 
-<a href="#content">Skip to main content</a>
+@include('components.head')
+@include('components.head-small')
 
-
-<nav id="hxTopNav">
-    <div>
+<!--
+<header id="head">
+    <nav id="hxTopNav">
         <div class="hxTopNavApp">
             <hx-disclosure>
                 <a href="/">
@@ -109,14 +110,30 @@
                 </a>
             </hx-disclosure>
         </div>
-        @include('components.menu')
-        @include('components.userdata')
-    </div>
-</nav>
+            @include('components.menu')
+            @include('components.userdata')
+    </nav>
+</header>
 
+<header id="smallHead">
+    <nav id="hxTopNav">
+        <div class="hxTopNavIcon">
+            <hx-icon type="list"></hx-icon>
+        </div>
+        <div class="hxTopNavApp">
+            <hx-disclosure>
+                <a href="/">
+                    <p>{!! config('webtool.headerTitle') !!}</p>
+                </a>
+            </hx-disclosure>
+        </div>
+    </nav>
+</header>
+-->
 <div id="app">
     <div id="stage">
         <main role="main" id="content" class="component-content">
+
             {{$slot}}
         </main>
     </div>
@@ -124,14 +141,9 @@
 
 <footer id="foot">
     &copy; 2014-2024 FrameNet Brasil Lab, UFJF.
-    <nav>
-    </nav>
 </footer>
 
 <!-- App Scripts Go Here -->
-
-<a id="bottom"></a>
-
 <script src="/scripts/lodash/lodash.js"></script>
 <script src="/scripts/backbone/backbone.js"></script>
 <script src="/scripts/jointjs/dist/joint.js"></script>
@@ -145,6 +157,7 @@
 
 <script type="module">
     import HelixUI from '/scripts/helix-ui/helix-ui.module.js';
+
     HelixUI.initialize();
 </script>
 

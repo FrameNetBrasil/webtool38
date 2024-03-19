@@ -33,15 +33,14 @@ class User extends Model
         $model->active ??= 1;
         $model->status ??= '0';
         $model->idLanguage ??= AppService::getCurrentIdLanguage();
-        $group = GroupRepository::getByName('BEGINNER');
-        $model->groups ??= [$group];
+        $model->groups ??= $data->groups;
         return $model;
     }
 
     public function registerLogin(): void
     {
         $this->lastLogin = Carbon::now();
-        $this->idUser = UserRepository::save($this);
+        $this->idUser = $this->save();
     }
     public function getUserLevel()
     {
@@ -49,8 +48,8 @@ class User extends Model
         $levels = AppService::userLevel();
         foreach($this->groups as $group) {
             foreach ($levels as $level) {
-                if ($group->name == $level['name']) {
-                    $userLevel = $level['name'];
+                if ($group->name == $level) {
+                    $userLevel = $level;
                     break 2;
                 }
             }

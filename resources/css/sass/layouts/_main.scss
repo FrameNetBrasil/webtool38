@@ -3,6 +3,8 @@
     box-sizing: border-box;
     margin-top: var(--wt-unit);
     margin-bottom: var(--wt-unit);
+    height:calc(100vh - 240px);
+    width:100%;
 
     .header {
         position: relative;
@@ -22,6 +24,8 @@
     .edit {
 
         //background-color: var(--wt-bg-panel-body);
+        margin-bottom: 1rem;
+        flex-grow: 0;
 
         .editHeader {
             //padding: var(--wt-mini-unit) var(--wt-mini-unit) var(--wt-mini-unit) 0;
@@ -36,10 +40,12 @@
     }
 
     .nav {
-        padding: var(--wt-mini-unit) 0 0 var(--wt-mini-unit);
+        margin-top: 1rem;
+        flex-grow: 0;
+        //padding: var(--wt-mini-unit) 0 0 var(--wt-mini-unit);
         //height: var(--wt-row-control-unit);
         //background-color: var(--wt-bg-pane-nav);
-        flex-grow: 1;
+        //flex-grow: 1;
 
         .options {
             border-bottom: 1px solid var(--wt-border-panel-header);
@@ -49,6 +55,9 @@
     .main {
         height: 100%;
         margin: 0 !important;
+        flex-grow: 1;
+        overflow: auto;
+
 
         .mainGrid {
             height: 100%;
@@ -59,11 +68,13 @@
         }
 
         .mainPane {
-            height: calc(100% - 0px);
-            overflow-y: auto;
-            padding: var(--wt-unit);
-            background-color: var(--wt-bg-panel-header);
-            box-sizing: border-box;
+            height: 100%;
+            //max-height: calc(100% - 0px) ;
+            //flex: 1;
+            //overflow: auto;
+            //padding: var(--wt-unit);
+            //background-color: var(--wt-bg-panel-header);
+            //box-sizing: border-box;
         }
     }
 

@@ -1,3 +1,4 @@
+/*
 .wt-layout-index {
     .main-header {
 
@@ -14,3 +15,136 @@
 
     }
 }
+*/
+
+body.hxVertical main {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    background-color: rgb(250, 250, 250);
+    /*
+       * +----------------+
+       * | header         | auto
+       * +------+---------+
+       * | body | [aside] | 1fr
+       * +------+---------+
+       *   1fr    auto
+       */
+}
+
+body.hxVertical main > * {
+    order: 10;
+    padding: 2rem;
+    grid-area: body;
+}
+
+body.hxVertical main > header {
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    border-style: solid;
+    border-width: 0 0 1px;
+    grid-area: header;
+    order: 1;
+    width: 100vw;
+}
+
+body.hxVertical main > header > * + * {
+    margin-top: 0.75rem;
+}
+
+body.hxVertical main > aside {
+    background-color: #ffffff;
+    border-color: #eeeeee;
+    border-style: solid;
+    border-width: 0 0 1px;
+    grid-area: aside;
+    order: 3;
+    width: 100%;
+}
+
+@supports (display: grid) {
+    body.hxVertical main {
+        display: grid;
+        grid-template-areas: "header header" "body   aside";
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto 1fr;
+        overflow: visible !important;
+    }
+    body.hxVertical main > aside {
+        border-width: 0 0 0 1px;
+        min-width: 15rem;
+        width: 25vw;
+    }
+}
+
+body.hxVertical main > div > * + *,
+body.hxVertical main > div > * + section {
+    //margin-top: 4.5rem;
+}
+
+body.hxVertical main > div > section > * + section {
+    //margin-top: 2rem;
+}
+
+body.hxVertical main > div > section > section > * + section {
+    //margin-top: 0.75rem;
+}
+
+body.hxVertical main > aside > * + * {
+    //margin-top: 2rem;
+}
+
+body.hxVertical.hxForm.beta main#content > header,
+body.hxHorizontal.hxForm.beta main#content > header {
+    background-color: #f5f5f5;
+    border-color: #eeeeee;
+    border-style: solid;
+    border-width: 0 0 1px;
+    padding: 2rem;
+}
+
+body.hxVertical {
+    #leftNav {
+        z-index: 10;
+        position:absolute;
+        left: 0;
+        top:64px;
+
+        nav {
+            height: calc(100vh - 104px);
+            //z-index: 10;
+
+            * {
+                //z-index: 10;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 704px) {
+    header#head{
+        display:none;
+    }
+    header#headSmall{
+        display:block;
+    }
+}
+
+@media only screen and (min-width: 704px) {
+    header#head{
+        display:block;
+    }
+    header#headSmall{
+        display:none;
+    }
+}
+
+//@media screen and (max-width: 600px) {
+//    #hxTopNav.responsive {position: relative;}
+//    #hxTopNav.responsive a {
+//        float: none;
+//        display: block;
+//        text-align: left;
+//    }
+//}
+

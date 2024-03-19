@@ -22,19 +22,7 @@ class Frame extends Model
     public ?array $relations;
     public ?array $inverseRelations;
 
-    public function getClassificationLabels()
-    {
-        $classification = [];
-        $result = FrameRepository::getClassification($this->idFrame);
-        debug($result);
-        foreach ($result as $framal => $values) {
-            foreach ($values as $row) {
-                $classification[$framal][] = $row['name'];
-            }
-        }
-        $classification['id'][] = "#" . $this->idFrame;
-        return $classification;
-    }
+
 
 
 }

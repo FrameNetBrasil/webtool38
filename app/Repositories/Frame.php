@@ -446,6 +446,20 @@ HERE;
         return $criteria->get()->groupBy('entry')->all();
     }
 
+    public static function getClassificationLabels(int $idFrame): array
+    {
+        $classification = [];
+        $result = self::getClassification($idFrame);
+        debug($result);
+        foreach ($result as $framal => $values) {
+            foreach ($values as $row) {
+                $classification[$framal][] = $row['name'];
+            }
+        }
+        $classification['id'][] = "#" . $idFrame;
+        return $classification;
+    }
+
 /*
     public function listFEDirectRelations(int $idEntityRelationBase)
     {

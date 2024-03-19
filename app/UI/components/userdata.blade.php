@@ -49,9 +49,11 @@
             </hx-menu>
         </div>
     @else
-        <a href="{{$hrefLogin}}">
-            <hx-icon class="material-icons-outlined wt-icon-menu-signin"></hx-icon>
-            <p>Login</p>
-        </a>
+        <div class="hxTopNavMenu">
+            <a href="{{$hrefLogin}}">
+                <hx-icon class="material-icons-outlined wt-icon-menu-signin"></hx-icon>
+                <p>Login</p>
+            </a>
+        </div>
     @endif
 </div>

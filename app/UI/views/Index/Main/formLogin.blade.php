@@ -8,7 +8,7 @@
         </p>
     </header>
     <div class="hxRow hxGutterless">
-        <div class="hxCol hxSpan-2 hxOffset-5">
+        <div class="hxCol hxSpan-12-xs hxSpan-6-sm hxSpan-4-md hxSpan-3-lg hxSpan-2-xl mx-auto">
             <x-form id="formLogin" title="Login" center="true" >
                 <x-slot:fields>
                     <div style="text-align: center">

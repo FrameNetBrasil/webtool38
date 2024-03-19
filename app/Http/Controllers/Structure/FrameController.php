@@ -129,17 +129,16 @@ class FrameController extends Controller
     {
         $frame = Frame::getById($id);
         data('frame', $frame);
-        data('classification', $frame->getClassificationLabels());
+        data('classification', Frame::getClassificationLabels($id));
         return $this->render("edit");
     }
 
     #[Get(path: '/frame/{id}/entries')]
     public function entries(string $id)
     {
-        $frame = new Frame($id);
+        $frame = Frame::getById($id);
         data('frame', $frame);
-        $entry = new Entry();
-        data('entries', $entry->listByIdEntity($frame->idEntity));
+        data('entries', Entry::listByIdEntity($frame->idEntity));
         data('languages', AppService::availableLanguages());
         return $this->render("Structure.Entry.main");
     }

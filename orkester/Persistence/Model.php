@@ -6,7 +6,7 @@ use Orkester\Persistence\Map\ClassMap;
 
 class Model
 {
-    protected static string $className;
+    protected static string $repositoryClassName;
 
     public static function from(object $data)
     {
@@ -19,23 +19,25 @@ class Model
         return $model;
     }
 
-    protected static function getClassName(): string
+    protected static function getRepositoryClassName(): string
     {
-        if (!isset(static::$className)) {
+        if (!isset(static::$repositoryClassName)) {
             $class = get_called_class();
-            $className = str_replace("App\\Repositories\\", "", $class);
+            $className = str_replace("App\\Models\\", "App\\Repositories\\", $class);
             debug("className", $className);
-            static::$className = $className;
+            static::$repositoryClassName = $className;
         }
-        return static::$className;
+        return static::$repositoryClassName;
     }
 
-    public function getClassMap(): ClassMap {
+    public function getClassMap(): ClassMap
+    {
         $className = str_replace("App\\Models\\", "", get_called_class());
         return PersistenceManager::getClassMap($className);
     }
 
-    public function getId(): int {
+    public function getId(): int
+    {
         $key = $this->getClassMap()->keyAttributeName;
         return $this->$key;
     }
@@ -45,6 +47,12 @@ class Model
         foreach ($data as $attribute => $value) {
             $this->$attribute = $value;
         }
+    }
+
+    public function save(): ?int
+    {
+        $repository = static::getRepositoryClassName();
+        return ($repository)::save($this);
     }
 
 //    protected static Model $model;

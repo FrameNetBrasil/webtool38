@@ -3,10 +3,10 @@
     <x-layout.edit>
         <x-slot:edit>
             <div class="grid grid-nogutter editHeader">
-                <div class="col-8 sm:col-12 title">
+                <div class="col-8 title">
                     <h2 class="color_frame">{{$frame?->name}}</h2>
                 </div>
-                <div class="col-4  sm:col-12 text-right description">
+                <div class="col-4 text-right description">
                     @foreach ($classification as $name => $values)
                         @foreach ($values as $value)
                             <x-tag label="{{$value}}"></x-tag>
@@ -72,9 +72,4 @@
             </div>
         </x-slot:main>
     </x-layout.edit>
-    <script>
-        $(function () {
-            //$('#layoutEditMain').panel({fit: true});
-        });
-    </script>
 @endsection
