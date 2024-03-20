@@ -98,7 +98,7 @@ a[href="#content"] {
 #content {
   flex-grow: 1;
   min-width: 0;
-  overflow: auto; // ...because IE
+  //overflow: auto; // ...because IE
 }
 
 .hxSiderail {

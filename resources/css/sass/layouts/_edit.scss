@@ -1,8 +1,7 @@
 .wt-layout-edit {
 
     box-sizing: border-box;
-    width: 100vw;
-    height: 100%;
+    //width: 100%;
     display: flex;
     flex-direction: column;
 
@@ -11,18 +10,23 @@
     }
 
     .main {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
+        //flex-grow: 1;
+        //display: flex;
+        //flex-direction: column;
 
         .workArea {
-            display: flex;
-            flex-direction: column;
+            //display: flex;
+            //flex-direction: column;
+            box-sizing: border-box;
+            padding: 0.5rem;
 
             .header {
                 padding: 1rem 0 1rem 0;
             }
 
+            .edit {
+
+            }
         }
     }
 }

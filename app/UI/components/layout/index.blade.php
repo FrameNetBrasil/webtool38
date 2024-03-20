@@ -48,6 +48,7 @@
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.easyui.min.js"></script>
 
     <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
+    <script type="text/javascript" src="/scripts/maestro/webcomponents.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
@@ -103,7 +104,6 @@
     hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
     id="top"
 >
-
 @include('components.head')
 @include('components.head-small')
 
@@ -111,6 +111,7 @@
     <div id="stage">
         <main role="main" id="content" class="component-content">
             {{$slot}}
+            <wt-go-top id="myButton" label="Top" offset="64"></wt-go-top>
         </main>
     </div>
 </div>
@@ -118,6 +119,7 @@
 <footer id="foot">
     &copy; 2014-2024 FrameNet Brasil Lab, UFJF.
 </footer>
+
 
 <!-- App Scripts Go Here -->
 <script src="/scripts/lodash/lodash.js"></script>
@@ -139,6 +141,28 @@
 
     HelixUI.initialize();
 </script>
+
+<style>
+    .wt-go-top {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed/sticky position */
+        bottom: 20px; /* Place the button at the bottom of the page */
+        right: 30px; /* Place the button 30px from the right */
+        z-index: 99; /* Make sure it does not overlap */
+        border: none; /* Remove borders */
+        outline: none; /* Remove outline */
+        /*background-color: red; !* Set a background color *!*/
+        /*color: white; !* Text color *!*/
+        /*cursor: pointer; !* Add a mouse pointer on hover *!*/
+        /*padding: 15px; !* Some padding *!*/
+        /*border-radius: 10px; !* Rounded corners *!*/
+        /*font-size: 18px; !* Increase font size *!*/
+    }
+
+    .wt-go-top:hover {
+        /*background-color: #555; !* Add a dark-grey background on hover *!*/
+    }
+</style>
 
 <!--
 

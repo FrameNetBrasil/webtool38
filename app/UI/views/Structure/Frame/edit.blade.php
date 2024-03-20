@@ -26,7 +26,24 @@
         {{$frame?->description}}
     </x-slot:description>
     <x-slot:edit>
-        <div id="editPanel">
+        <div id="editPanel" class="hxRow hxGutterless">
+            <div
+                class="hxCol hxSpan-12-xs hxSpan-12-sm hxSpan-2-md hxSpan-2-lg hxSpan-2-xl">
+                <hx-disclosure aria-controls="editTranslations">
+                    <a hx-get="/frame/{{$frame->idFrame}}/entries"
+                       hx-target="#editTranslations"
+                    >Translations
+                    </a>
+
+                </hx-disclosure>
+            </div>
+            <div
+                class="hxCol hxSpan-12-xs hxSpan-12-sm hxSpan-10-md hxSpan-10-lg hxSpan-10-xl">
+                <hx-reveal id="editTranslations">
+
+                </hx-reveal>
+                </div>
+            </div>
         </div>
     </x-slot:edit>
 </x-layout.edit>
