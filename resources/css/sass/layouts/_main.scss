@@ -1,86 +1,13 @@
 .wt-layout-main {
 
     box-sizing: border-box;
-    margin-top: var(--wt-unit);
-    margin-bottom: var(--wt-unit);
-    height:calc(100vh - 240px);
-    width:100%;
-
-    .header {
-        position: relative;
-        background-color: var(--wt-bg-header);
-        padding: var(--wt-mini-unit);
-    }
-
-    .title {
-        //font-size: 1.25rem;
-        //font-weight: bold;
-        //color: var(--wt-color-panel-header);
-        //height: var(--wt-row-unit);
-        //line-height: var(--wt-row-unit);
-        //padding-left: var(--wt-mini-unit);
-    }
-
-    .edit {
-
-        //background-color: var(--wt-bg-panel-body);
-        margin-bottom: 1rem;
-        flex-grow: 0;
-
-        .editHeader {
-            //padding: var(--wt-mini-unit) var(--wt-mini-unit) var(--wt-mini-unit) 0;
-        }
-
-        .description {
-            font-size: 1rem;
-            height: var(--wt-row-detail-unit);
-            line-height: var(--wt-row-detail-unit);
-            padding: var(--wt-mini-unit) var(--wt-mini-unit) var(--wt-mini-unit) 0;
-        }
-    }
-
-    .nav {
-        margin-top: 1rem;
-        flex-grow: 0;
-        //padding: var(--wt-mini-unit) 0 0 var(--wt-mini-unit);
-        //height: var(--wt-row-control-unit);
-        //background-color: var(--wt-bg-pane-nav);
-        //flex-grow: 1;
-
-        .options {
-            border-bottom: 1px solid var(--wt-border-panel-header);
-        }
-    }
-
+    width:100vw;
+    height:100%;
+    display: flex;
+    flex-direction: column;
     .main {
-        height: 100%;
-        margin: 0 !important;
         flex-grow: 1;
-        overflow: auto;
-
-
-        .mainGrid {
-            height: 100%;
-            //-moz-border-radius: var(--wt-controls-border-radius);
-            //-webkit-border-radius: var(--wt-controls-border-radius);
-            //border-radius: var(--wt-controls-border-radius);
-            //border: var(--wt-controls-border);
-        }
-
-        .mainPane {
-            height: 100%;
-            //max-height: calc(100% - 0px) ;
-            //flex: 1;
-            //overflow: auto;
-            //padding: var(--wt-unit);
-            //background-color: var(--wt-bg-panel-header);
-            //box-sizing: border-box;
-        }
-    }
-
-    .new {
-        height: calc(100% - 0px);
-        padding: var(--wt-unit);
-        background-color: var(--wt-bg-panel-header);
+        display: flex;
+        flex-direction: column;
     }
 }

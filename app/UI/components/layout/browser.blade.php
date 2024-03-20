@@ -1,25 +1,28 @@
 <x-layout.index>
-    <header class="main-header">
-        <div class="hxRow hxGutterless">
-            <div class="hxCol hxSpan-8">
-                <h1>
-                    {{$title}}
-                </h1>
+    <section class="wt-layout-browse">
+        <header>
+            <div class="hxRow hxGutterless">
+                <div class="hxCol hxSpan-8">
+                    <h1>
+                        {{$title}}
+                    </h1>
+                </div>
+                <div class="hxCol hxSpan-4 actions">
+                    {{$actions}}
+                </div>
             </div>
-            <div class="hxCol hxSpan-4 actions">
-                {{$actions}}
+        </header>
+        <section class="hxRow hxGutterless main">
+            <div
+                class="hxCol hxSpan-11-xs hxSpan-11-sm hxSpan-10-md hxOffset-1-md hxSpan-10-lg hxOffset-1-lg hxSpan-10-xl hxOffset-1-xl workArea">
+                <div class="search">
+                    {{$search}}
+                </div>
+                <div class="grid">
+                    {{$grid}}
+                </div>
             </div>
-        </div>
-    </header>
-    <div class="hxRow">
-        <div class="hxCol hxSpan-11-xs hxSpan-11-sm hxSpan-10-md hxSpan-9-lg hxSpan-6-xl mx-auto">
-            <div class="search">
-                {{$search}}
-            </div>
-            <div class="grid">
-                {{$grid}}
-            </div>
-        </div>
-    </div>
+        </section>
+    </section>
 </x-layout.index>
 

@@ -52,6 +52,8 @@
     @include hxButton--secondary;
   } @else if $weight == tertiary {
     @include hxButton--tertiary;
+  } @else if $weight == danger {
+      @include hxButton--danger;
   } @else {
     // weightless (no additional styles)
   }
@@ -231,4 +233,52 @@
   background-color: $rax-component-button-plain-hover-background-color;
   border-color: $rax-component-button-plain-hover-border-color;
   color: $rax-component-button-plain-focus-color;
+}
+
+/// --------------------------------------------- ///
+/// ---------- DANGER (FILLED) BUTTON ---------- ///
+/// --------------------------------------------- ///
+
+@mixin hxButton--danger {
+    background-color: $rax-component-button-filled-default-background-color-danger;
+    border: none;
+    color: $rax-component-button-filled-default-color-danger;
+
+    &:hover {
+        @include hxButton-hover--danger;
+    }
+
+    &:active {
+        @include hxButton-active--danger;
+    }
+
+    &:focus {
+        @include hxButton-focus--danger;
+    }
+
+    &[disabled] {
+        @include hxButton-disabled--danger;
+    }
+}
+
+@mixin hxButton-active--danger {
+    background-color: $rax-component-button-filled-active-background-color-danger;
+    color: $rax-component-button-filled-active-color-danger;
+}
+
+@mixin hxButton-disabled--danger {
+    background-color: $rax-component-button-filled-disabled-background-color-danger;
+    color: $rax-component-button-filled-disabled-color-danger;
+}
+
+@mixin hxButton-focus--danger {
+    background-color: $rax-component-button-filled-focus-background-color-danger;
+    color: $rax-component-button-filled-focus-color-danger;
+    outline: none;
+}
+
+@mixin hxButton-hover--danger {
+    background-color: $rax-component-button-filled-hover-background-color-danger;
+    border: none;
+    color: $rax-component-button-filled-hover-color-danger;
 }

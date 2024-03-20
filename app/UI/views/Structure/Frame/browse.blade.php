@@ -36,12 +36,12 @@
             <x-submit
                 label="Search"
                 hx-post="/frame/grid"
-                hx-target="#frameGrid"
+                hx-target="#gridPanel"
             ></x-submit>
         </x-form-search>
     </x-slot:search>
     <x-slot:grid>
-        <div id="frameGrid">
+        <div id="gridPanel">
             @include('Structure.Frame.grid')
         </div>
     </x-slot:grid>

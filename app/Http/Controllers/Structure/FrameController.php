@@ -87,8 +87,7 @@ class FrameController extends Controller
         } else {
             $icon = 'material-icons-outlined wt-tree-icon wt-icon-frame';
             if (($search->fe == '') && ($search->lu == '')) {
-                $frame = new ViewFrame();
-                $frames = $frame->listByFilter($search)->getResult();
+                $frames = ViewFrame::listByFilter($search)->getResult();
                 foreach ($frames as $row) {
                     $node = [];
                     $node['id'] = 'f' . $row['idFrame'];

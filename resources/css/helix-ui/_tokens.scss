@@ -124,6 +124,7 @@ $rax-component-button-base-border-style: solid;
 $rax-component-button-base-display: inline-block;
 $rax-component-button-base-vertical-padding: 0.5rem;
 $rax-component-button-base-horizontal-padding: 1rem;
+
 $rax-component-button-filled-default-color: #ffffff;
 $rax-component-button-filled-default-background-color: #367ed4;
 $rax-component-button-filled-default-border-color: #367ed4;
@@ -139,6 +140,7 @@ $rax-component-button-filled-focus-border-color: #0051b7;
 $rax-component-button-filled-disabled-color: #ffffff;
 $rax-component-button-filled-disabled-background-color: #bdbdbd;
 $rax-component-button-filled-disabled-border-color: #bdbdbd;
+
 $rax-component-button-outline-default-color: #367ed4;
 $rax-component-button-outline-default-border-color: #367ed4;
 $rax-component-button-outline-default-background-color: transparent;
@@ -169,6 +171,19 @@ $rax-component-button-plain-focus-border-color: transparent;
 $rax-component-button-plain-disabled-color: #bdbdbd;
 $rax-component-button-plain-disabled-background-color: transparent;
 $rax-component-button-plain-disabled-border-color: transparent;
+
+$rax-component-button-filled-default-color-danger: #ffffff;;
+$rax-component-button-filled-default-background-color-danger: #C10015;
+$rax-component-button-filled-active-color-danger: #ffffff;;
+$rax-component-button-filled-active-background-color-danger: #C10015;
+$rax-component-button-filled-disabled-color-danger: #bdbdbd;
+$rax-component-button-filled-disabled-background-color-danger: transparent;
+$rax-component-button-filled-disabled-border-color-danger: #bdbdbd;
+$rax-component-button-filled-focus-color-danger: #ffffff;;
+$rax-component-button-filled-focus-background-color-danger: #C10015;
+$rax-component-button-filled-hover-color-danger: #ffffff;;
+$rax-component-button-filled-hover-background-color-danger: #C10015;
+
 $rax-component-checkbox-base-height: 1.5rem;
 $rax-component-checkbox-base-width: 1.5rem;
 $rax-component-checkbox-base-border-radius: 0;

@@ -103,7 +103,7 @@ class Operand
                     $associationMap = $this->criteria->getAssociationMap($part, $currentClass);
                     // associationMap MUST exist
                     if (is_null($associationMap)) {
-                        throw new \InvalidArgumentException("Association not found: [{$part}] [{$this->field}]");
+                        throw new \InvalidArgumentException("Association not found: [{$currentClass}] [{$part}] [{$this->field}]");
                     }
                     $realChain .= ($first ? '' : '.') . $part;
                     $currentClass = $associationMap->toClassName;
@@ -156,6 +156,7 @@ class Operand
                 // just create the join for this chain if the alias wasn't set yet
                 if (!isset($this->criteria->associationAlias[$chain])) {
                     // get the associationMap based on current Class
+                    //debug($associationName, $currentClass);
                     $associationMap = $this->criteria->getAssociationMap($associationName, $currentClass);
                     // join type for this chain otherwise INNER
                     $associationJoinType = $this->criteria->associationJoin[$chain] ?? $associationMap->joinType ?? Join::INNER;

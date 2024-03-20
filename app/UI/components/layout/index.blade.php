@@ -15,8 +15,12 @@
           type="text/css">
 
     <script type="text/javascript" src="/scripts/htmx/htmx.min.js"></script>
+
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.min.js"></script>
+
+
     <script type="text/javascript" src="/scripts/maestro/manager.js"></script>
+
     <script type="text/javascript" src="/scripts/pdf/jspdf.debug.js"></script>
     <script type="text/javascript" src="/scripts/pdf/html2canvas.min.js"></script>
     <script type="text/javascript" src="/scripts/pdf/html2pdf.min.js"></script>
@@ -40,8 +44,11 @@
     <script type="text/javascript"
             src="/scripts/fontawesome-free-5.0.9/svg-with-js/js/fa-v4-shims.min.js"></script>
 -->
+
     <script type="text/javascript" src="/scripts/jquery-easyui-1.10.17/jquery.easyui.min.js"></script>
+
     <script type="text/javascript" src="/scripts/maestro/notify.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/scripts/jointjs/dist/joint.css"/>
 
     <script type="text/javascript" src="/scripts/video-js-8.11.5/video.min.js"></script>
@@ -92,7 +99,7 @@
     @vite(['resources/js/app.js'])
 </head>
 <body
-    class="wt-layout-index hxVertical"
+    class="hxVertical"
     hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
     id="top"
 >
@@ -100,40 +107,9 @@
 @include('components.head')
 @include('components.head-small')
 
-<!--
-<header id="head">
-    <nav id="hxTopNav">
-        <div class="hxTopNavApp">
-            <hx-disclosure>
-                <a href="/">
-                    <p>{!! config('webtool.headerTitle') !!}</p>
-                </a>
-            </hx-disclosure>
-        </div>
-            @include('components.menu')
-            @include('components.userdata')
-    </nav>
-</header>
-
-<header id="smallHead">
-    <nav id="hxTopNav">
-        <div class="hxTopNavIcon">
-            <hx-icon type="list"></hx-icon>
-        </div>
-        <div class="hxTopNavApp">
-            <hx-disclosure>
-                <a href="/">
-                    <p>{!! config('webtool.headerTitle') !!}</p>
-                </a>
-            </hx-disclosure>
-        </div>
-    </nav>
-</header>
--->
 <div id="app">
     <div id="stage">
         <main role="main" id="content" class="component-content">
-
             {{$slot}}
         </main>
     </div>
@@ -149,6 +125,9 @@
 <script src="/scripts/jointjs/dist/joint.js"></script>
 <script src="/scripts/dagre/dist/dagre.js"></script>
 <script src="/scripts/utils/md5.min.js"></script>
+<!--
+<script src="/scripts/tabulator-6.0/js/tabulator.min.js"></script>
+-->
 
 <script nomodule src="/scripts/helix-ui/helix-ui.js"></script>
 <script nomodule>
