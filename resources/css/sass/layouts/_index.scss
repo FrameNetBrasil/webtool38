@@ -1,22 +1,3 @@
-/*
-.wt-layout-index {
-    .main-header {
-
-        .hxRow {
-            .actions {
-                text-align: right;
-
-                a {
-                    display: inline-block;
-                    margin: var(--wt-mini-unit);
-                }
-            }
-        }
-
-    }
-}
-*/
-
 body.hxVertical main {
     display: flex;
     flex-direction: column;
@@ -34,7 +15,7 @@ body.hxVertical main {
 
 body.hxVertical main > * {
     order: 10;
-    padding: 2rem;
+    padding: 1rem;
     grid-area: body;
 }
 
@@ -52,15 +33,15 @@ body.hxVertical main > header > * + * {
     margin-top: 0.75rem;
 }
 
-body.hxVertical main > aside {
-    background-color: #ffffff;
-    border-color: #eeeeee;
-    border-style: solid;
-    border-width: 0 0 1px;
-    grid-area: aside;
-    order: 3;
-    width: 100%;
-}
+//body.hxVertical main > aside {
+//    background-color: #ffffff;
+//    border-color: #eeeeee;
+//    border-style: solid;
+//    border-width: 0 0 1px;
+//    grid-area: aside;
+//    order: 3;
+//    width: 100%;
+//}
 
 @supports (display: grid) {
     body.hxVertical main {
@@ -70,38 +51,38 @@ body.hxVertical main > aside {
         grid-template-rows: auto 1fr;
         overflow: visible !important;
     }
-    body.hxVertical main > aside {
-        border-width: 0 0 0 1px;
-        min-width: 15rem;
-        width: 25vw;
-    }
+    //body.hxVertical main > aside {
+    //    border-width: 0 0 0 1px;
+    //    min-width: 15rem;
+    //    width: 25vw;
+    //}
 }
 
-body.hxVertical main > div > * + *,
-body.hxVertical main > div > * + section {
-    //margin-top: 4.5rem;
-}
+//body.hxVertical main > div > * + *,
+//body.hxVertical main > div > * + section {
+//    //margin-top: 4.5rem;
+//}
 
-body.hxVertical main > div > section > * + section {
-    //margin-top: 2rem;
-}
+//body.hxVertical main > div > section > * + section {
+//    //margin-top: 2rem;
+//}
+//
+//body.hxVertical main > div > section > section > * + section {
+//    //margin-top: 0.75rem;
+//}
+//
+//body.hxVertical main > aside > * + * {
+//    //margin-top: 2rem;
+//}
 
-body.hxVertical main > div > section > section > * + section {
-    //margin-top: 0.75rem;
-}
-
-body.hxVertical main > aside > * + * {
-    //margin-top: 2rem;
-}
-
-body.hxVertical.hxForm.beta main#content > header,
-body.hxHorizontal.hxForm.beta main#content > header {
-    background-color: #f5f5f5;
-    border-color: #eeeeee;
-    border-style: solid;
-    border-width: 0 0 1px;
-    padding: 2rem;
-}
+//body.hxVertical.hxForm.beta main#content > header,
+//body.hxHorizontal.hxForm.beta main#content > header {
+//    background-color: #f5f5f5;
+//    border-color: #eeeeee;
+//    border-style: solid;
+//    border-width: 0 0 1px;
+//    padding: 2rem;
+//}
 
 body.hxVertical {
     #leftNav {
