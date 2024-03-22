@@ -1,0 +1,68 @@
+.wt-layout-object {
+    flex-grow:1;
+    display: flex;
+    flex-direction: column;
+
+
+    header {
+        padding-top: 1rem;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        header {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+
+    .work {
+
+        background-color: #EEE;
+        height: 320px;
+        margin-top: 1rem;
+        border: 1px solid #E0E0E0;
+
+        nav {
+            a {
+                display: block;
+                padding: 0.5rem 0 0 1rem;
+                cursor: pointer;
+            }
+        }
+
+        main {
+            .editArea {
+                box-sizing: border-box;
+                height: 318px;
+                overflow-y: auto;
+                display:flex;
+                flex-direction: column;
+            }
+        }
+
+        /*
+        .workArea {
+            box-sizing: border-box;
+            padding: 0.5rem;
+
+            .header {
+                padding: 1rem 0 1rem 0;
+            }
+
+            .edit {
+
+                #editPanel {
+                    background-color: #EEE;
+                    height: 320px;
+
+
+
+
+                }
+
+            }
+        }
+
+         */
+    }
+}

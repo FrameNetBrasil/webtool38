@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Services\AppService;
 use App\Services\RelationService;
 use Orkester\Persistence\Repository;
-use App\Models\Frame as FrameModel;
+use App\Models\FrameModel as FrameModel;
 
 class Frame extends Repository
 {

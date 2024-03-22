@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Orkester\Persistence\Criteria\Criteria;
 use Orkester\Persistence\Repository;
 use Orkester\Persistence\PersistenceManager;
-use App\Models\User as UserModel;
+use App\Models\UserModel as UserModel;
 
 class User extends Repository
 {

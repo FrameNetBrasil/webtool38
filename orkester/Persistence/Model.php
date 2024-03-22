@@ -24,7 +24,7 @@ class Model
         if (!isset(static::$repositoryClassName)) {
             $class = get_called_class();
             $className = str_replace("App\\Models\\", "App\\Repositories\\", $class);
-            debug("className", $className);
+            $className = str_replace("Model", "", $className);
             static::$repositoryClassName = $className;
         }
         return static::$repositoryClassName;
@@ -33,6 +33,7 @@ class Model
     public function getClassMap(): ClassMap
     {
         $className = str_replace("App\\Models\\", "", get_called_class());
+        $className = str_replace("Model", "", $className);
         return PersistenceManager::getClassMap($className);
     }
 

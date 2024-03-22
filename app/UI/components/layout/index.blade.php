@@ -112,13 +112,13 @@
         <main role="main" id="content" class="component-content">
             {{$slot}}
             <wt-go-top id="myButton" label="Top" offset="64"></wt-go-top>
+            <footer id="foot">
+                &copy; 2014-2024 FrameNet Brasil Lab, UFJF.
+            </footer>
         </main>
     </div>
 </div>
 
-<footer id="foot">
-    &copy; 2014-2024 FrameNet Brasil Lab, UFJF.
-</footer>
 
 
 <!-- App Scripts Go Here -->

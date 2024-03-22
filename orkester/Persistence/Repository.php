@@ -313,7 +313,7 @@ class Repository
         $id = $model->getId();
         $associationMap = static::getAssociationMap($associationName);
         $data = static::getAssociationById($associationName, $id, $associationMap->toClassName, $idLanguage);
-        $toClassName = "App\\Models\\{$associationMap->toClassName}";
+        $toClassName = "App\\Models\\{$associationMap->toClassName}Model";
         $cardinality = $associationMap->cardinality;
         if (count($data) == 0) {
             return (($cardinality == Association::ONE) ? null : []);

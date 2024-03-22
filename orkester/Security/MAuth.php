@@ -4,11 +4,11 @@ namespace Orkester\Security;
 
 //use Maestro\Persistence\Repository;
 
-use App\Models\User;
+use App\Models\UserModel;
 
 class MAuth
 {
-    private static ?User $login = null;
+    private static ?UserModel $login = null;
 
     public static function init(): void
     {
@@ -20,7 +20,7 @@ class MAuth
         return !is_null(self::$login);
     }
 
-    public static function getLogin(): ?User
+    public static function getLogin(): ?UserModel
     {
         return self::$login;
     }

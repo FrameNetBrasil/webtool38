@@ -4,29 +4,54 @@
     //width: 100%;
     display: flex;
     flex-direction: column;
+    flex-grow:1;
 
     .actions {
         text-align: right;
     }
 
-    .main {
-        //flex-grow: 1;
-        //display: flex;
-        //flex-direction: column;
-
-        .workArea {
-            //display: flex;
-            //flex-direction: column;
-            box-sizing: border-box;
-            padding: 0.5rem;
-
-            .header {
-                padding: 1rem 0 1rem 0;
-            }
-
-            .edit {
-
-            }
-        }
+    #editMaster {
+        flex-grow:1;
+        display: flex;
+        flex-direction: column;
     }
+
+    //#editMaster {
+    //
+    //    header {
+    //        padding-top: 1rem;
+    //    }
+    //
+    //    .main {
+    //
+    //        .workArea {
+    //            box-sizing: border-box;
+    //            padding: 0.5rem;
+    //
+    //            .header {
+    //                padding: 1rem 0 1rem 0;
+    //            }
+    //
+    //            .edit {
+    //
+    //                #editPanel {
+    //                    background-color: #EEE;
+    //                    height: 320px;
+    //
+    //                    a {
+    //                        display: block;
+    //                        padding: 0.5rem 0 0 1rem;
+    //                    }
+    //
+    //                    #editPanelWork {
+    //                        height: 100%;
+    //                        overflow-y: auto;
+    //                    }
+    //
+    //                }
+    //
+    //            }
+    //        }
+    //    }
+    //}
 }

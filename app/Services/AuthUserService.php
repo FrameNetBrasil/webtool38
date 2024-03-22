@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Repositories\Group as GroupRepository;
+use App\Repositories\Group;
 use App\Repositories\User;
-use App\Models\User as UserModel;
+use App\Models\UserModel;
 
 class AuthUserService
 {
@@ -52,7 +52,7 @@ class AuthUserService
         ];
         $result = User::listByFilter($userData)->getResult();
         if (count($result) == 0) {
-            $userData->groups = [GroupRepository::getByName('BEGINNER')];
+            $userData->groups = [Group::getByName('BEGINNER')];
             $user = UserModel::from($userData);
             User::create($user);
             $user->registerLogin();

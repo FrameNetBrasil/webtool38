@@ -1,4 +1,4 @@
-<x-form id="entryForm" title="Translations" center="true">
+<x-form id="entryForm" title="Translations" center="true" :border="false">
     <x-slot:fields>
         @foreach($languages as $language)
             @php

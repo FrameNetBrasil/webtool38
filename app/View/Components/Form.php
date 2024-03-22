@@ -15,6 +15,7 @@ class Form extends Component
         public string $id,
         public string $title,
         public bool $center,
+        public bool $border = true,
         public string $toolbar = '',
 //        public string $fields,
 //        public string $buttons,
